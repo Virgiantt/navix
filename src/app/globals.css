@@ -1,2 +1,15 @@
 @import "tailwindcss";
 
+@theme {
+    --color-lochmara-50: #f3f7fc;
+    --color-lochmara-100: #e7eff7;
+    --color-lochmara-200: #c9dcee;
+    --color-lochmara-300: #9ac0df;
+    --color-lochmara-400: #649fcc;
+    --color-lochmara-500: #4083b7;
+    --color-lochmara-600: #3474ac;
+    --color-lochmara-700: #27547d;
+    --color-lochmara-800: #244768;
+    --color-lochmara-900: #223d58;
+    --color-lochmara-950: #17283a;
+  }

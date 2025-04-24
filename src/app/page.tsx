@@ -2,7 +2,9 @@ import { BoxReveal } from "@/components/magicui/box-reveal";
 import { AnimatedShinyTextDemo } from "@/components/magicui/demo/animated_shiny_text_demo";
 import { CoverDemo } from "@/components/magicui/demo/cover-demo";
 import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-button";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 import { Navbar } from "@/components/sections.tsx/Navbar";
+import { InfiniteMovingLogos } from "@/components/ui/inifinite_logo";
 import { PiCheckBold } from "react-icons/pi";
 
 export default function Home() {
@@ -13,7 +15,7 @@ export default function Home() {
         <main className="md:pb-10 container">
           <div className="md:px-0 mx-6 xl:w-4/5 2xl:w-[68%] md:mx-auto mt-14">
             <AnimatedShinyTextDemo />
-          </div>
+     
           <h1>
             <CoverDemo />
           </h1>
@@ -90,7 +92,44 @@ export default function Home() {
               </p>
             </BoxReveal>
           </div>
-          <div></div>
+          <div className="md:flex items-center justify-between gap-y-4 my-10 gap-x-28 mx-auto">
+            <div className="md:w-2/5">
+              <h1 className="text-2xl font-medium text-gray-600 w-4/5">
+                Trusted by fast brands
+              </h1>
+              <div className="flex my-6 gap-x-5 w-full">
+                <div>
+                  <h1 className="text-3xl md:text-5xl text-lochmara-500">
+                    <NumberTicker value={100} />+
+                    <p className="text-gray-500 text-sm md:text-md">
+                      Happy clients
+                    </p>
+                  </h1>
+                </div>
+                <div className="w-px bg-gray-300 self-stretch" />
+                <div className="flex-1 min-w-0 ">
+                  <h1 className="text-3xl md:text-5xl text-lochmara-500 whitespace-nowrap overflow-hidden">
+                    <NumberTicker value={30} />+
+                    <p className="text-gray-500 text-sm md:text-md">
+                      Projects completed
+                    </p>
+                  </h1>
+                </div>
+              </div>
+            </div>
+            <section className="overflow-hidden mt-10 md:w-4/5">
+<InfiniteMovingLogos 
+speed="normal"
+direction="left"
+items={[
+  { logo: "/HouseProtein.png", name: "HouseProtein" , link: "https://www.house-protein.tn/" },
+  { logo: "/logo_Houssem.jpeg", name: "Houssem Consulting", link: "www.shtc-maghreb.tn" },
+  { logo: "/logo_Rayen.png", name: "Rayen el maamoun portfolio", link: "https://www.rayenelmaamoun.com/" },
+  
+]}/>
+            </section>
+          </div>
+          </div>
         </main>
       </div>
     </div>

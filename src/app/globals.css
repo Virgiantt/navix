@@ -68,7 +68,7 @@
     --screen-2xl: 1400px;
 
 
-    --container-padding: 2rem;
+    --container-padding: 1rem;
     --container-max-width: 1400px;
    
 }
@@ -194,6 +194,21 @@
     @media (min-width: 1400px) {
       max-width: var(--breakpoint-2xl);
     }
+  }
+  .scroller {
+    --animation-duration: 40s;
+    --animation-direction: forwards;
+  }
+
+  @keyframes scroll {
+    to {
+      transform: translate(calc(-50% - 0.5rem));
+    }
+  }
+
+  .animate-scroll {
+    animation: scroll var(--animation-duration) linear infinite;
+    animation-direction: var(--animation-direction);
   }
 }
 @layer base {

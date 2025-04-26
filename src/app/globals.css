@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -36,14 +36,14 @@
     --color-border: var(--border);
     --color-input: var(--input);
     --color-ring: var(--ring);
-    
+
     /* Chart Colors */
     --color-chart-1: var(--chart-1);
     --color-chart-2: var(--chart-2);
     --color-chart-3: var(--chart-3);
     --color-chart-4: var(--chart-4);
     --color-chart-5: var(--chart-5);
-    
+
     /* Sidebar Colors */
     --color-sidebar: var(--sidebar);
     --color-sidebar-foreground: var(--sidebar-foreground);
@@ -60,17 +60,15 @@
     --radius-lg: var(--radius);
     --radius-xl: calc(var(--radius) + 4px);
 
-
     --screen-sm: 640px;
     --screen-md: 768px;
     --screen-lg: 1024px;
     --screen-xl: 1280px;
     --screen-2xl: 1400px;
 
-
     --container-padding: 1rem;
     --container-max-width: 1400px;
-   
+
 }
 
 @keyframes accordion-down {
@@ -105,7 +103,7 @@
 :root {
     /* Base Settings */
     --radius: 0.625rem;
-    
+
     /* Light Mode Colors */
     --background: oklch(1 0 0);
     --foreground: oklch(0.145 0 0);
@@ -125,14 +123,14 @@
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
     --ring: oklch(0.708 0 0);
-    
+
     /* Chart Colors */
     --chart-1: oklch(0.646 0.222 41.116);
     --chart-2: oklch(0.6 0.118 184.704);
     --chart-3: oklch(0.398 0.07 227.392);
     --chart-4: oklch(0.828 0.189 84.429);
     --chart-5: oklch(0.769 0.188 70.08);
-    
+
     /* Sidebar */
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
@@ -164,14 +162,14 @@
     --border: oklch(1 0 0 / 10%);
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.556 0 0);
-    
+
     /* Dark Mode Charts */
     --chart-1: oklch(0.488 0.243 264.376);
     --chart-2: oklch(0.696 0.17 162.48);
     --chart-3: oklch(0.769 0.188 70.08);
     --chart-4: oklch(0.627 0.265 303.9);
     --chart-5: oklch(0.645 0.246 16.439);
-    
+
     /* Dark Mode Sidebar */
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
@@ -190,7 +188,7 @@
     padding-left: var(--container-padding);
     padding-right: var(--container-padding);
     max-width: var(--container-max-width);
-    
+
     @media (min-width: 1400px) {
       max-width: var(--breakpoint-2xl);
     }
@@ -215,35 +213,63 @@
     * {
         @apply border-border outline-ring/50;
     }
-    
+
     body {
         @apply bg-background text-foreground;
         font-feature-settings: "rlig" 1, "calt" 1;
     }
-    
+
     /* Animation Classes */
     --animate-accordion-down {
         animation: accordion-down 0.2s ease-out;
     }
-    
+
     --animate-accordion-up {
         animation: accordion-up 0.2s ease-out;
     }
-    
+
     --animate-scroll {
         animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
     }
-    
+
     --animate-shimmer {
         animation: shimmer 8s infinite;
     }
-    
+
     --animate-shine {
         animation: shine 2s linear infinite;
     }
-    
+
     --animate-shiny-text {
         animation: shiny-text 8s infinite;
     }
-   
+
+}
+
+@theme inline {
+    --animate-marquee: marquee var(--duration) infinite linear;
+    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+
+        }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+
+        }
+
+    }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+
+        }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+
+        }
+
+    }
+
 }

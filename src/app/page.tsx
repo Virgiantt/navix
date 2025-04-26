@@ -1,5 +1,6 @@
 import Hero from "@/components/sections/Hero";
 import Navbar from "@/components/sections/Navbar";
+import { Projects } from "@/components/sections/Projects";
 
 import Services from "@/components/sections/Services";
 
@@ -11,6 +12,7 @@ export default function Home() {
         <div className="pt-10">
         <Hero />
         <Services />
+        <Projects />
         </div>
        
       </div>

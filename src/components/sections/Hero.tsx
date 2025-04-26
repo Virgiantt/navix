@@ -22,34 +22,34 @@ md:text-2xl my-6 md:my-10
         Schedule a call with us to discuss your busniss growth goals and
         how Navix can help you achieve them.
       </p>
-      <div className="flex md:justify-center items-center gap-x-4">
-        {/* Primary Button */}
-        <InteractiveHoverButton
-          className="sm:text-base
-bg-primary text-primary-foreground
-py-3 px-10 md:px-16 md:text-xl
+      <div className="flex flex-wrap justify-center gap-4 w-full">
+  {/* Primary Button */}
+  <InteractiveHoverButton
+    className="flex-1 whitespace-nowrap min-w-[150px] sm:min-w-0
+      bg-primary text-primary-foreground
+      py-3 px-6 md:px-8 
+      text-sm sm:text-base md:text-xl
+      hover:bg-primary-foreground hover:text-primary
+      border border-primary
+      hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
+      dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground)]"
+  >
+    Book a Call
+  </InteractiveHoverButton>
 
-hover:bg-primary-foreground hover:text-primary
-hover:border-primary
-hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
-dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground)]
-"
-        >
-          Book a Call
-        </InteractiveHoverButton>
-
-        {/* Secondary Button (Reversed) */}
-        <InteractiveHoverButton
-          className="
-
-py-3 px-10 md:px-16 md:text-xl
-hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
-dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground)]
-"
-        >
-          Showcase
-        </InteractiveHoverButton>
-      </div>
+  {/* Secondary Button */}
+  <InteractiveHoverButton
+    className="flex-1 whitespace-nowrap min-w-[150px] sm:min-w-0
+      bg-background text-foreground border border-primary
+      py-3 px-6 md:px-8 
+      text-sm sm:text-base md:text-xl
+      hover:bg-primary/10
+      hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
+      dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground)]"
+  >
+    Showcase
+  </InteractiveHoverButton>
+</div>
       <We_Offer />
       <Trusted />
     </div>

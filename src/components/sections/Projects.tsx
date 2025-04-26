@@ -204,7 +204,7 @@ const ProjectDetails = ({
 >
 Strategic Campaign Showcase
 </ScrollFloat>
-                 <p className="md:text-center py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 ">
+                 <p className="text-center py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 ">
                  Explore data-driven campaigns where precision targeting met creative execution to boost client revenue by 150%+.
                  </p>
         </div>

@@ -47,7 +47,7 @@ const Services = () => {
     <Element name="services" className="container">
       <div className="md:px-0 mx-6 xl:w-4/5 2xl:w-[68%] md:mx-auto">
         <WordPullUpDemo />
-        <p className="md:text-center py-4 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 ">
+        <p className="text-center py-4 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 ">
           All of our services are designed to make your busniss stand out
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">

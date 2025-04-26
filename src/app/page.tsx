@@ -1,4 +1,5 @@
 import { ScrollBasedVelocityDemo } from "@/components/magicui/demo/scroll-based-velocity-demo";
+import Founders from "@/components/sections/founders";
 import Hero from "@/components/sections/Hero";
 import Navbar from "@/components/sections/Navbar";
 import Process from "@/components/sections/Process";
@@ -19,6 +20,7 @@ export default function Home() {
    <ScrollBasedVelocityDemo />
         </div>
         <Process />
+        <Founders />
         </div>
        
       </div>

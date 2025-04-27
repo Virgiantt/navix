@@ -5,7 +5,7 @@ import { BoxReveal } from "../box-reveal";
 
 const BoxRevealDemo = () => {
   return (
-    <div className="h-full w-full items-center justify-center ml-10 overflow-hidden pt-8 space-y-2">
+    <div className="h-full w-full items-center justify-center md:ml-10 overflow-hidden pt-8 space-y-2">
       <BoxReveal boxColor={"#3b82f6"} duration={0.5}>
         
         <p className="text-3xl font-semibold">1. Connect</p>
@@ -26,7 +26,7 @@ const BoxRevealDemo = () => {
 
       <BoxReveal boxColor={"#3b82f6"} duration={0.5}>
         <h2 className="my-2 text-lg text-gray-500">
-        Jointly define project goals, KPIs, and success metrics through our collaborative workshop process
+        Together, we set goals and KPIs through collaborative workshops.
         </h2>
       </BoxReveal>
 
@@ -35,7 +35,7 @@ const BoxRevealDemo = () => {
       </BoxReveal>
 
       <BoxReveal boxColor={"#3b82f6"} duration={0.5}>
-        <h2 className="my-2 text-lg text-gray-500">  We handle execution with weekly progress reports while you focus on business growth</h2>
+        <h2 className="my-2 text-lg text-gray-500"> We execute with weekly updates, so you stay focused on growth.</h2>
       </BoxReveal>
     </div>
   );

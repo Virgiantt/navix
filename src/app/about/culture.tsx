@@ -56,7 +56,7 @@ const Culture = () => {
   
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen ">
       <div
         className=" px-6 py-10
      2xl:w-4/5 md:px-16 "

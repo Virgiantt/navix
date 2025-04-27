@@ -1,9 +1,12 @@
 import React from 'react'
 import { AnimatedShinyTextDemo } from '../magicui/demo/animated_shiny_text_demo'
 import { CoverDemo } from '../magicui/demo/cover-demo'
-import { InteractiveHoverButton } from '../magicui/interactive-hover-button'
+
 import We_Offer from '../What-We-Offer'
 import Trusted from '../Trusted'
+
+import { InteractiveHoverButton } from '../magicui/interactive-hover-button'
+import Link from 'next/link'
 
 const Hero = () => {
   return (
@@ -24,24 +27,33 @@ md:text-2xl my-6 md:my-10
       </p>
       <div className="flex md:justify-center items-center gap-x-4 max-md:w-full max-md:grid max-md:grid-cols-2">
   {/* Primary Button */}
+ <Link href="/meeting">
   <InteractiveHoverButton
+ 
     className="sm:text-base bg-primary text-primary-foreground
     py-3 px-10 md:px-16 md:text-xl max-md:w-full max-md:px-2
     hover:bg-primary-foreground hover:text-primary hover:border-primary
     hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
     dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground)]"
   >
-    <span className="max-md:text-sm">Book a Call</span>
+     <span	  className="max-md:text-sm">Book a Call</span>
+    
+
   </InteractiveHoverButton>
+  </Link>
+  {/* Divider */}
 
   {/* Secondary Button */}
+  <Link href="/about">
   <InteractiveHoverButton
+ 
     className="py-3 px-10 md:px-16 md:text-xl max-md:w-full max-md:px-2
     hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
     dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground)]"
   >
-    <span className="max-md:text-sm">Showcase</span>
+    <span  className="max-md:text-sm">About us</span>
   </InteractiveHoverButton>
+  </Link>
 </div>
       <We_Offer />
       <Trusted />

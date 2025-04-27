@@ -1,3 +1,4 @@
+import LetsMakeThingsHappenSection from "@/components/LetsMakeThingsHappen";
 import { ScrollBasedVelocityDemo } from "@/components/magicui/demo/scroll-based-velocity-demo";
 import MainLayout from "@/components/main-layout";
 import Faq from "@/components/sections/Faq";
@@ -25,6 +26,7 @@ export default function Home() {
           <Process />
           <Founders />
           <Guarentees />
+          <LetsMakeThingsHappenSection />
           <Faq />
         </MainLayout>
       </div>

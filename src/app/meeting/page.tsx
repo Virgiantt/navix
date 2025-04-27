@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import { PiCheckCircle } from 'react-icons/pi'
 import Calendly from './calendly';
+import { BoxReveal } from '@/components/magicui/box-reveal'
 const checkItemVariants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0 },
@@ -16,11 +17,19 @@ const page = () => {
   <MainLayout>
   <div className="md:px-0 px-6 xl:w-4/5 2xl:w-[68%] justify-between md:mt-14 md:flex mx-auto  ">
   <div className="md:w-2/5">
-  <h1 className="text-4xl font-semibold pt-10">Let&apos;s Meet</h1>
-  <p className="text-lg text-gray-500 py-4">
-    We are always excited to connect with ambitious brands and discuss new growth opportunities.
-    Feel free to book a strategy session with us.
-  </p>
+  <div className="mx-auto flex items-center">
+           <div className="max-w-5xl">
+             <h1 className="text-4xl xl:text-6xl 2xl:text-7xl font-bold mb-8">
+                 <BoxReveal boxColor={"#4083b7"} duration={0.5}>
+                 Let&apos;s Meet
+                </BoxReveal>
+               
+             </h1>
+             <p className="text-medium md:text-xl text-gray-600">
+             We are always excited to connect with ambitious brands and discuss new growth opportunities. Feel free to book a strategy session with us.
+ </p>
+           </div>
+         </div>
 
   {[
     {

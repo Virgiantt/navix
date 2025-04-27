@@ -8,7 +8,7 @@ import Trusted from '../Trusted'
 const Hero = () => {
   return (
     <main className="md:pb-10 container">
-    <div className="md:px-0 mx-6 xl:w-4/5 2xl:w-[68%] md:mx-auto mt-14">
+    <div className="md:px-0 mx-6 xl:w-4/5 2xl:w-[68%] md:mx-auto ">
       <AnimatedShinyTextDemo />
 
       <h1>

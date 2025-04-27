@@ -203,8 +203,8 @@ export const Beam = ({
           }}
         >
           <stop stopColor="#2EB9DF" stopOpacity="0" />
-          <stop stopColor="#3b82f6" />
-          <stop offset="1" stopColor="#3b82f6" stopOpacity="0" />
+          <stop stopColor="#4083b7" />
+          <stop offset="1" stopColor="#4083b7" stopOpacity="0" />
         </motion.linearGradient>
       </defs>
     </motion.svg>

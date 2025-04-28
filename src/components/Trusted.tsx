@@ -37,6 +37,8 @@ items={[
 { logo: "/HouseProtein.png", name: "HouseProtein" , link: "https://www.house-protein.tn/" },
 { logo: "/logo_Houssem.jpeg", name: "Houssem Consulting", link: "www.shtc-maghreb.tn" },
 { logo: "/logo_Rayen.png", name: "Rayen el maamoun portfolio", link: "https://www.rayenelmaamoun.com/" },
+{ logo: "/HFD_FX.jpeg", name: "HFD_FX", link: "/" },
+
 
 ]}/>
     </section>

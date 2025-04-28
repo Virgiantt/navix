@@ -57,7 +57,7 @@ const Footer = () => {
               href="mailto:hi@email.com"
               className="text-xl hover:underline inline-block mb-8"
             >
-              Navix@email.com
+              contact@Navix.com
             </a>
             <p className="text-gray-600">
               Manzel Jemil, Bizerte

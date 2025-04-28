@@ -4,7 +4,7 @@ import Link from "next/link";
 
 function LetsMakeThingsHappenSection() {
   return (
-    <section className="container bg-lochmara-300 rounded-[45px] p-6 md:p-16 relative pt-12 md:pt-20 pb-12 md:pb-20 mx-auto mt-10 md:mt-20 mb-10 md:mb-20 flex flex-col items-center justify-center gap-8">
+    <section className="container bg-lochmara-300 md:rounded-[45px] p-6 md:p-16 relative pt-12 md:pt-20 pb-12 md:pb-20 mx-auto mt-10 md:mt-20 mb-10 md:mb-20 flex flex-col items-center justify-center gap-8">
       <div className="flex flex-col md:flex-row items-center justify-between gap-8 w-full">
         {/* Text Content */}
         <div className="md:flex-1 md:text-left text-center w-full">

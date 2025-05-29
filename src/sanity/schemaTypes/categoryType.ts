@@ -7,6 +7,7 @@ export interface Category {
     slug: {
       current: string;
     };
+    description: string;
   }
 export const categoryType = defineType({
     name: 'category',

@@ -1,8 +1,7 @@
 'use client'
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
 import Image from "next/image";
 import {
   PiArrowArcLeft,
@@ -11,347 +10,256 @@ import {
   PiLinkedinLogo,
   PiTwitterLogo,
 } from "react-icons/pi";
-
-
-interface Social {
-    linkedin: string;
-    twitter: string;
-    website?: string;
-  }
-
-
-
-interface Founder {
-    name: string;
-    role: string;
-    image: string;
-    description: string;
-    social: Social;
-  }
-
-
-const founders: Founder[] = [
-    {
-      name: "Alex Johnson",
-      role: "CEO & Founder",
-      image: "/images/image-1.jpg",
-      description:
-        "Leading our vision with over a decade of experience in AI and business strategy",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-        website: "https://website.com",
-      },
-    },
-    {
-      name: "Jamie Lee",
-      role: "CTO",
-      image: "/images/image-2.jpg",
-      description:
-        "Expert in AI technologies, driving innovation and technical excellence across our projects",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-        website: "https://website.com",
-      },
-    },
-    {
-      name: "Morgan Smith",
-      role: "Marketing Director",
-      image: "/images/image-3.jpg",
-      description:
-        "Crafting impactful marketing strategies that resonate with our clients and their audiences",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-      },
-    },
-    {
-      name: "Taylor Brown",
-      role: "Lead Developer",
-      image: "/images/image-4.jpg",
-      description:
-        "Creating innovative solutions with our expert development team",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-      },
-    },
-    {
-      name: "Chris White",
-      role: "Head of Design",
-      image: "/images/image-4.jpg",
-      description:
-        "Driving creative direction and design excellence across all our projects",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-      },
-    },
-    {
-      name: "Emily Green",
-      role: "Product Manager",
-      image: "/images/image-5.jpg",
-      description:
-        "Leading product development and strategy with a focus on user experience",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-      },
-    },
-    {
-      name: "Ethan Black",
-      role: "Data Scientist",
-      image: "/images/image-6.jpg",
-      description:
-        "Applying advanced data science techniques to drive insights and innovation",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-      },
-    },
-    {
-      name: "Ava Brown",
-      role: "Customer Success",
-      image: "/images/image-7.jpg",
-      description:
-        "Ensuring our clients receive the best possible service and support",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-      },
-    },
-    {
-      name: "Noah White",
-      role: "Business Development",
-      image: "/images/image-1.jpg",
-      description:
-        "Building relationships and driving growth through strategic partnerships",
-      social: {
-        linkedin: "https://linkedin.com",
-        twitter: "https://twitter.com",
-      },
-    },
-  ];
-
-
-
-
+import { useData } from "../context/DataContext";
 
 const Founders = () => {
+  const { clients, isLoading } = useData();
+  const [startIndex, setStartIndex] = useState(0);
+  const [itemsToShow, setItemsToShow] = useState(4);
+  
+  // Filter clients with representatives
+  const featuredClients = useMemo(() => 
+    clients.filter(client => client.representative), 
+  [clients]);
 
-    const [startIndex, setStartIndex] = useState(0);
-    const [itemsToShow, setItemsToShow] = useState(4);
-    const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 768;
+      const newItemsToShow = isMobile ? 1 : 4; // Changed to 1 for mobile
+      setItemsToShow(newItemsToShow);
+      setStartIndex(prev => {
+        const maxStart = Math.max(0, featuredClients.length - newItemsToShow);
+        return prev > maxStart ? maxStart : prev;
+      });
+    };
 
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [featuredClients.length]);
 
-    const container = {
-        hidden: { opacity: 0 },
-        show: {
-          opacity: 1,
-          transition: {
-            staggerChildren: 0.1,
-            delayChildren: 0,
-          },
-        },
-        exit: {
-          opacity: 0,
-          transition: {
-            staggerChildren: 0.05,
-            staggerDirection: -1,
-            duration: 0.2,
-          },
-        },
-      };
-    
-      const item = {
-        hidden: {
-          opacity: 0,
-          y: 20,
-          scale: 0.95,
-        },
-        show: {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          transition: {
-            type: "spring",
-            duration: 0.5,
-            bounce: 0.4,
-          },
-        },
-        exit: {
-          opacity: 0,
-          y: -20,
-          scale: 0.95,
-          transition: {
-            duration: 0.3,
-          },
-        },
-      };
+  const next = () => {
+    setStartIndex(prev => {
+      const nextIndex = prev + 1;
+      const maxStart = Math.max(0, featuredClients.length - itemsToShow);
+      return nextIndex > maxStart ? 0 : nextIndex;
+    });
+  };
 
-      
+  const prev = () => {
+    setStartIndex(prev => {
+      const nextIndex = prev - 1;
+      return nextIndex < 0 ? Math.max(0, featuredClients.length - itemsToShow) : nextIndex;
+    });
+  };
 
+  const visibleClients = featuredClients.slice(startIndex, startIndex + itemsToShow);
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0,
+      },
+    },
+    exit: {
+      opacity: 0,
+      transition: {
+        staggerChildren: 0.05,
+        staggerDirection: -1,
+        duration: 0.2,
+      },
+    },
+  };
 
-    useEffect(() => {
-        const handleResize = () => {
-          const mobile = window.innerWidth < 768;
-          setIsMobile(mobile);
-          setItemsToShow(mobile ? 2 : 4);
-          setStartIndex((prev) => {
-            const maxStart = founders.length - (mobile ? 2 : 4);
-            return prev > maxStart ? maxStart : prev;
-          });
-        };
-    
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-      }, [founders.length]);
+  const item = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      scale: 0.95,
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        duration: 0.5,
+        bounce: 0.4,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      scale: 0.95,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
 
-
-      const next = () => {
-        setStartIndex((prev) => {
-          const nextIndex = prev + 1;
-          const maxStart = founders.length - itemsToShow;
-          return nextIndex > maxStart ? 0 : nextIndex;
-        });
-      };
-    
-      const prev = () => {
-        setStartIndex((prev) => {
-          const nextIndex = prev - 1;
-          return nextIndex < 0 ? founders.length - itemsToShow : nextIndex;
-        });
-      };
-    
-      type PanInfo = {
-        offset: {
-          x: number;
-          y: number;
-        };
-        velocity: {
-          x: number;
-        };
-      };
-
-      const handleDragEnd = (_event: never, info: PanInfo) => {
-        const swipeThreshold = 50;
-        if (
-          info.offset.x < -swipeThreshold &&
-          startIndex < founders.length - itemsToShow
-        ) {
-          next();
-        } else if (info.offset.x > swipeThreshold && startIndex > 0) {
-          prev();
-        }
-      };
-    
-      const visibleFounders = founders.slice(startIndex, startIndex + itemsToShow);
-
-      
-
-
-    return ( 
-        <div
-        className="px-6 
-      mx-auto 2xl:w-4/5 md:px-16
-      
-      py-16 md:py-32"
-      >
-        <div className="flex justify-between items-center mb-12">
-          <div>
-            <h2 className="text-3xl font-bold mb-2">
-              Trusted by 400+ Business Owners
-            </h2>
-            <p className="text-gray-600">
-              Meet the passionate experts driving our AI solutions.
-            </p>
+  if (isLoading) {
+    return (
+      <div className="px-6 mx-auto 2xl:w-4/5 md:px-16 py-16 md:py-32">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="space-y-4">
+                <div className="bg-gray-200 aspect-square rounded"></div>
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                <div className="h-3 bg-gray-200 rounded w-full"></div>
+                <div className="h-3 bg-gray-200 rounded w-4/5"></div>
+              </div>
+            ))}
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  return ( 
+    <div className="px-6 mx-auto 2xl:w-4/5 md:px-16 py-16 md:py-32">
+      <div className="flex justify-between items-center mb-12">
+        <div>
+          <h2 className="text-3xl font-bold mb-2">
+            Trusted by {clients.length}+ Business Owners
+          </h2>
+          <p className="text-gray-600">
+            Meet our valued clients and their experiences.
+          </p>
+        </div>
+        {featuredClients.length > itemsToShow && (
           <div className="hidden md:flex gap-2">
-            <motion.button onClick={prev}>
+            <motion.button onClick={prev} whileHover={{ scale: 1.1 }}>
               <PiArrowArcLeft className="text-black border rounded-full flex items-center justify-center text-5xl p-3 hover:bg-black/10 transition-colors" />
             </motion.button>
-            <motion.button onClick={next}>
+            <motion.button onClick={next} whileHover={{ scale: 1.1 }}>
               <PiArrowArcRight className="text-black border rounded-full flex items-center justify-center text-5xl p-3 hover:bg-black/10 transition-colors" />
             </motion.button>
           </div>
-        </div>
-  
-        <div className="relative max-w-full overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
-              key={startIndex}
-              variants={container}
-              initial="hidden"
-              animate="show"
-              exit="exit"
-              drag={isMobile ? "x" : false}
-              dragSnapToOrigin
-              dragElastic={0.1}
-              onDragEnd={handleDragEnd}
-              style={{
-                touchAction: "none",
-                x: 0,
-              }}
-            >
-              {visibleFounders.map((founder, index) => (
+        )}
+      </div>
+
+      <div className="relative max-w-full overflow-hidden">
+        <AnimatePresence mode="wait">
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
+            key={startIndex}
+            variants={container}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+          >
+            {visibleClients.map((client) => {
+              const rep = client.representative;
+              return (
                 <motion.div
-                  key={`${founder.name}-${index}`}
+                  key={client._id}
                   variants={item}
                   className="md:mb-0 mb-8"
                 >
-                  <div className="bg-gray-100 aspect-square mb-4 overflow-hidden">
-                    <Image
-                      priority
-                      width={500}
-                      height={500}
-                      src={founder.image}
-                      alt={founder.name}
-                      className="w-full h-full object-cover"
-                    />
+                  <div className="bg-gray-100 aspect-square mb-4 overflow-hidden rounded-xl">
+                    {rep?.image ? (
+                      <Image
+                        priority
+                        width={500}
+                        height={500}
+                        src={rep.image.asset.url}
+                        alt={rep.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                        <Image
+                          priority
+                          width={200}
+                          height={200}
+                          src={client.logo.asset.url}
+                          alt={client.logo.alt || client.name}
+                          className="w-3/4 h-3/4 object-contain"
+                        />
+                      </div>
+                    )}
                   </div>
-                  <h3 className="font-bold text-lg mb-1">{founder.name}</h3>
-                  <p className="text-[#7b7b7b] text-sm mb-2">{founder.role}</p>
-                  <p className="text-gray-700 text-sm mb-4">
-                    {founder.description}
+                  <h3 className="font-bold text-lg mb-1">
+                    {rep?.name || client.name}
+                  </h3>
+                  <p className="text-[#7b7b7b] text-sm mb-2">
+                    {rep?.role || client.category}
                   </p>
+                  {client.testimonial ? (
+                    <p className="text-gray-700 text-sm mb-4 italic">
+                      &quot;{client.testimonial}&quot;
+                    </p>
+                  ) : (
+                    <p className="text-gray-700 text-sm mb-4">
+                      {client.description}
+                    </p>
+                  )}
                   <div className="flex gap-4">
-                    <motion.div
-                      whileHover={{ scale: 1.15 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    >
-                      <PiLinkedinLogo className="w-5 h-5 text-[#7b7b7b] hover:text-gray-900 cursor-pointer" />
-                    </motion.div>
-                    <motion.div
-                      whileHover={{ scale: 1.15 }}
-                      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    >
-                      <PiTwitterLogo className="w-5 h-5 text-[#7b7b7b] hover:text-gray-900 cursor-pointer" />
-                    </motion.div>
-                    {founder.social.website && (
-                      <motion.div
-                        whileHover={{ scale: 1.15 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 400,
-                          damping: 17,
-                        }}
-                      >
-                        <PiGlobe className="w-5 h-5 text-[#7b7b7b] hover:text-gray-900 cursor-pointer" />
-                      </motion.div>
+                    {client.social?.linkedin && (
+                      <a href={client.social.linkedin} target="_blank" rel="noopener noreferrer">
+                        <motion.div
+                          whileHover={{ scale: 1.15 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        >
+                          <PiLinkedinLogo className="w-5 h-5 text-[#7b7b7b] hover:text-[#0077b5] cursor-pointer" />
+                        </motion.div>
+                      </a>
+                    )}
+                    {client.social?.twitter && (
+                      <a href={client.social.twitter} target="_blank" rel="noopener noreferrer">
+                        <motion.div
+                          whileHover={{ scale: 1.15 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        >
+                          <PiTwitterLogo className="w-5 h-5 text-[#7b7b7b] hover:text-[#1DA1F2] cursor-pointer" />
+                        </motion.div>
+                      </a>
+                    )}
+                    {client.website && (
+                      <a href={client.website} target="_blank" rel="noopener noreferrer">
+                        <motion.div
+                          whileHover={{ scale: 1.15 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        >
+                          <PiGlobe className="w-5 h-5 text-[#7b7b7b] hover:text-lochmara-500 cursor-pointer" />
+                        </motion.div>
+                      </a>
                     )}
                   </div>
                 </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
+              );
+            })}
+          </motion.div>
+        </AnimatePresence>
+        
+        {/* Mobile Navigation Arrows */}
+        {featuredClients.length > itemsToShow && (
+          <div className="md:hidden flex justify-center gap-4 mt-8">
+            <motion.button 
+              onClick={prev} 
+              whileHover={{ scale: 1.1 }}
+              className="bg-white rounded-full p-3 shadow-md"
+            >
+              <PiArrowArcLeft className="text-black text-2xl" />
+            </motion.button>
+            <motion.button 
+              onClick={next} 
+              whileHover={{ scale: 1.1 }}
+              className="bg-white rounded-full p-3 shadow-md"
+            >
+              <PiArrowArcRight className="text-black text-2xl" />
+            </motion.button>
+          </div>
+        )}
       </div>
-    
-);
+    </div>
+  );
 }
- 
+
 export default Founders;

@@ -1,6 +1,6 @@
 // schemas/client.ts
 import { defineType, defineField } from 'sanity';
-import { Category } from './categoryType';
+
 
 
 // TypeScript interface that matches your component
@@ -19,10 +19,20 @@ export interface Client {
     alt?: string;
   };
   description: string;
-  category: Category; // Reference to category document
+  category: string; // Reference to category document
 
   website?: string;
   testimonial?: string;
+  featured?: boolean;
+  representative?: {
+    name: string;
+    role: string;
+    image: { asset: { url: string } };
+  };
+  social?: {
+    linkedin?: string;
+    twitter?: string;
+  };
 }
 
 export const clientType =  defineType({
@@ -102,6 +112,46 @@ export const clientType =  defineType({
       type: 'boolean',
       initialValue: false,
       description: 'Show this client more prominently',
+    }),
+    defineField({
+      name: 'representative',
+      title: 'Client Representative',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'name',
+          title: 'Name',
+          type: 'string',
+        }),
+        defineField({
+          name: 'role',
+          title: 'Role',
+          type: 'string',
+        }),
+        defineField({
+          name: 'image',
+          title: 'Photo',
+          type: 'image',
+          options: { hotspot: true },
+        }),
+      ],
+    }),
+    defineField({
+      name: 'social',
+      title: 'Social Media',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'linkedin',
+          title: 'LinkedIn URL',
+          type: 'url',
+        }),
+        defineField({
+          name: 'twitter',
+          title: 'Twitter URL',
+          type: 'url',
+        }),
+      ],
     }),
   ],
   preview: {

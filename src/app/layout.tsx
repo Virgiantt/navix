@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { CategoryProvider } from "@/components/context/CategoryContext";
 
 const font =Space_Grotesk({
   subsets: ["latin"],
@@ -21,7 +22,10 @@ export default function RootLayout({
       <body
         className={`${font.className} antialiased`}
       >
-        {children}
+           <CategoryProvider>
+           {children}
+           </CategoryProvider>
+     
       </body>
     </html>
   );

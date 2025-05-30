@@ -3,17 +3,18 @@
 import React, { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useCategories } from "@/components/context/CategoryContext";
 
 type TabId = "projects" | "clients";
-type CategoryId =
-  | "all"
-  | "branding"
-  | "uxui"
-  | "development"
-  | "strategy"
-  | "marketing"
-  | "research"
-  | "analytics";
+// type CategoryId =
+//   | "all"
+//   | "branding"
+//   | "uxui"
+//   | "development"
+//   | "strategy"
+//   | "marketing"
+//   | "research"
+//   | "analytics";
 
 interface TabCounts {
   projects: number;
@@ -35,7 +36,7 @@ interface Project {
   video: string;
   title: string;
   description: string;
-  category: CategoryId;
+  category: string;
   size: string;
   imageHeight: string;
 }
@@ -45,13 +46,13 @@ interface Client {
   name: string;
   image: string;
   description: string;
-  category: CategoryId;
+  category: string;
 }
 
 const ProjectHero = () => {
   const [activeTab, setActiveTab] = useState<TabId>("projects");
-  const [activeCategory, setActiveCategory] = useState<CategoryId>("all");
-
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const { categories} = useCategories();
   const clients: Client[] = [
     {
       id: 1,
@@ -194,39 +195,15 @@ const ProjectHero = () => {
   const { tabCounts, categoryCounts } = useMemo(() => {
     const projectCount = projects.length;
     const clientCount = clients.length;
-
     const categoryCount: CategoryCounts = {
       all: { projects: projectCount, clients: clientCount },
-      branding: {
-        projects: projects.filter((p) => p.category === "branding").length,
-        clients: clients.filter((c) => c.category === "branding").length,
-      },
-      uxui: {
-        projects: projects.filter((p) => p.category === "uxui").length,
-        clients: clients.filter((c) => c.category === "uxui").length,
-      },
-      development: {
-        projects: projects.filter((p) => p.category === "development").length,
-        clients: clients.filter((c) => c.category === "development").length,
-      },
-      strategy: {
-        projects: projects.filter((p) => p.category === "strategy").length,
-        clients: clients.filter((c) => c.category === "strategy").length,
-      },
-      marketing: {
-        projects: projects.filter((p) => p.category === "marketing").length,
-        clients: clients.filter((c) => c.category === "marketing").length,
-      },
-      research: {
-        projects: projects.filter((p) => p.category === "research").length,
-        clients: clients.filter((c) => c.category === "research").length,
-      },
-      analytics: {
-        projects: projects.filter((p) => p.category === "analytics").length,
-        clients: clients.filter((c) => c.category === "analytics").length,
-      },
     };
-
+    categories.forEach(category => {
+      categoryCount[category.title] = {
+        projects: projects.filter(p => p.category.toLowerCase() === category.title.toLowerCase()).length,
+        clients: clients.filter(c => c.category.toLowerCase() === category.title.toLowerCase()).length,
+      };
+    });
     return {
       tabCounts: {
         projects: projectCount,
@@ -234,51 +211,21 @@ const ProjectHero = () => {
       } as TabCounts,
       categoryCounts: categoryCount,
     };
-  }, []);
+  }, [categories]);
 
   const tabs = [
     { id: "projects" as const, name: "Projects", count: tabCounts.projects },
     { id: "clients" as const, name: "Clients", count: tabCounts.clients },
   ];
 
-  const categories = [
-    { id: "all" as const, name: "All", count: categoryCounts.all[activeTab] },
-    {
-      id: "branding" as const,
-      name: "Branding",
-      count: categoryCounts.branding[activeTab],
-    },
-    {
-      id: "uxui" as const,
-      name: "UX/UI",
-      count: categoryCounts.uxui[activeTab],
-    },
-    {
-      id: "development" as const,
-      name: "Development",
-      count: categoryCounts.development[activeTab],
-    },
-    {
-      id: "strategy" as const,
-      name: "Strategy",
-      count: categoryCounts.strategy[activeTab],
-    },
-    {
-      id: "marketing" as const,
-      name: "Marketing",
-      count: categoryCounts.marketing[activeTab],
-    },
-    {
-      id: "research" as const,
-      name: "Research",
-      count: categoryCounts.research[activeTab],
-    },
-    {
-      id: "analytics" as const,
-      name: "Analytics",
-      count: categoryCounts.analytics[activeTab],
-    },
-  ];
+  const filterCategories = useMemo(() => [
+    { id: "all", name: "All", count: categoryCounts.all[activeTab] },
+    ...categories.map(category => ({
+      id: category.title,
+      name: category.title,
+      count: categoryCounts[category.title]?.[activeTab] || 0
+    })),
+  ], [categories, categoryCounts, activeTab]);
 
   const renderContent = () => {
     return (
@@ -295,10 +242,9 @@ const ProjectHero = () => {
           >
             <AnimatePresence>
               {clients
-                .filter(
-                  (client) =>
-                    activeCategory === "all" ||
-                    client.category === activeCategory
+                 .filter(client => 
+                  activeCategory === "all" || 
+                  client.category.toLowerCase() === activeCategory.toLowerCase()
                 )
                 .map((client) => (
                   <motion.div
@@ -341,11 +287,10 @@ const ProjectHero = () => {
             className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-x-10"
           >
             <AnimatePresence>
-              {projects
-                .filter(
-                  (project) =>
-                    activeCategory === "all" ||
-                    project.category === activeCategory
+            {projects
+                .filter(project => 
+                  activeCategory === "all" || 
+                  project.category.toLowerCase() === activeCategory.toLowerCase()
                 )
                 .map((project) => (
                   <motion.div
@@ -357,7 +302,7 @@ const ProjectHero = () => {
                     transition={{ duration: 0.2 }}
                     className={`${project.size}`}
                   >
-                    <div className={`relative ${project.imageHeight} mb-4 `}>
+                    <div className={`relative ${project.imageHeight} mb-4`}>
                       <video
                         autoPlay
                         loop
@@ -417,7 +362,7 @@ const ProjectHero = () => {
 
       {/* Categories */}
       <div className="flex flex-wrap gap-6 mb-12">
-        {categories.map((category) => (
+      {filterCategories.map((category) => (
           <motion.button
             key={category.id}
             whileHover={{ scale: 1.05 }}

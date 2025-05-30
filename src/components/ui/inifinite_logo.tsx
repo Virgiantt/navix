@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { urlFor } from "@/sanity/lib/image";
 
 export const InfiniteMovingLogos = ({
   items,
@@ -97,7 +98,7 @@ export const InfiniteMovingLogos = ({
                   className="block w-full h-full hover:scale-105 transition-transform"
                 >
                   <Image
-                    src={item.logo}
+                    src={urlFor(item.logo).url()}
                     alt={item.name}
                     width={160}
                     height={80}

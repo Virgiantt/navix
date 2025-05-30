@@ -1,8 +1,18 @@
+"use client";
 import React from 'react'
 import { InfiniteMovingLogos } from './ui/inifinite_logo'
 import { NumberTicker } from './magicui/number-ticker'
+import { useData } from './context/DataContext';
 
 const Trusted = () => {
+  const {clients , isLoading} = useData();
+  const clientLogos = clients.map(client => ({
+    logo: typeof client.logo === "string"
+      ? client.logo
+      : client.logo?.asset?.url || "",
+    name: client.name,
+    link: client.website || "#"
+  }));
   return (
     <div className="md:flex items-center justify-between gap-y-4 my-10 gap-x-28 mx-auto">
     <div className="md:w-2/5">
@@ -30,18 +40,20 @@ const Trusted = () => {
       </div>
     </div>
     <section className="overflow-hidden mt-10 md:w-4/5">
-<InfiniteMovingLogos 
-speed="normal"
-direction="left"
-items={[
-{ logo: "/HouseProtein.png", name: "HouseProtein" , link: "https://www.house-protein.tn/" },
-{ logo: "/logo_Houssem.jpeg", name: "Houssem Consulting", link: "www.shtc-maghreb.tn" },
-{ logo: "/logo_Rayen.png", name: "Rayen el maamoun portfolio", link: "https://www.rayenelmaamoun.com/" },
-{ logo: "/HFD_FX.jpeg", name: "HFD_FX", link: "/" },
-
-
-]}/>
-    </section>
+        {isLoading ? (
+          <div className="flex space-x-8">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="bg-gray-200 rounded-xl w-32 h-32 animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <InfiniteMovingLogos 
+            speed="normal"
+            direction="left"
+            items={clientLogos}
+          />
+        )}
+      </section>
   </div>
   )
 }

@@ -84,114 +84,114 @@ const ProjectHero = () => {
   // ];
 
   const projects: Project[] = [
-    {
-      id: 1,
-      name: "Sony",
-      video:
-        "https://videos.pexels.com/video-files/6572598/6572598-hd_1920_1080_25fps.mp4",
-      title: "Innovating the future of entertainment",
-      description:
-        "Partnered with sony to introduce a new line of cameras, focusing on user experience and accessibility. And shot this promo video.",
-      category: "branding",
-      size: "col-span-12 md:col-span-4 row-span-1",
-      imageHeight: "h-80",
-    },
-    {
-      id: 2,
-      name: "Adidas",
-      video:
-        "https://videos.pexels.com/video-files/4126123/4126123-uhd_2732_1440_25fps.mp4",
-      title: "Innovation meets sustainability",
-      description:
-        "Until now, Qwant has been the search engine that knows nothing about you—and that hasn't changed. But there are some new developments.",
-      category: "development",
-      size: " col-span-12 md:col-span-4",
-      imageHeight: "h-48",
-    },
-    {
-      id: 3,
-      name: "Tokyo Roast",
-      video:
-        "https://videos.pexels.com/video-files/2909914/2909914-uhd_2732_1440_24fps.mp4",
-      title: "Craftsmanship in every cup",
-      description:
-        "Primary designs innovative, patient-centered medical offices. We crafted a brand for them that is as warm as it is modern, seamlessly bridging the gap between in-person and digital experiences.",
-      category: "uxui",
-      size: "col-span-12 md:col-span-4",
-      imageHeight: "h-48",
-    },
-    {
-      id: 4,
-      name: "Spotify",
-      video:
-        "https://videos.pexels.com/video-files/5077471/5077471-uhd_1440_2732_25fps.mp4",
-      title: "Music streaming reimagined",
-      description:
-        "Spotify is a leading music streaming service, with a focus on user experience and data analytics. We collaborated with Spotify to develop a new brand identity and marketing strategy.",
-      category: "strategy",
-      size: "col-span-12 row-span-2",
-      imageHeight: "h-[600px]",
-    },
-    {
-      id: 5,
-      name: "Ecomworld",
-      video:
-        "https://videos.pexels.com/video-files/5585939/5585939-hd_1920_1080_25fps.mp4",
-      title: "All-in-one ecommerce platform",
-      description:
-        "Ecomworld is an all in one platform for ecommerce businesses to set up their own storefronts. We build out the back-end technology to make it extremely scalable.",
-      category: "branding",
-      size: "col-span-12 md:col-span-6 row-span-1",
-      imageHeight: "h-80",
-    },
-    {
-      id: 6,
-      name: "Toyota",
-      video:
-        "https://videos.pexels.com/video-files/4419251/4419251-hd_1920_1080_25fps.mp4",
-      title: "Driving innovation forward",
-      description:
-        "Toyota is a global leader in the automotive industry, with a focus on innovation and sustainability. We worked with Toyota to develop a new digital platform for their e-commerce business.",
-      category: "uxui",
-      size: "col-span-12 md:col-span-6 row-span-1",
-      imageHeight: "h-80",
-    },
-    {
-      id: 7,
-      name: "Visa",
-      video:
-        "https://videos.pexels.com/video-files/3945147/3945147-uhd_2732_1440_25fps.mp4",
-      title: "Digital wallet experience",
-      description:
-        "Partnered with Visa to design a new digital wallet experience, focusing on user-centered design and accessibility.",
-      category: "strategy",
-      size: "col-span-12 md:col-span-3 row-span-1",
-      imageHeight: "h-44",
-    },
-    {
-      id: 8,
-      name: "Tesla",
-      video:
-        "https://videos.pexels.com/video-files/27421705/12140050_2730_1440_30fps.mp4",
-      title: "Automating the future",
-      description:
-        "Collaborated on enhancing Tesla's data analytics dashboard, providing deeper insights into user listening patterns and preferences.",
-      category: "analytics",
-      size: "col-span-12 md:col-span-3 row-span-1",
-      imageHeight: "h-44",
-    },
-    {
-      id: 9,
-      name: "Nike",
-      video:
-        "https://videos.pexels.com/video-files/8533114/8533114-uhd_2560_1440_25fps.mp4",
-      title: "Steps Towards Sustainability",
-      description:
-        "Developing a marketing campaign that brings Nike's commitment to sustainability to the forefront of their brand narrative.",
-      category: "marketing",
-      size: "col-span-12 md:col-span-6 row-span-2",
-      imageHeight: "h-96",
-    },
+    // {
+    //   id: 1,
+    //   name: "Sony",
+    //   video:
+    //     "https://videos.pexels.com/video-files/6572598/6572598-hd_1920_1080_25fps.mp4",
+    //   title: "Innovating the future of entertainment",
+    //   description:
+    //     "Partnered with sony to introduce a new line of cameras, focusing on user experience and accessibility. And shot this promo video.",
+    //   category: "branding",
+    //   size: "col-span-12 md:col-span-4 row-span-1",
+    //   imageHeight: "h-80",
+    // },
+    // {
+    //   id: 2,
+    //   name: "Adidas",
+    //   video:
+    //     "https://videos.pexels.com/video-files/4126123/4126123-uhd_2732_1440_25fps.mp4",
+    //   title: "Innovation meets sustainability",
+    //   description:
+    //     "Until now, Qwant has been the search engine that knows nothing about you—and that hasn't changed. But there are some new developments.",
+    //   category: "development",
+    //   size: " col-span-12 md:col-span-4",
+    //   imageHeight: "h-48",
+    // },
+    // {
+    //   id: 3,
+    //   name: "Tokyo Roast",
+    //   video:
+    //     "https://videos.pexels.com/video-files/2909914/2909914-uhd_2732_1440_24fps.mp4",
+    //   title: "Craftsmanship in every cup",
+    //   description:
+    //     "Primary designs innovative, patient-centered medical offices. We crafted a brand for them that is as warm as it is modern, seamlessly bridging the gap between in-person and digital experiences.",
+    //   category: "uxui",
+    //   size: "col-span-12 md:col-span-4",
+    //   imageHeight: "h-48",
+    // },
+    // {
+    //   id: 4,
+    //   name: "Spotify",
+    //   video:
+    //     "https://videos.pexels.com/video-files/5077471/5077471-uhd_1440_2732_25fps.mp4",
+    //   title: "Music streaming reimagined",
+    //   description:
+    //     "Spotify is a leading music streaming service, with a focus on user experience and data analytics. We collaborated with Spotify to develop a new brand identity and marketing strategy.",
+    //   category: "strategy",
+    //   size: "col-span-12 row-span-2",
+    //   imageHeight: "h-[600px]",
+    // },
+    // {
+    //   id: 5,
+    //   name: "Ecomworld",
+    //   video:
+    //     "https://videos.pexels.com/video-files/5585939/5585939-hd_1920_1080_25fps.mp4",
+    //   title: "All-in-one ecommerce platform",
+    //   description:
+    //     "Ecomworld is an all in one platform for ecommerce businesses to set up their own storefronts. We build out the back-end technology to make it extremely scalable.",
+    //   category: "branding",
+    //   size: "col-span-12 md:col-span-6 row-span-1",
+    //   imageHeight: "h-80",
+    // },
+    // {
+    //   id: 6,
+    //   name: "Toyota",
+    //   video:
+    //     "https://videos.pexels.com/video-files/4419251/4419251-hd_1920_1080_25fps.mp4",
+    //   title: "Driving innovation forward",
+    //   description:
+    //     "Toyota is a global leader in the automotive industry, with a focus on innovation and sustainability. We worked with Toyota to develop a new digital platform for their e-commerce business.",
+    //   category: "uxui",
+    //   size: "col-span-12 md:col-span-6 row-span-1",
+    //   imageHeight: "h-80",
+    // },
+    // {
+    //   id: 7,
+    //   name: "Visa",
+    //   video:
+    //     "https://videos.pexels.com/video-files/3945147/3945147-uhd_2732_1440_25fps.mp4",
+    //   title: "Digital wallet experience",
+    //   description:
+    //     "Partnered with Visa to design a new digital wallet experience, focusing on user-centered design and accessibility.",
+    //   category: "strategy",
+    //   size: "col-span-12 md:col-span-3 row-span-1",
+    //   imageHeight: "h-44",
+    // },
+    // {
+    //   id: 8,
+    //   name: "Tesla",
+    //   video:
+    //     "https://videos.pexels.com/video-files/27421705/12140050_2730_1440_30fps.mp4",
+    //   title: "Automating the future",
+    //   description:
+    //     "Collaborated on enhancing Tesla's data analytics dashboard, providing deeper insights into user listening patterns and preferences.",
+    //   category: "analytics",
+    //   size: "col-span-12 md:col-span-3 row-span-1",
+    //   imageHeight: "h-44",
+    // },
+    // {
+    //   id: 9,
+    //   name: "Nike",
+    //   video:
+    //     "https://videos.pexels.com/video-files/8533114/8533114-uhd_2560_1440_25fps.mp4",
+    //   title: "Steps Towards Sustainability",
+    //   description:
+    //     "Developing a marketing campaign that brings Nike's commitment to sustainability to the forefront of their brand narrative.",
+    //   category: "marketing",
+    //   size: "col-span-12 md:col-span-6 row-span-2",
+    //   imageHeight: "h-96",
+    // },
   ];
 
   const { tabCounts, categoryCounts } = useMemo(() => {

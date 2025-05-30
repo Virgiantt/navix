@@ -13,77 +13,93 @@ const projects = [
       name: "Adidas",
       logo: "/images/adidas-logo.png",
       description: "Created Adidas back to school campaign",
-      className: "",
+     
     },
     {
-      src: "/images/airbnb.jpg",
-      name: "Airbnb",
-      logo: "/images/airbnb-logo.png",
-      description: "Designed Airbnb landing page",
-      className: "",
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+   
+    },{
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+  
+    },{
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+     
+    },{
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+  
+    },{
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+  
+    },{
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+
     },
     {
-      src: "/images/audi.jpg",
-      name: "Audi",
-      logo: "/images/audi-logo.png",
-      description: "Developed Audi car configurator",
-      className: "",
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+     
     },
     {
-      src: "/images/paypal.jpg",
-      name: "Paypal",
-      logo: "/images/paypal-logo.png",
-      description: "Integrated Paypal payment gateway",
-      className: "",
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+     
     },
     {
-      src: "/images/sony.jpg",
-      name: "Sony",
-      logo: "/images/sony-logo.png",
-      description: "Developed Sony Playstation website",
-      className: "",
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+     
     },
     {
-      src: "/images/under-armour.jpg",
-      name: "Under Armour",
-      logo: "/images/under-armour-logo.png",
-      description: "Designed Under Armour fitness app",
-      className: "",
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+     
     },
     {
-      src: "/images/redbull.jpg",
-      name: "Redbull",
-      logo: "/images/redbull-logo.png",
-      description: "Created Redbull energy drink campaign",
-      className: "",
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+     
     },
     {
-      src: "/images/spalding.jpg",
-      name: "Spalding",
-      logo: "/images/spalding-logo.png",
-      description: "Designed Spalding basketball landing page",
-      className: "",
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+     
     },
     {
-      src: "/images/visa.jpg",
-      name: "Visa",
-      logo: "/images/visa-logo.png",
-      description: "Integrated Visa payment gateway",
-      className: "",
-    },
-    {
-      src: "/images/nord.jpg",
-      name: "Nordstrom",
-      logo: "/images/nord-logo.png",
-      description: "Designed Nordstrom ecommerce website",
-      className: "",
-    },
-    {
-      src: "/images/zara.jpeg",
-      name: "Zara",
-      logo: "/images/zara-logo.png",
-      description: "Created Zara fashion campaign",
-      className: "",
+      src: "/images/adidas.jpg",
+      name: "Adidas",
+      logo: "/images/adidas-logo.png",
+      description: "Created Adidas back to school campaign",
+     
     },
   ];
   

@@ -42,7 +42,7 @@ case "videoBlock":
   // Try to detect if it's an Instagram URL
   if (block.url.includes('instagram.com')) {
     return (
-      <div key={block._key} className="my-16 w-full max-w-6xl mx-auto">
+      <div key={block._key} className="my-16 w-full max-w-2xl mx-auto">
       <div className="flex items-center gap-3 mb-6">
         <FaVideo className="text-lochmara-500 text-xl" />
         <h2 className="text-2xl font-bold">Video Showcase</h2>

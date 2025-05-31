@@ -11,6 +11,7 @@ import {
   PiTwitterLogo,
 } from "react-icons/pi";
 import { useData } from "../context/DataContext";
+import Link from "next/link";
 
 const Founders = () => {
   const { clients, isLoading } = useData();
@@ -202,34 +203,34 @@ const Founders = () => {
                   )}
                   <div className="flex gap-4">
                     {client.social?.linkedin && (
-                      <a href={client.social.linkedin} target="_blank" rel="noopener noreferrer">
+                      <Link href={client.social.linkedin} target="_blank" rel="noopener noreferrer">
                         <motion.div
                           whileHover={{ scale: 1.15 }}
                           transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         >
                           <PiLinkedinLogo className="w-5 h-5 text-[#7b7b7b] hover:text-[#0077b5] cursor-pointer" />
                         </motion.div>
-                      </a>
+                      </Link>
                     )}
                     {client.social?.twitter && (
-                      <a href={client.social.twitter} target="_blank" rel="noopener noreferrer">
+                      <Link href={client.social.twitter} target="_blank" rel="noopener noreferrer">
                         <motion.div
                           whileHover={{ scale: 1.15 }}
                           transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         >
                           <PiTwitterLogo className="w-5 h-5 text-[#7b7b7b] hover:text-[#1DA1F2] cursor-pointer" />
                         </motion.div>
-                      </a>
+                      </Link>
                     )}
                     {client.website && (
-                      <a href={client.website} target="_blank" rel="noopener noreferrer">
+                      <Link href={client.website} target="_blank" rel="noopener noreferrer">
                         <motion.div
                           whileHover={{ scale: 1.15 }}
                           transition={{ type: "spring", stiffness: 400, damping: 17 }}
                         >
                           <PiGlobe className="w-5 h-5 text-[#7b7b7b] hover:text-lochmara-500 cursor-pointer" />
                         </motion.div>
-                      </a>
+                      </Link>
                     )}
                   </div>
                 </motion.div>

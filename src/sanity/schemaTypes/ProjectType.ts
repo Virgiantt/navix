@@ -2,15 +2,103 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
 import { FaVideo, FaImage, FaChartLine, FaMobile, FaBrush } from 'react-icons/fa'
 
-// Fixed category slugs (match your existing categories)
-// const FIXED_CATEGORIES = [
-//   'marketing-strategy',
-//   'video-editing',
-//   'development',
-//   'uxui',
-//   'branding'
-// ] as const
+export interface Project {
+  _id: string;
+  _type: 'project';
+  title: string;
+  slug: {
+    current: string;
+  };
+  client: {
+    _ref: string;
+    _type: 'reference';
+    // When expanded:
+    name?: string;
+    slug?: { current: string };
+    logo?: SanityImage;
+  };
+  categories: ('Marketing Strategy' | 'VideoEditing' | 'development' | 'UXUI' | 'branding')[];
+  format: 'video' | 'gallery' | 'case-study' | 'interactive';
+  timeline?: {
+    start?: string; // ISO date string
+    end?: string;   // ISO date string
+  };
+  content: ContentBlock[];
+  description: string;
+  projectUrl?: string;
+}
 
+// Base image type
+export interface SanityImage {
+  _type: 'image';
+  asset: {
+    _ref: string;
+    _type: 'reference';
+    url: string;
+  };
+  alt?: string;
+}
+
+// Content Block Types
+export type ContentBlock = 
+  | VideoBlock 
+  | GalleryBlock 
+  | MetricsBlock 
+  | UIBlock 
+  | BrandBlock;
+
+export interface VideoBlock {
+  _type: 'videoBlock';
+  _key: string;
+  url: string;
+  orientation: 'horizontal' | 'vertical';
+  caption?: string;
+}
+
+export interface GalleryBlock {
+  _type: 'galleryBlock';
+  _key: string;
+  images: SanityImage[];
+  layout: 'grid' | 'carousel' | 'fullscreen';
+}
+
+export interface MetricsBlock {
+  _type: 'metricsBlock';
+  _key: string;
+  title?: string;
+  metrics: {
+    label: string;
+    value: string;
+  }[];
+}
+
+export interface UIBlock {
+  _type: 'uiBlock';
+  _key: string;
+  screens: SanityImage[];
+  prototype?: string;
+}
+
+export interface BrandBlock {
+  _type: 'brandBlock';
+  _key: string;
+  assets: SanityImage[];
+  styleGuide?: string;
+}
+
+// When you need a minimal representation for previews
+export interface ProjectPreview {
+  _id: string;
+  title: string;
+  slug: string;
+  client: {
+    name: string;
+    logo: SanityImage;
+  };
+  categories: string[];
+  description: string;
+  featuredImage?: SanityImage;
+}
 export const projectType = defineType({
   name: 'project',
   title: 'Project',
@@ -234,6 +322,12 @@ export const projectType = defineType({
           ]
         })
       ]
+    }),
+    defineField({
+      name: 'projectUrl',
+      title: 'Project URL',
+      type: 'url',
+      description: 'Link to the live project',
     }),
     
     // ─── Project Summary ───────────────────

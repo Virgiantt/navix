@@ -6,22 +6,10 @@ import Image from "next/image";
 import { useData } from "@/components/context/DataContext";
 import { urlFor } from "@/sanity/lib/image";
 import Link from "next/link";
+import { Project, SanityImage } from "@/sanity/schemaTypes/ProjectType";
 
 type TabId = "projects" | "clients";
-// type CategoryId =
-//   | "all"
-//   | "branding"
-//   | "uxui"
-//   | "development"
-//   | "strategy"
-//   | "marketing"
-//   | "research"
-//   | "analytics";
 
-// interface TabCounts {
-//   projects: number;
-//   clients: number;
-// }
 
 interface CategoryCount {
   projects: number;
@@ -32,16 +20,7 @@ interface CategoryCounts {
   [key: string]: CategoryCount;
 }
 
-interface Project {
-  id: number;
-  name: string;
-  video: string;
-  title: string;
-  description: string;
-  category: string;
-  size: string;
-  imageHeight: string;
-}
+
 
 // interface Client {
 //   id: number;
@@ -54,145 +33,34 @@ interface Project {
 const ProjectHero = () => {
   const [activeTab, setActiveTab] = useState<TabId>("projects");
   const [activeCategory, setActiveCategory] = useState<string>("all");
-  const { categories,clients} = useData();
-  // const clients: Client[] = [
-  //   {
-  //     id: 1,
-  //     name: "House Protein",
-  //     image: "HouseProtein.png",
-  //     description:
-  //       "House Protein is a sports nutrition store in Bizerte, Tunisia, offering a wide range of supplements, proteins, amino acids, and energy products to enhance performance and help you reach your fitness goals.",
-  //     category: "branding",
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Houssem Consulting",
-  //     image: "logo_Houssem.jpeg",
-  //     description:
-  //       "Houssem Consulting is a startup specializing in product management with Mitutoyo, a leading brand in precision measurement, and offering innovative solutions across the industrial sector in North Africa.",
-  //     category: "development",
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Rayen el Maamoun",
-  //     image: "logo_Rayen.png",
-  //     description:
-  //       "Rayen El Maamoun is a talented filmmaker and video editor with over 20,000 followers. He specializes in crafting visually stunning films, bringing a creative touch to every project. With a keen eye for detail and storytelling, Rayen has established himself as a skilled professional in the filmmaking industry.",
-  //     category: "development",
-  //   },
+  const { categories,clients, projects } = useData();
 
-  // ];
-
-  const projects: Project[] = [
-    // {
-    //   id: 1,
-    //   name: "Sony",
-    //   video:
-    //     "https://videos.pexels.com/video-files/6572598/6572598-hd_1920_1080_25fps.mp4",
-    //   title: "Innovating the future of entertainment",
-    //   description:
-    //     "Partnered with sony to introduce a new line of cameras, focusing on user experience and accessibility. And shot this promo video.",
-    //   category: "branding",
-    //   size: "col-span-12 md:col-span-4 row-span-1",
-    //   imageHeight: "h-80",
-    // },
-    // {
-    //   id: 2,
-    //   name: "Adidas",
-    //   video:
-    //     "https://videos.pexels.com/video-files/4126123/4126123-uhd_2732_1440_25fps.mp4",
-    //   title: "Innovation meets sustainability",
-    //   description:
-    //     "Until now, Qwant has been the search engine that knows nothing about you—and that hasn't changed. But there are some new developments.",
-    //   category: "development",
-    //   size: " col-span-12 md:col-span-4",
-    //   imageHeight: "h-48",
-    // },
-    // {
-    //   id: 3,
-    //   name: "Tokyo Roast",
-    //   video:
-    //     "https://videos.pexels.com/video-files/2909914/2909914-uhd_2732_1440_24fps.mp4",
-    //   title: "Craftsmanship in every cup",
-    //   description:
-    //     "Primary designs innovative, patient-centered medical offices. We crafted a brand for them that is as warm as it is modern, seamlessly bridging the gap between in-person and digital experiences.",
-    //   category: "uxui",
-    //   size: "col-span-12 md:col-span-4",
-    //   imageHeight: "h-48",
-    // },
-    // {
-    //   id: 4,
-    //   name: "Spotify",
-    //   video:
-    //     "https://videos.pexels.com/video-files/5077471/5077471-uhd_1440_2732_25fps.mp4",
-    //   title: "Music streaming reimagined",
-    //   description:
-    //     "Spotify is a leading music streaming service, with a focus on user experience and data analytics. We collaborated with Spotify to develop a new brand identity and marketing strategy.",
-    //   category: "strategy",
-    //   size: "col-span-12 row-span-2",
-    //   imageHeight: "h-[600px]",
-    // },
-    // {
-    //   id: 5,
-    //   name: "Ecomworld",
-    //   video:
-    //     "https://videos.pexels.com/video-files/5585939/5585939-hd_1920_1080_25fps.mp4",
-    //   title: "All-in-one ecommerce platform",
-    //   description:
-    //     "Ecomworld is an all in one platform for ecommerce businesses to set up their own storefronts. We build out the back-end technology to make it extremely scalable.",
-    //   category: "branding",
-    //   size: "col-span-12 md:col-span-6 row-span-1",
-    //   imageHeight: "h-80",
-    // },
-    // {
-    //   id: 6,
-    //   name: "Toyota",
-    //   video:
-    //     "https://videos.pexels.com/video-files/4419251/4419251-hd_1920_1080_25fps.mp4",
-    //   title: "Driving innovation forward",
-    //   description:
-    //     "Toyota is a global leader in the automotive industry, with a focus on innovation and sustainability. We worked with Toyota to develop a new digital platform for their e-commerce business.",
-    //   category: "uxui",
-    //   size: "col-span-12 md:col-span-6 row-span-1",
-    //   imageHeight: "h-80",
-    // },
-    // {
-    //   id: 7,
-    //   name: "Visa",
-    //   video:
-    //     "https://videos.pexels.com/video-files/3945147/3945147-uhd_2732_1440_25fps.mp4",
-    //   title: "Digital wallet experience",
-    //   description:
-    //     "Partnered with Visa to design a new digital wallet experience, focusing on user-centered design and accessibility.",
-    //   category: "strategy",
-    //   size: "col-span-12 md:col-span-3 row-span-1",
-    //   imageHeight: "h-44",
-    // },
-    // {
-    //   id: 8,
-    //   name: "Tesla",
-    //   video:
-    //     "https://videos.pexels.com/video-files/27421705/12140050_2730_1440_30fps.mp4",
-    //   title: "Automating the future",
-    //   description:
-    //     "Collaborated on enhancing Tesla's data analytics dashboard, providing deeper insights into user listening patterns and preferences.",
-    //   category: "analytics",
-    //   size: "col-span-12 md:col-span-3 row-span-1",
-    //   imageHeight: "h-44",
-    // },
-    // {
-    //   id: 9,
-    //   name: "Nike",
-    //   video:
-    //     "https://videos.pexels.com/video-files/8533114/8533114-uhd_2560_1440_25fps.mp4",
-    //   title: "Steps Towards Sustainability",
-    //   description:
-    //     "Developing a marketing campaign that brings Nike's commitment to sustainability to the forefront of their brand narrative.",
-    //   category: "marketing",
-    //   size: "col-span-12 md:col-span-6 row-span-2",
-    //   imageHeight: "h-96",
-    // },
+  const getFirstImage = (project: Project): SanityImage | null => {
+    for (const block of project.content) {
+      if (block._type === "galleryBlock" && block.images.length > 0) {
+        return block.images[0];
+      }
+      if (block._type === "uiBlock" && block.screens.length > 0) {
+        return block.screens[0];
+      }
+      if (block._type === "brandBlock" && block.assets.length > 0) {
+        return block.assets[0];
+      }
+    }
+    return null;
+  };
+  const layoutPattern = [
+    { size: "col-span-12 md:col-span-4 row-span-1", imageHeight: "h-80" },
+    { size: "col-span-12 md:col-span-4", imageHeight: "h-48" },
+    { size: "col-span-12 md:col-span-4", imageHeight: "h-48" },
+    { size: "col-span-12 row-span-2", imageHeight: "h-[600px]" },
+    { size: "col-span-12 md:col-span-6 row-span-1", imageHeight: "h-80" },
+    { size: "col-span-12 md:col-span-6 row-span-1", imageHeight: "h-80" },
+    { size: "col-span-12 md:col-span-3 row-span-1", imageHeight: "h-44" },
+    { size: "col-span-12 md:col-span-3 row-span-1", imageHeight: "h-44" },
+    { size: "col-span-12 md:col-span-6 row-span-2", imageHeight: "h-96" },
   ];
+  
 
   const { tabCounts, categoryCounts } = useMemo(() => {
     const projectCount = projects.length;
@@ -203,7 +71,7 @@ const ProjectHero = () => {
     categories.forEach(category => {
       categoryCount[category.title] = {
         projects: projects.filter(p => 
-          p.category.toLowerCase() === category.title.toLowerCase()
+          p.categories.includes(category.title.toLowerCase() as typeof p.categories[number])
         ).length,
         clients: clients.filter(c => 
           c.category.toLowerCase() === category.title.toLowerCase()
@@ -217,7 +85,7 @@ const ProjectHero = () => {
       },
       categoryCounts: categoryCount,
     };
-  }, [categories, clients]);
+  }, [categories, clients, projects]);
 
   const tabs = [
     { id: "projects" as const, name: "Projects", count: tabCounts.projects },
@@ -304,38 +172,60 @@ const ProjectHero = () => {
           >
             <AnimatePresence>
             {projects
-                .filter(project => 
-                  activeCategory === "all" || 
-                  project.category.toLowerCase() === activeCategory.toLowerCase()
-                )
-                .map((project) => (
-                  <motion.div
-                    layout
-                    key={project.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className={`${project.size}`}
-                  >
-                    <div className={`relative ${project.imageHeight} mb-4`}>
-                      <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
-                      >
-                        <source src={project.video} type="video/mp4" />
-                      </video>
-                    </div>
-                    <h3 className="text-sm font-bold mb-2 text-gray-600">
-                      / {project.name}
-                    </h3>
-                    <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                    <p className="text-gray-600">{project.description}</p>
-                  </motion.div>
-                ))}
+  .filter(project => 
+    activeCategory === "all" || 
+    project.categories.includes(activeCategory.toLowerCase() as typeof project.categories[number])
+  )
+  .map((project, index) => {
+    const layout = layoutPattern[index % layoutPattern.length];
+    const firstImage = getFirstImage(project);
+    const slug = project.slug || "";
+ 
+    return (
+      <motion.div
+        layout
+        key={project._id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className={`${layout.size}`}
+      >
+        {/* Wrap the entire card content in Link */}
+        <Link 
+          href={`/projects/${slug}`}
+          className="block h-full w-full"
+        >
+          <div className="h-full flex flex-col">
+            <div className={`relative ${layout.imageHeight} mb-4 flex-grow`}>
+              {firstImage ? (
+                <Image
+                  src={urlFor(firstImage).url()}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full flex items-center justify-center">
+                  <span className="text-gray-500">No Image</span>
+                </div>
+              )}
+            </div>
+            <div className="mt-auto">
+              <h3 className="text-sm font-bold mb-2 text-gray-600">
+                / {project.client.name}
+              </h3>
+              <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+              <p className="text-gray-600 line-clamp-3">
+                {project.description}
+              </p>
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+    );
+})}
             </AnimatePresence>
           </motion.div>
         )}

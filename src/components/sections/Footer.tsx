@@ -1,6 +1,7 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 import React, { useState } from "react";
 import {
   PiFacebookLogo,
@@ -53,12 +54,12 @@ const Footer = () => {
           {/* left side */}
           <div>
             <h2 className="text-4xl font-bold mb-4">Let&apos;s Talk!</h2>
-            <a
+            <Link
               href="mailto:hi@email.com"
               className="text-xl hover:underline inline-block mb-8"
             >
               contact@Navix.com
-            </a>
+            </Link>
             <p className="text-gray-600">
               Manzel Jemil, Bizerte
               <br />
@@ -70,24 +71,24 @@ const Footer = () => {
           <div className="grid grid-cols-2 gap-8">
             <div className="space-y-4">
               {mainLinks.slice(0, 3).map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
                   className="block text-[#7b7b7b] hover:underline"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
             <div className="space-y-4">
               {mainLinks.slice(3).map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
                   className="block text-[#7b7b7b] hover:underline"
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
@@ -131,13 +132,13 @@ const Footer = () => {
           {/* Legal links */}
           <div className="flex gap-6 mb-4 md:mb-0">
             {legalLinks.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 className="text-[#7b7b7b] hover:underline text-sm"
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
           </div>
 
@@ -146,13 +147,13 @@ const Footer = () => {
             {socialLinks.map((link, index) => {
               const Icon = link.icon;
               return (
-                <a
+                <Link
                   key={index}
                   href={link.href}
                   className="text-[#7b7b7b] hover:text-gray-900"
                 >
                   <Icon size={20} />
-                </a>
+                </Link>
               );
             })}
           </div>

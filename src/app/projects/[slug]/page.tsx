@@ -25,7 +25,7 @@ export default async function ProjectPage({ params }: Params) {
     return notFound();
   }
 
-  // Helper to format date
+
   const formatDate = (dateString?: string) => {
     if (!dateString) return "Present";
     return new Date(dateString).toLocaleDateString("en-US", {

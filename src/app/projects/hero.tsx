@@ -172,50 +172,60 @@ const ProjectHero = () => {
           >
             <AnimatePresence>
             {projects
-                .filter(project => 
-                  activeCategory === "all" || 
-                
-                  project.categories.includes(activeCategory.toLowerCase() as typeof project.categories[number])
-                )
-                .map((project, index) => {
-                  const layout = layoutPattern[index % layoutPattern.length];
-                  const firstImage = getFirstImage(project);
-                  console.log(project.categories, activeCategory)
-                  return (
-                    <motion.div
-                      layout
-                      key={project._id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className={`${layout.size}`}
-                    >
-                      <div className={`relative ${layout.imageHeight} mb-4`}>
-                        {firstImage ? (
-                          <Image
-                            src={urlFor(firstImage).url()}
-                            alt={project.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 50vw"
-                          />
-                        ) : (
-                          <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full flex items-center justify-center">
-                            <span className="text-gray-500">No Image</span>
-                          </div>
-                        )}
-                      </div>
-                      <h3 className="text-sm font-bold mb-2 text-gray-600">
-                        / {project.client.name}
-                      </h3>
-                      <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                      <p className="text-gray-600 line-clamp-3">
-                        {project.description}
-                      </p>
-                    </motion.div>
-                  );
-                })}
+  .filter(project => 
+    activeCategory === "all" || 
+    project.categories.includes(activeCategory.toLowerCase() as typeof project.categories[number])
+  )
+  .map((project, index) => {
+    const layout = layoutPattern[index % layoutPattern.length];
+    const firstImage = getFirstImage(project);
+    const slug = project.slug || "";
+ 
+    return (
+      <motion.div
+        layout
+        key={project._id}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className={`${layout.size}`}
+      >
+        {/* Wrap the entire card content in Link */}
+        <Link 
+          href={`/projects/${slug}`}
+          className="block h-full w-full"
+        >
+          <div className="h-full flex flex-col">
+            <div className={`relative ${layout.imageHeight} mb-4 flex-grow`}>
+              {firstImage ? (
+                <Image
+                  src={urlFor(firstImage).url()}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full flex items-center justify-center">
+                  <span className="text-gray-500">No Image</span>
+                </div>
+              )}
+            </div>
+            <div className="mt-auto">
+              <h3 className="text-sm font-bold mb-2 text-gray-600">
+                / {project.client.name}
+              </h3>
+              <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+              <p className="text-gray-600 line-clamp-3">
+                {project.description}
+              </p>
+            </div>
+          </div>
+        </Link>
+      </motion.div>
+    );
+})}
             </AnimatePresence>
           </motion.div>
         )}

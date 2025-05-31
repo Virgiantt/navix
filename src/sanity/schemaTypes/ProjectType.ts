@@ -2,15 +2,6 @@
 import { defineType, defineField, defineArrayMember } from 'sanity'
 import { FaVideo, FaImage, FaChartLine, FaMobile, FaBrush } from 'react-icons/fa'
 
-// Fixed category slugs (match your existing categories)
-// const FIXED_CATEGORIES = [
-//   'marketing-strategy',
-//   'video-editing',
-//   'development',
-//   'uxui',
-//   'branding'
-// ] as const
-// schemas/project.ts
 export interface Project {
   _id: string;
   _type: 'project';
@@ -34,6 +25,7 @@ export interface Project {
   };
   content: ContentBlock[];
   description: string;
+  projectUrl?: string;
 }
 
 // Base image type
@@ -330,6 +322,12 @@ export const projectType = defineType({
           ]
         })
       ]
+    }),
+    defineField({
+      name: 'projectUrl',
+      title: 'Project URL',
+      type: 'url',
+      description: 'Link to the live project',
     }),
     
     // ─── Project Summary ───────────────────

@@ -90,14 +90,21 @@ export interface BrandBlock {
 export interface ProjectPreview {
   _id: string;
   title: string;
-  slug: string;
-  client: {
-    name: string;
-    logo: SanityImage;
-  };
-  categories: string[];
   description: string;
-  featuredImage?: SanityImage;
+  slug: string; // Should be string, not { current: string }
+  client: {
+    name?: string; // Optional in schema
+    logo: {
+      asset: {
+        url: string;
+      };
+    };
+  };
+  featuredImage?: {
+    asset: {
+      url: string;
+    };
+  };
 }
 export const projectType = defineType({
   name: 'project',
@@ -127,7 +134,13 @@ export const projectType = defineType({
       to: [{ type: 'client' }],
       validation: Rule => Rule.required()
     }),
-    
+    defineField({
+      name: 'featuredImage',
+      title: 'Featured Image',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Main image for project showcases',
+    }),
     // ─── Fixed Categories ───────────────────
     defineField({
       name: 'categories',

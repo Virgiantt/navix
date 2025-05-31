@@ -1,293 +1,195 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { Marquee } from "@/components/magicui/marquee";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import ScrollFloat from "../TextAnimations/ScrollFloat/ScrollFloat";
+import { client } from "@/sanity/lib/client";
 
-const projects = [
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-   
-    },{
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-  
-    },{
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },{
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-  
-    },{
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-  
-    },{
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
+// Skeleton component for loading state
+const SkeletonCard = () => (
+  <div className="relative overflow-hidden group animate-pulse">
+    <div className="bg-gray-200 aspect-square rounded-xl w-full" />
+    <div className="absolute bottom-0 left-0 p-4 w-full">
+      <div className="h-6 bg-gray-300 rounded w-3/4 mb-2"></div>
+    </div>
+  </div>
+);
 
-    },
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },
-    {
-      src: "/images/adidas.jpg",
-      name: "Adidas",
-      logo: "/images/adidas-logo.png",
-      description: "Created Adidas back to school campaign",
-     
-    },
-  ];
-  
+export function Projects() {
+  const [projects, setProjects] = useState<{ src: string; name: string, slug: string }[]>([]);
+  const [selectedProject, setSelectedProject] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-const firstRow = projects.slice(0, projects.length);
-const secondRow = projects.slice(3, projects.length);
-const thirdRow = projects.slice(6, projects.length);
+  // Fetch projects from Sanity
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setIsLoading(true);
+        // Optimized query for minimal data
+        const query = `*[_type == "project"] | order(_createdAt desc)[0...15] {
+          title,
+          "slug": slug.current,
+          "src": content[0]{
+            _type,
+            _type == "galleryBlock" => {images[0]{asset->{url}}},
+            _type == "uiBlock" => {screens[0]{asset->{url}}},
+            _type == "brandBlock" => {assets[0]{asset->{url}}}
+          }.images.asset.url
+        }`;
+        
+        const result = await client.fetch(query);
+        
 
+        setProjects(result.map((p: any) => ({
+          src: p.src || "/images/fallback.jpg",
+          name: p.title || "Project",
+          slug: p.slug
+        })));
+      } catch (err) {
+        setError("Failed to load projects");
+        console.error("Project fetch error:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-const ReviewCard = ({
-    src,
-    name,
-    description,
-    onClick,
-  }: {
-    src: string;
-    name: string;
-    description: string;
-    onClick: () => void;
-  }) => {
-    return (
-      <motion.figure
-        className="relative cursor-pointer overflow-hidden group"
-        onClick={onClick}
-      >
-        <div className="relative">
-          <Image
-            width={500}
-            height={500}
-            src={src}
-            alt="projects"
-            className="object-cover w-full"
-          />
-          <div className="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black/60 to-transparent w-full">
-            <h3 className="text-white text-xl font-semibold">{name}</h3>
-            <p className="text-white/80 text-sm">{description}</p>
-          </div>
+    fetchProjects();
+  }, []);
+
+  const ReviewCard = ({ src, name, onClick }: { 
+    src: string; 
+    name: string; 
+    onClick: () => void 
+  }) => (
+    <motion.figure
+      className="relative cursor-pointer overflow-hidden group"
+      onClick={onClick}
+    >
+      <div className="relative">
+        <Image
+          width={500}
+          height={500}
+          quality={90} 
+ 
+        
+          src={src}
+          alt={name}
+          className="object-cover w-full"
+          priority
+        />
+        <div className="absolute bottom-0 left-0 p-4 bg-gradient-to-t from-black/60 to-transparent w-full">
+          <h3 className="text-white text-xl font-semibold">{name}</h3>
         </div>
-      </motion.figure>
-    );
-  };
+      </div>
+    </motion.figure>
+  );
 
+  // Create rows for marquee
+  const firstRow = projects.slice(0, projects.length);
+  const secondRow = projects.slice(3, projects.length);
+  const thirdRow = projects.slice(6, projects.length);
 
+  // Skeleton rows
+  const skeletonRow = Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
 
-const ProjectDetails = ({
-    project,
-    onClose,
-  }: {
-    project: (typeof projects)[0];
-    onClose: () => void;
-  }) => {
-    return (
-      <motion.div
-        initial={{ x: "100%" }}
-        animate={{ x: 0 }}
-        exit={{ x: "100%" }}
-        transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="fixed right-0 top-0 h-full  md:w-2/5 bg-white shadow-lg p-6 z-50 cursor-pointer"
-      >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+  return (
+    <section className="w-full bg-white py-16 md:mx-auto 2xl:w-4/5 md:px-16">
+      <div className="mx-auto mb-8 px-6 md:px-0">
+        <ScrollFloat
+          animationDuration={1}
+          ease='back.inOut(2)'
+          scrollStart='center bottom+=20%'
+          scrollEnd='bottom bottom-=40%'
+          stagger={0.03}
+          textClassName="text-3xl md:text-5xl md:text-center font-medium"
+          containerClassName="flex items-center justify-center"
         >
-          ×
-        </button>
-  
-        <div className="mt-8">
-          <h2 className="text-2xl font-bold mb-4">{project.name}</h2>
-          <Image
-            src={project.src}
-            alt={project.name}
-            width={500}
-            height={300}
-            className="w-full rounded-lg mb-6 object-cover h-60"
-          />
-          <p className="text-gray-600 mb-4">{project.description}</p>
-  
-          <div className="space-y-4">
-            <h3 className="font-semibold text-lg">Project Details</h3>
-            <p className="text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                Web Design
-              </span>
-              <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                Branding
-              </span>
-              <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
-                UI/UX
-              </span>
-            </div>
+          Strategic Campaign Showcase
+        </ScrollFloat>
+        <p className="text-center py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500">
+          Explore data-driven campaigns where precision targeting met creative execution to boost client revenue by 150%+.
+        </p>
+      </div>
+
+      <div className="w-full h-[800px] flex items-center justify-center overflow-hidden py-8">
+        {isLoading ? (
+          // Skeleton state
+          <>
+            <Marquee vertical className="[--duration:60s]">
+              {skeletonRow}
+            </Marquee>
+            <Marquee vertical className="[--duration:60s]">
+              {skeletonRow}
+            </Marquee>
+            <Marquee vertical className="[--duration:60s] hidden md:flex">
+              {skeletonRow}
+            </Marquee>
+          </>
+        ) : error ? (
+          // Error state
+          <div className="text-center py-16 text-red-500">
+            {error} - <button 
+              onClick={() => window.location.reload()}
+              className="text-blue-500 underline"
+            >
+              Try Again
+            </button>
           </div>
-        </div>
-      </motion.div>
-    );
-  };
-
-
-  export function Projects() {
-    const [selectedProject, setSelectedProject] = useState<
-      (typeof projects)[0] | null
-    >(null);
-  
-    return (
-      <section className="w-full bg-white py-16 md:mx-auto 2xl:w-4/5 md:px-16">
-        <div className="mx-auto mb-8 px-6 md:px-0">
-           <ScrollFloat
-  animationDuration={1}
-  ease='back.inOut(2)'
-  scrollStart='center bottom+=20%'
-  scrollEnd='bottom bottom-=40%'
-  stagger={0.03}
-  textClassName="text-3xl md:text-5xl md:text-center font-medium"
-  containerClassName="flex  items-center justify-center"
->
-Strategic Campaign Showcase
-</ScrollFloat>
-                 <p className="text-center py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 ">
-                 Explore data-driven campaigns where precision targeting met creative execution to boost client revenue by 150%+.
-                 </p>
-        </div>
-  
-        <div className="w-full h-[800px] flex items-center justify-center overflow-hidden py-8">
-          <Marquee
-            vertical
-            pauseOnHover
-            className="[--duration:60s]"
-            paused={selectedProject !== null}
-          >
-            {firstRow.map((review, index) => (
-              <ReviewCard
-                key={index}
-                {...review}
-                onClick={() => setSelectedProject(review)}
-              />
-            ))}
-          </Marquee>
-          <Marquee
-            vertical
-            pauseOnHover
-            className="[--duration:60s]"
-            paused={selectedProject !== null}
-          >
-            {secondRow.map((review, index) => (
-              <ReviewCard
-                key={index}
-                {...review}
-                onClick={() => setSelectedProject(review)}
-              />
-            ))}
-          </Marquee>
-          <Marquee
-            vertical
-            pauseOnHover
-            className="[--duration:60s] hidden md:flex"
-            paused={selectedProject !== null}
-          >
-            {thirdRow.map((review, index) => (
-              <ReviewCard
-                key={index}
-                {...review}
-                onClick={() => setSelectedProject(review)}
-              />
-            ))}
-          </Marquee>
-        </div>
-  
-        <AnimatePresence>
-          {selectedProject && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 bg-black z-40"
-                onClick={() => setSelectedProject(null)}
-              />
-              <ProjectDetails
-                project={selectedProject}
-                onClose={() => setSelectedProject(null)}
-              />
-            </>
-          )}
-        </AnimatePresence>
-      </section>
-    );
-  }
-  
+        ) : (
+          // Success state
+          <>
+            <Marquee
+              vertical
+              pauseOnHover
+              className="[--duration:60s]"
+              paused={selectedProject !== null}
+            >
+              {firstRow.map((project, index) => (
+                <ReviewCard
+                  key={index}
+                  src={project.src}
+                  name={project.name}
+                  onClick={() => window.location.href = `/projects/${project.slug}`}
+                />
+              ))}
+            </Marquee>
+            <Marquee
+              vertical
+              pauseOnHover
+              className="[--duration:60s]"
+              paused={selectedProject !== null}
+            >
+              {secondRow.map((project, index) => (
+                <ReviewCard
+                  key={index}
+                  src={project.src}
+                  name={project.name}
+                  onClick={() => window.location.href = `/projects/${project.slug}`}
+                />
+              ))}
+            </Marquee>
+            <Marquee
+              vertical
+              pauseOnHover
+              className="[--duration:60s] hidden md:flex"
+              paused={selectedProject !== null}
+            >
+              {thirdRow.map((project, index) => (
+                <ReviewCard
+                  key={index}
+                  src={project.src}
+                  name={project.name}
+                  onClick={() => window.location.href = `/projects/${project.slug}`}
+                />
+              ))}
+            </Marquee>
+          </>
+        )}
+      </div>
+    </section>
+  );
+}

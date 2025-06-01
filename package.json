@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "extract-content": "ts-node --loader ts-node/esm src/scripts/extractAndChunkContent.ts",
+    "upsert-content": "ts-node --loader ts-node/esm src/scripts/upsertContentToPinecone.ts"
   },
   "dependencies": {
     "@pinecone-database/pinecone": "^6.1.0",
@@ -42,10 +44,13 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-scroll": "^1.8.10",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "tailwindcss": "^4.1.4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
     "tw-animate-css": "^1.2.8",
-    "typescript": "^5"
+    "typescript": "^5.8.3"
   }
 }

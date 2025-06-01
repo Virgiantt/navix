@@ -1,6 +1,7 @@
 import LetsMakeThingsHappenSection from "@/components/LetsMakeThingsHappen";
 import { ScrollBasedVelocityDemo } from "@/components/magicui/demo/scroll-based-velocity-demo";
 import MainLayout from "@/components/main-layout";
+// import ProjectRecommendations from "@/components/ProjectRecommendations";
 import Faq from "@/components/sections/Faq";
 
 import Founders from "@/components/sections/founders";
@@ -26,6 +27,12 @@ export default function Home() {
           <Process />
           <Founders />
           <Guarentees />
+          {/* <section className="py-20">
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl font-bold mb-8 text-center">Recommended Projects</h2>
+    <ProjectRecommendations />
+  </div>
+</section> */}
           <LetsMakeThingsHappenSection />
           <Faq />
         </MainLayout>

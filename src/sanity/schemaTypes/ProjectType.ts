@@ -26,6 +26,10 @@ export interface Project {
   content: ContentBlock[];
   description: string;
   projectUrl?: string;
+  firstImage?: SanityImage;
+  featuredImage?: SanityImage;
+
+  clientName?: string;
 }
 
 // Base image type

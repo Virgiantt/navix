@@ -2,15 +2,14 @@
 import { getSimilarProjects } from '@/lib/ai/recommendationService';
 import { NextResponse } from 'next/server';
 
-export const dynamic = 'force-dynamic'; // Bypass cache
+export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   const { projectId } = await req.json();
   
-  // Validate input
-  if (!projectId || typeof projectId !== 'string') {
+  if (!projectId) {
     return NextResponse.json(
-      { error: 'Invalid project ID' },
+      { error: 'Project ID required' },
       { status: 400 }
     );
   }
@@ -23,9 +22,9 @@ export async function POST(req: Request) {
       }
     });
   } catch (error) {
-    console.error('API error:', error);
+    console.error('Recommendation API error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Failed to get recommendations' },
       { status: 500 }
     );
   }

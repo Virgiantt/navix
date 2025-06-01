@@ -15,7 +15,7 @@ export const getSimilarProjects = async (projectId: string): Promise<Project[]> 
       'title',
       'description',
       'categories',
-      'client->name',
+      '"clientName": client->name',
       'content[]',
       'slug',
       '_id',
@@ -39,17 +39,39 @@ export const getSimilarProjects = async (projectId: string): Promise<Project[]> 
       filter: { projectId: { $ne: projectId } },
     });
 
-    // Return top 3 matches (excluding itself)
+    // Get the IDs of the top matches (excluding itself)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return (queryRes.matches || [])
+    const matchIds = (queryRes.matches || [])
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .filter((match: any) => match.score && match.score > 0.7)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((match: any) => ({
-        ...(match.metadata as unknown as Project),
-        _id: match.id,
-      }))
+      .map((match: any) => match.id)
       .slice(0, 3);
+
+    // Fetch the full project documents from Sanity, including firstImage
+    const similarProjects: Project[] = [];
+    for (const id of matchIds) {
+      const fullProject = await fetchProjectById(id, [
+        'title',
+        'description',
+        'categories',
+        '"clientName": client->name',
+        'content[]',
+        'slug',
+        '_id',
+        '"firstImage": featuredImage.asset->url',
+      ]);
+      if (
+        fullProject &&
+        fullProject.title &&
+        fullProject.description &&
+        fullProject.slug &&
+        (typeof fullProject.slug === 'string' ? fullProject.slug : fullProject.slug.current)
+      ) {
+        similarProjects.push(fullProject);
+      }
+    }
+    return similarProjects;
   } catch (error) {
     console.error('Recommendation error:', error);
     return [];

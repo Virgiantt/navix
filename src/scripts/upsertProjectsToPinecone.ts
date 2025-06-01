@@ -8,7 +8,6 @@ export async function upsertAllProjects() {
   const index = getPineconeIndex();
   const projects = await getAllProjectsForEmbedding();
 
-  // Batch upserts for efficiency (max 1000 per batch, but keep it small for now)
   for (const project of projects) {
     const text = `${project.title}\n${project.description}`;
     const embeddingRes = await openai.embeddings.create({
@@ -17,7 +16,28 @@ export async function upsertAllProjects() {
     });
     const embedding = embeddingRes.data[0].embedding;
 
-    // Upsert the vector
+    // Build a content summary from all string fields in content
+    let contentSummary = '';
+    if (Array.isArray(project.content)) {
+      contentSummary = project.content
+        .map(block => {
+          if (typeof block === 'string') return block;
+          return Object.values(block)
+            .filter(v => typeof v === 'string')
+            .join(' ');
+        })
+        .join(' ')
+        .slice(0, 500);
+    }
+
+    // Ensure firstImage is always a string (URL or empty)
+    let firstImage = '';
+    if (typeof project.firstImage === 'string') {
+      firstImage = project.firstImage;
+    } else if (project.firstImage && typeof project.firstImage === 'object' && project.firstImage.asset && typeof project.firstImage.asset.url === 'string') {
+      firstImage = project.firstImage.asset.url;
+    }
+
     await index.upsert([
       {
         id: project._id,
@@ -26,7 +46,11 @@ export async function upsertAllProjects() {
           projectId: project._id,
           title: project.title,
           description: project.description,
-          slug: project.slug,
+          categories: project.categories,
+          slug: project.slug?.current ?? project.slug ?? '',
+          client: project.clientName ?? project.client?.name ?? '',
+          firstImage,
+          contentSummary,
         },
       },
     ]);
@@ -35,7 +59,6 @@ export async function upsertAllProjects() {
   console.log('All projects upserted to Pinecone!');
 }
 
-// If you want to run this directly with tsx or ts-node:
 if (require.main === module) {
   upsertAllProjects().catch(console.error);
-} 
+}

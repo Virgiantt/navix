@@ -135,18 +135,10 @@ export async function getAllProjectsForEmbedding(): Promise<Project[]> {
     title,
     description,
     categories,
+    "slug": slug.current,
     "clientName": client->name,
-    "firstImage": ${getFirstImageGroqQuery()}
+    content[],
+    "firstImage": featuredImage.asset->url
   }`;
   return client.fetch(query);
-}
-
-// Helper for first image query
-function getFirstImageGroqQuery() {
-  return `coalesce(
-    content[_type == "galleryBlock"][0].images[0],
-    content[_type == "uiBlock"][0].screens[0],
-    content[_type == "brandBlock"][0].assets[0],
-    null
-  )`;
 }

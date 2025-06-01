@@ -1,3 +1,4 @@
+// app/projects/page.tsx
 import { BoxReveal } from '@/components/magicui/box-reveal'
 import MainLayout from '@/components/main-layout'
 import React from 'react'

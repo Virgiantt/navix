@@ -113,3 +113,41 @@ export const fetchProjectBySlug = async (slug: string): Promise<Project> => {
 
   return await client.fetch<Project>(query, { slug });
 };
+
+//fetch project by id
+export const fetchProjectById = async (id: string): Promise<Project> => {
+  const query = `*[_type == "project" && _id == $id][0] {
+    ...,
+    client->{
+      ...,
+      "slug": slug.current,
+      logo {
+        asset->{
+          url
+        },
+        alt
+      }
+    },
+    content[] {
+      ...,
+      // Resolve image assets for all block types
+      _type in ["galleryBlock", "uiBlock", "brandBlock"] => {
+        ...,
+        images[] {
+          ...,
+          asset->
+        },
+        screens[] {
+          ...,
+          asset->
+        },
+        assets[] {
+          ...,
+          asset->
+        }
+      }
+    }
+  }`;
+
+  return await client.fetch<Project>(query, { id });
+}

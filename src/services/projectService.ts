@@ -2,6 +2,7 @@
 
 import { client } from "@/sanity/lib/client";
 import { Project } from "@/sanity/schemaTypes/ProjectType";
+import { groq } from "next-sanity";
 
 
 
@@ -114,40 +115,38 @@ export const fetchProjectBySlug = async (slug: string): Promise<Project> => {
   return await client.fetch<Project>(query, { slug });
 };
 
-//fetch project by id
-export const fetchProjectById = async (id: string): Promise<Project> => {
-  const query = `*[_type == "project" && _id == $id][0] {
-    ...,
-    client->{
-      ...,
-      "slug": slug.current,
-      logo {
-        asset->{
-          url
-        },
-        alt
-      }
-    },
-    content[] {
-      ...,
-      // Resolve image assets for all block types
-      _type in ["galleryBlock", "uiBlock", "brandBlock"] => {
-        ...,
-        images[] {
-          ...,
-          asset->
-        },
-        screens[] {
-          ...,
-          asset->
-        },
-        assets[] {
-          ...,
-          asset->
-        }
-      }
-    }
-  }`;
 
-  return await client.fetch<Project>(query, { id });
+export async function fetchProjectById(
+  id: string,
+  projectionFields: string[] = []
+): Promise<Project | null> {
+  const projection = projectionFields.length 
+    ? `{ ${projectionFields.join(', ')} }`
+    : '';
+    
+  const query = groq`*[_type == "project" && _id == $id][0]${projection}`;
+  return client.fetch(query, { id });
+}
+
+// Add to getAllProjects (for Pinecone population):
+export async function getAllProjectsForEmbedding(): Promise<Project[]> {
+  const query = groq`*[_type == "project"]{
+    _id,
+    title,
+    description,
+    categories,
+    "clientName": client->name,
+    "firstImage": ${getFirstImageGroqQuery()}
+  }`;
+  return client.fetch(query);
+}
+
+// Helper for first image query
+function getFirstImageGroqQuery() {
+  return `coalesce(
+    content[_type == "galleryBlock"][0].images[0],
+    content[_type == "uiBlock"][0].screens[0],
+    content[_type == "brandBlock"][0].assets[0],
+    null
+  )`;
 }

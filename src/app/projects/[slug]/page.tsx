@@ -11,6 +11,9 @@ import { FaChartLine, FaMobile, FaBrush, FaVideo } from "react-icons/fa";
 import Link from "next/link";
 import InstagramEmbed from "@/components/InstagramEmbed";
 
+import AIRecommendations from "@/components/AIRecommendations";
+
+
 interface Params {
   params: {
     slug: string;
@@ -217,7 +220,6 @@ case "videoBlock":
         return null;
     }
   };
-
   return (
     <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]">
       <div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_500px_at_50%_200px,#C9EBFF,transparent)] overflow-x-hidden">
@@ -328,7 +330,7 @@ case "videoBlock":
             <div className="w-full">
               {project.content?.map((block) => renderContentBlock(block))}
             </div>
-
+            <AIRecommendations projectId={project._id} />
             {/* Project Summary */}
             <div className="mt-20 max-w-5xl mx-auto">
               <h2 className="text-3xl font-bold mb-6">Project Impact</h2>

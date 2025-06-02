@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Element } from "react-scroll";
+
 import { FlipWords } from "../ui/flip-words";
 // import Image from "next/image";
 
@@ -15,7 +15,7 @@ const Process = () => {
     "End-to-End",
   ];
   return (
-    <Element name="process">
+    <section id="process">
       <main className="md:px-0 mx-6 md:mx-auto">
       <h1 className="text-3xl md:text-5xl md:text-center font-medium flex flex-wrap items-center justify-center gap-x-2 mx-auto">
   <span className="whitespace-nowrap">Our</span>
@@ -53,7 +53,7 @@ const Process = () => {
 </div>
 </div>
       </main>
-    </Element>
+      </section>
   );
 };
 

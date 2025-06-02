@@ -120,8 +120,9 @@ export async function fetchProjectById(
   id: string,
   projectionFields: string[] = []
 ): Promise<Project | null> {
-  const projection = projectionFields.length 
-    ? `{ ${projectionFields.join(', ')} }`
+  const safeFields = projectionFields.map(f => f === 'content[]' ? 'content' : f);
+  const projection = safeFields.length 
+    ? `{ ${safeFields.join(', ')} }`
     : '';
     
   const query = groq`*[_type == "project" && _id == $id][0]${projection}`;

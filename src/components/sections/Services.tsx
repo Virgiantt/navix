@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Element } from "react-scroll";
+
 import Image from "next/image";
 import { WordPullUpDemo } from "../magicui/demo/word-pull-up-demo";
 const Services = () => {
@@ -44,7 +44,7 @@ const Services = () => {
       ];
       
   return (
-    <Element name="services" className="container">
+    <section id="services" className="container">
       <div className="md:px-0 mx-6 xl:w-4/5 2xl:w-[68%] md:mx-auto">
         <WordPullUpDemo />
         <p className="text-center py-4 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 ">
@@ -69,7 +69,7 @@ const Services = () => {
             ))}
           </div>
       </div>
-    </Element>
+    </section>
   );
 };
 

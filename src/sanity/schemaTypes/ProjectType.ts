@@ -39,6 +39,12 @@ export interface SanityImage {
     _ref: string;
     _type: 'reference';
     url: string;
+    metadata?: {
+      dimensions?: {
+        width: number;
+        height: number;
+      };
+    };
   };
   alt?: string;
 }

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useData } from "@/components/context/DataContext";
 import { urlFor } from "@/sanity/lib/image";
 import Link from "next/link";
-import { Project, SanityImage } from "@/sanity/schemaTypes/ProjectType";
+// import { Project, SanityImage } from "@/sanity/schemaTypes/ProjectType";
 
 type TabId = "projects" | "clients";
 
@@ -35,31 +35,31 @@ const ProjectHero = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const { categories,clients, projects } = useData();
 
-  const getFirstImage = (project: Project): SanityImage | null => {
-    for (const block of project.content) {
-      if (block._type === "galleryBlock" && block.images.length > 0) {
-        return block.images[0];
-      }
-      if (block._type === "uiBlock" && block.screens.length > 0) {
-        return block.screens[0];
-      }
-      if (block._type === "brandBlock" && block.assets.length > 0) {
-        return block.assets[0];
-      }
-    }
-    return null;
-  };
-  const layoutPattern = [
-    { size: "col-span-12 md:col-span-4 row-span-1", imageHeight: "h-80" },
-    { size: "col-span-12 md:col-span-4", imageHeight: "h-48" },
-    { size: "col-span-12 md:col-span-4", imageHeight: "h-48" },
-    { size: "col-span-12 row-span-2", imageHeight: "h-[600px]" },
-    { size: "col-span-12 md:col-span-6 row-span-1", imageHeight: "h-80" },
-    { size: "col-span-12 md:col-span-6 row-span-1", imageHeight: "h-80" },
-    { size: "col-span-12 md:col-span-3 row-span-1", imageHeight: "h-44" },
-    { size: "col-span-12 md:col-span-3 row-span-1", imageHeight: "h-44" },
-    { size: "col-span-12 md:col-span-6 row-span-2", imageHeight: "h-96" },
-  ];
+  // const getFirstImage = (project: Project): SanityImage | null => {
+  //   for (const block of project.content) {
+  //     if (block._type === "galleryBlock" && block.images.length > 0) {
+  //       return block.images[0];
+  //     }
+  //     if (block._type === "uiBlock" && block.screens.length > 0) {
+  //       return block.screens[0];
+  //     }
+  //     if (block._type === "brandBlock" && block.assets.length > 0) {
+  //       return block.assets[0];
+  //     }
+  //   }
+  //   return null;
+  // };
+  // const layoutPattern = [
+  //   { size: "col-span-12 md:col-span-4 row-span-1", imageHeight: "h-80" },
+  //   { size: "col-span-12 md:col-span-4", imageHeight: "h-48" },
+  //   { size: "col-span-12 md:col-span-4", imageHeight: "h-48" },
+  //   { size: "col-span-12 row-span-2", imageHeight: "h-[600px]" },
+  //   { size: "col-span-12 md:col-span-6 row-span-1", imageHeight: "h-80" },
+  //   { size: "col-span-12 md:col-span-6 row-span-1", imageHeight: "h-80" },
+  //   { size: "col-span-12 md:col-span-3 row-span-1", imageHeight: "h-44" },
+  //   { size: "col-span-12 md:col-span-3 row-span-1", imageHeight: "h-44" },
+  //   { size: "col-span-12 md:col-span-6 row-span-2", imageHeight: "h-96" },
+  // ];
   
 
   const { tabCounts, categoryCounts } = useMemo(() => {
@@ -168,7 +168,7 @@ const ProjectHero = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-12 gap-y-10 md:gap-x-10"
+            className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6"
           >
             <AnimatePresence>
             {projects
@@ -176,11 +176,12 @@ const ProjectHero = () => {
     activeCategory === "all" || 
     project.categories.includes(activeCategory.toLowerCase() as typeof project.categories[number])
   )
-  .map((project, index) => {
-    const layout = layoutPattern[index % layoutPattern.length];
-    const firstImage = getFirstImage(project);
+  .map((project) => {
+    const mainImage = project.featuredImage || (project.content?.[0]?.images?.[0] || null);
     const slug = project.slug || "";
- 
+    // Get natural width/height from metadata if available
+    const width = mainImage?.asset?.metadata?.dimensions?.width || 600;
+    const height = mainImage?.asset?.metadata?.dimensions?.height || 400;
     return (
       <motion.div
         layout
@@ -189,38 +190,33 @@ const ProjectHero = () => {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className={`${layout.size}`}
+        className="mb-6 break-inside-avoid "
       >
-        {/* Wrap the entire card content in Link */}
-        <Link 
-          href={`/projects/${slug}`}
-          className="block h-full w-full"
-        >
-          <div className="h-full flex flex-col">
-            <div className={`relative ${layout.imageHeight} mb-4 flex-grow`}>
-              {firstImage ? (
-                <Image
-                  src={urlFor(firstImage).url()}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              ) : (
-                <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-full flex items-center justify-center">
-                  <span className="text-gray-500">No Image</span>
-                </div>
-              )}
-            </div>
-            <div className="mt-auto">
-              <h3 className="text-sm font-bold mb-2 text-gray-600">
-                / {project.client.name}
-              </h3>
-              <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-              <p className="text-gray-600 line-clamp-3">
-                {project.description}
-              </p>
-            </div>
+        <Link href={`/projects/${slug}`} className="block w-full group">
+          <div className="relative w-full">
+            {mainImage && mainImage.asset && mainImage.asset.url ? (
+              <Image
+                src={mainImage.asset.url}
+                alt={project.title}
+                width={width}
+                height={height}
+                quality={90}
+                className="w-full h-auto object-cover rounded-t-2xl"
+              />
+            ) : (
+              <div className="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48 flex items-center justify-center">
+                <span className="text-gray-500">No Image</span>
+              </div>
+            )}
+          </div>
+          <div className="p-4">
+            <h3 className="text-sm font-bold mb-2 text-gray-600">
+              / {project.client.name}
+            </h3>
+            <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+            <p className="text-gray-600 line-clamp-3">
+              {project.description}
+            </p>
           </div>
         </Link>
       </motion.div>

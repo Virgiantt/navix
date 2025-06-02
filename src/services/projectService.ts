@@ -26,6 +26,13 @@ export const fetchProjects = async (): Promise<Project[]> => {
     format,
     timeline,
     description,
+    "featuredImage": featuredImage{
+      asset->{
+        url,
+        metadata
+      },
+      alt
+    },
     content[] {
       _type,
       // Video Block
@@ -90,6 +97,13 @@ export const fetchProjectBySlug = async (slug: string): Promise<Project> => {
         },
         alt
       }
+    },
+    "featuredImage": featuredImage{
+      asset->{
+        url,
+        metadata
+      },
+      alt
     },
     content[] {
       ...,

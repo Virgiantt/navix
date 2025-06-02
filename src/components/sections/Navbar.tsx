@@ -12,7 +12,7 @@ import {
   useScroll,
 } from "framer-motion";
 import { InteractiveHoverButton } from "../magicui/interactive-hover-button";
-import { Link as ScrollLink, Element } from "react-scroll";
+import { Element } from "react-scroll";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -114,30 +114,15 @@ const Navbar = () => {
               <Link href={"/projects"}className="text-gray-700 hover:text-lochmara-500 transition-colors">
               Projects
               </Link>
-              <ScrollLink
-                to="process"
-                smooth={true}
-                duration={500}
-                className="text-gray-700 hover:text-lochmara-500 transition-colors cursor-pointer"
-              >
+              <Link href="/#process" className="text-gray-700 hover:text-lochmara-500 transition-colors">
                 Process
-              </ScrollLink>
-              <ScrollLink
-                to="services"
-                smooth={true}
-                duration={500}
-                className="text-gray-700 hover:text-lochmara-500 transition-colors cursor-pointer"
-              >
+              </Link>
+              <Link href="/#services" className="text-gray-700 hover:text-lochmara-500 transition-colors">
                 Services
-              </ScrollLink>
-              <ScrollLink
-                to="guarentees"
-                smooth={true}
-                duration={500}
-                className="text-gray-700 hover:text-lochmara-500 transition-colors cursor-pointer"
-              >
+              </Link>
+              <Link href="/#guarentees" className="text-gray-700 hover:text-lochmara-500 transition-colors">
                 Guarantees
-              </ScrollLink>
+              </Link>
               {/* <a href="tel:50699724" className="text-gray-700 hover:text-lochmara-500">
                 (+216) 50 699 724
               </a> */}
@@ -194,30 +179,15 @@ const Navbar = () => {
               <Link href={"/projects"}className="text-gray-700 hover:text-lochmara-500 transition-colors">
               Projects
               </Link>
-              <ScrollLink
-                to="process"
-                smooth={true}
-                duration={500}
-                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
-              >
+              <Link href="/#process" className="text-gray-700 hover:text-lochmara-500 cursor-pointer">
                 Process
-              </ScrollLink>
-              <ScrollLink
-                to="services"
-                smooth={true}
-                duration={500}
-                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
-              >
+              </Link>
+              <Link href="/#services" className="text-gray-700 hover:text-lochmara-500 cursor-pointer">
                 Services
-              </ScrollLink>
-              <ScrollLink
-                to="guarentees"
-                smooth={true}
-                duration={500}
-                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
-              >
+              </Link>
+              <Link href="/#guarentees" className="text-gray-700 hover:text-lochmara-500 cursor-pointer">
                 Guarantees
-              </ScrollLink>
+              </Link>
               <a href="tel:50699724" className="text-gray-700 hover:text-lochmara-500">
                 (+216) 50 699 724
               </a>

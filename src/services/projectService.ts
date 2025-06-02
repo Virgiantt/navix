@@ -120,8 +120,9 @@ export async function fetchProjectById(
   id: string,
   projectionFields: string[] = []
 ): Promise<Project | null> {
-  const projection = projectionFields.length 
-    ? `{ ${projectionFields.join(', ')} }`
+  const safeFields = projectionFields.map(f => f === 'content[]' ? 'content' : f);
+  const projection = safeFields.length 
+    ? `{ ${safeFields.join(', ')} }`
     : '';
     
   const query = groq`*[_type == "project" && _id == $id][0]${projection}`;
@@ -135,18 +136,10 @@ export async function getAllProjectsForEmbedding(): Promise<Project[]> {
     title,
     description,
     categories,
+    "slug": slug.current,
     "clientName": client->name,
-    "firstImage": ${getFirstImageGroqQuery()}
+    content[],
+    "firstImage": featuredImage.asset->url
   }`;
   return client.fetch(query);
-}
-
-// Helper for first image query
-function getFirstImageGroqQuery() {
-  return `coalesce(
-    content[_type == "galleryBlock"][0].images[0],
-    content[_type == "uiBlock"][0].screens[0],
-    content[_type == "brandBlock"][0].assets[0],
-    null
-  )`;
 }

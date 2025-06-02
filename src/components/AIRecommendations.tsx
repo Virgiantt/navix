@@ -4,24 +4,7 @@ import { useEffect, useState } from 'react';
 import { Project } from '@/sanity/schemaTypes/ProjectType';
 import Image from 'next/image';
 import Link from 'next/link';
-import { urlFor } from '@/sanity/lib/image';
 
-// Helper to get the first image from project content
-function getFirstImage(project: Project) {
-  if (!project.content) return null;
-  for (const block of project.content) {
-    if (block._type === 'galleryBlock' && block.images && block.images.length > 0) {
-      return block.images[0];
-    }
-    if (block._type === 'uiBlock' && block.screens && block.screens.length > 0) {
-      return block.screens[0];
-    }
-    if (block._type === 'brandBlock' && block.assets && block.assets.length > 0) {
-      return block.assets[0];
-    }
-  }
-  return null;
-}
 
 // Simple Skeleton component for loading placeholders
 function Skeleton({ className = '' }: { className?: string }) {
@@ -83,7 +66,6 @@ export default function AIRecommendations({ projectId }: { projectId: string }) 
           Beta
         </span>
       </h3>
-      
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
@@ -99,42 +81,39 @@ export default function AIRecommendations({ projectId }: { projectId: string }) 
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {recommendations.map((project) => {
-            const firstImage = getFirstImage(project);
-            return (
-              <Link 
-                key={project._id} 
-                href={`/projects/${project.slug?.current || ''}`}
-                className="group block transition-transform hover:scale-[1.02]"
-              >
-                <div className="border rounded-lg overflow-hidden h-full flex flex-col">
-                  {firstImage ? (
-                    <div className="relative h-48">
-                      <Image
-                        src={urlFor(firstImage).url()}
-                        alt={project.title}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    </div>
-                  ) : (
-                    <div className="bg-gray-100 border-2 border-dashed h-48 flex items-center justify-center">
-                      <span className="text-gray-400">No Image</span>
-                    </div>
-                  )}
-                  <div className="p-4 flex-grow">
-                    <h4 className="font-bold text-lg mb-1 group-hover:text-blue-600 transition-colors">
-                      {project.title}
-                    </h4>
-                    <p className="text-gray-600 text-sm line-clamp-2">
-                      {project.description}
-                    </p>
+          {recommendations.map((project) => (
+            <Link
+              key={project._id}
+              href={`/projects/${typeof project.slug === 'string' ? project.slug : (project.slug?.current ?? '')}`}
+              className="group block transition-transform hover:scale-[1.02]"
+            >
+              <div className="border rounded-lg overflow-hidden h-full flex flex-col">
+                {typeof project.firstImage === 'string' && project.firstImage ? (
+                  <div className="relative h-48">
+                  <Image
+    src={project.firstImage}
+    alt={project.title}
+    fill
+    className="object-cover"
+    sizes="(max-width: 768px) 100vw, 33vw"
+  />
                   </div>
+                ) : (
+                  <div className="bg-gray-100 border-2 border-dashed h-48 flex items-center justify-center">
+                    <span className="text-gray-400">No Image</span>
+                  </div>
+                )}
+                <div className="p-4 flex-grow">
+                  <h4 className="font-bold text-lg mb-1 group-hover:text-blue-600 transition-colors">
+                    {project.title}
+                  </h4>
+                  <p className="text-gray-600 text-sm line-clamp-2">
+                    {project.description}
+                  </p>
                 </div>
-              </Link>
-            );
-          })}
+              </div>
+            </Link>
+          ))}
         </div>
       )}
     </div>

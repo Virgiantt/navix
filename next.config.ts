@@ -1,6 +1,13 @@
 import type { NextConfig } from "next";
+import createNextIntlPlugin from 'next-intl/plugin';
+
+const withNextIntl = createNextIntlPlugin(
+  // This is the default (also the `src` folder is supported out of the box)
+  './src/i18n/request.ts'
+);
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ['next-intl'],
   images: {
     remotePatterns: [
       {
@@ -21,4 +28,4 @@ const nextConfig: NextConfig = {
   // Your other config here
 };
 
-export default nextConfig;
+export default withNextIntl(nextConfig);

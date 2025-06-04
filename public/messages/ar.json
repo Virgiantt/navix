@@ -1,0 +1,114 @@
+{
+  "Navigation": {
+    "home": "الرئيسية",
+    "about": "حولنا",
+    "projects": "المشاريع",
+    "process": "العملية",
+    "services": "الخدمات",
+    "guarantees": "الضمانات",
+    "meeting": "احجز اجتماع"
+  },
+"Footer": {
+  "letsTalk": "تواصل معنا",
+  "newsletter": "اشترك في النشرة",
+  "emailPlaceholder": "أدخل بريدك الإلكتروني",
+  "subscribe": "اشترك الآن",
+  "subscribeSuccess": "تم الاشتراك بنجاح!",
+  "privacy": "سياسة الخصوصية",
+  "terms": "شروط الاستخدام",
+  "sitemap": "خريطة الموقع"
+},
+  "HomePage": {
+    "hero": {
+      "title": "حوّل عملك بالتميز الرقمي",
+      "subtitle": "نساعد الشركات على النمو من خلال التسويق الاستراتيجي والتطوير المتقدم والتصميم المذهل",
+      "cta": "ابدأ اليوم"
+    },
+    "sections": {
+      "services": "خدماتنا",
+      "projects": "المشاريع المميزة",
+      "process": "عمليتنا",
+      "founders": "تعرف على مؤسسينا",
+      "guarantees": "ضماناتنا",
+      "faq": "الأسئلة الشائعة"
+    }
+  },
+  "Common": {
+    "loading": "جاري التحميل...",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "bookCall": "احجز مكالمة",
+    "getStarted": "ابدأ",
+    "learnMore": "تعلم المزيد"
+  },
+  "AIContactForm": {
+    "title": "كيف يمكننا مساعدتك؟",
+    "subtitle": "اختر خدمة لبدء محادثة سريعة حول مشروعك",
+    "changeService": "تغيير الخدمة",
+    "questionProgress": "السؤال {current} من {total}",
+    "typePlaceholder": "اكتب إجابتك...",
+    "send": "إرسال",
+    "scheduleCall": "جدولة مكالمة استراتيجية",
+    "emailInstead": "أرسل لنا بريد إلكتروني",
+    "startOver": "ابدأ من جديد",
+    "celebration": {
+      "title": "شكراً لاختيارك نافيكس!",
+      "subtitle": "نحن متحمسون لاستكشاف مشروعك ومساعدتك في تحقيق رؤيتك."
+    },
+    "contactForm": {
+      "title": "تقريباً انتهينا!",
+      "subtitle": "فقط بعض التفاصيل حتى نتمكن من المتابعة معك باستراتيجيتك المخصصة",
+      "fullName": "الاسم الكامل",
+      "email": "البريد الإلكتروني",
+      "phone": "الهاتف / واتساب",
+      "phoneOptional": "(اختياري)",
+      "fullNamePlaceholder": "اسمك الكامل",
+      "emailPlaceholder": "your@email.com",
+      "phonePlaceholder": "+966 50 123 4567",
+      "submitButton": "إرسال والحصول على الاستراتيجية",
+      "submitting": "جاري الإرسال...",
+      "skipForNow": "تخطي الآن"
+    },
+    "services": {
+      "marketingStrategy": {
+        "title": "استراتيجية التسويق",
+        "description": "تسويق النمو والحملات والتحليلات"
+      },
+      "videoEditing": {
+        "title": "تحرير الفيديو",
+        "description": "إنتاج الفيديو والرسوم المتحركة"
+      },
+      "development": {
+        "title": "التطوير",
+        "description": "تطوير الويب والحلول الشاملة"
+      },
+      "uxUi": {
+        "title": "تصميم UX/UI",
+        "description": "تجربة المستخدم وتصميم الواجهة"
+      },
+      "branding": {
+        "title": "العلامة التجارية",
+        "description": "هوية العلامة التجارية والأنظمة البصرية"
+      }
+    },
+    "calendly": {
+      "title": "جدولة مكالمتك الاستراتيجية",
+      "subtitle": "دعنا نناقش مشروعك وأهدافك",
+      "mobileHint": "نصيحة: مرر داخل التقويم لرؤية جميع الأوقات المتاحة",
+      "contactAlternatives": "تواجه مشكلة؟ اتصل بنا مباشرة",
+      "emailUs": "راسلنا",
+      "callUs": "اتصل بنا"
+    },
+    "errors": {
+      "generic": "عذراً، حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "submission": "عذراً، حدث خطأ ما. يرجى المحاولة مرة أخرى أو الاتصال بنا مباشرة."
+    }
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "اختر اللغة",
+    "english": "English",
+    "french": "Français",
+    "arabic": "العربية"
+  }
+}

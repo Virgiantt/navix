@@ -1,0 +1,33 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "process": "Process",
+    "services": "Services",
+    "guarantees": "Guarantees",
+    "meeting": "Meeting"
+  },
+  "Footer": {
+    "letsTalk": "Let's Talk",
+    "newsletter": "Newsletter",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe",
+    "subscribeSuccess": "Successfully subscribed!",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "sitemap": "Sitemap"
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "Select Language"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "close": "Close",
+    "bookCall": "Book a Call",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More"
+  }
+}

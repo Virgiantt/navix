@@ -91,6 +91,7 @@ The app will be running at http://localhost:3000
 
 # Run tests
 npm test        # or: pnpm test
+ ```
 📄 License
 This project is licensed under the MIT License – see the LICENSE file for details.
 
@@ -99,7 +100,8 @@ Built with ❤️ by Houssem Daas
 📧 houssemdaas2@gmail.com
 🔗 LinkedIn • GitHub
 
+
 <div align="center">
 🔼 Back to Top
 
-</div> ```
+</div>

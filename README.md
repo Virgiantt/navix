@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 NAVIX
+#  **NAVIX** 
 
 **Empowering Dynamic Content for Engaging User Experiences**
 
@@ -12,13 +12,36 @@
 
 **Tech Stack**
 
+
+### 🌐 Frontend
 ![Next.js](https://img.shields.io/badge/Next.js-000000.svg?style=flat&logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/React-61DAFB.svg?style=flat&logo=React&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6.svg?style=flat&logo=TypeScript&logoColor=white)
-![Sanity](https://img.shields.io/badge/Sanity-F03E2F.svg?style=flat&logo=Sanity&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-38B2AC.svg?style=flat&logo=tailwind-css&logoColor=white)
-![OpenAI](https://img.shields.io/badge/OpenAI-412991.svg?style=flat&logo=OpenAI&logoColor=white)
 ![Styled Components](https://img.shields.io/badge/styled--components-DB7093.svg?style=flat&logo=styled-components&logoColor=white)
+![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000.svg?style=flat&logo=radix-ui&logoColor=white)
+
+### ⚙️ Backend & APIs
+![Sanity](https://img.shields.io/badge/Sanity-F03E2F.svg?style=flat&logo=Sanity&logoColor=white)
+![Resend](https://img.shields.io/badge/Resend-FF6F61.svg?style=flat&logoColor=white)
+![OpenAI](https://img.shields.io/badge/OpenAI-412991.svg?style=flat&logo=OpenAI&logoColor=white)
+![Pinecone](https://img.shields.io/badge/Pinecone-026AFF.svg?style=flat&logoColor=white)
+
+### 🛠️ Tooling & DX
+![npm](https://img.shields.io/badge/npm-CB3837.svg?style=flat&logo=npm&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220.svg?style=flat&logo=pnpm&logoColor=white)
+![ts-node](https://img.shields.io/badge/ts--node-3178C6.svg?style=flat&logo=typescript&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-4B32C3.svg?style=flat&logo=eslint&logoColor=white)
+![Prettier](https://img.shields.io/badge/Prettier-F7B93E.svg?style=flat&logo=prettier&logoColor=black)
+
+### 🧪 Testing
+![Jest](https://img.shields.io/badge/Jest-C21325.svg?style=flat&logo=jest&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18.svg?style=flat&logo=vitest&logoColor=white)
+![Cypress](https://img.shields.io/badge/Cypress-17202C.svg?style=flat&logo=cypress&logoColor=white)
+
+### ☁️ Deployment
+![Vercel](https://img.shields.io/badge/Vercel-000000.svg?style=flat&logo=vercel&logoColor=white)
+
 
 </div>
 

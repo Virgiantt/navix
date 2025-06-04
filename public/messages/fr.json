@@ -1,0 +1,33 @@
+{
+  "Navigation": {
+    "home": "Accueil",
+    "about": "À propos",
+    "projects": "Projets",
+    "process": "Processus",
+    "services": "Services",
+    "guarantees": "Garanties",
+    "meeting": "Réserver une réunion"
+  },
+  "Footer": {
+    "letsTalk": "Parlons-en",
+    "newsletter": "Newsletter",
+    "emailPlaceholder": "Entrez votre email",
+    "subscribe": "S'abonner",
+    "subscribeSuccess": "Abonnement réussi !",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "sitemap": "Plan du site"
+  },
+  "LanguageSwitcher": {
+    "selectLanguage": "Sélectionner la langue"
+  },
+  "Common": {
+    "loading": "Chargement...",
+    "submit": "Soumettre",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "bookCall": "Réserver un appel",
+    "getStarted": "Commencer",
+    "learnMore": "En savoir plus"
+  }
+}

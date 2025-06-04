@@ -13,11 +13,20 @@ import {
 } from "framer-motion";
 import { InteractiveHoverButton } from "../magicui/interactive-hover-button";
 import { Element } from "react-scroll";
+import LanguageSwitcher from "../LanguageSwitcher";
+import { useTranslations } from "../../hooks/useTranslations";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const isHomePage = pathname === "/";
+  const { t } = useTranslations();
+
+  // Check if we're on the home page (considering locale)
+  const isHomePage =
+    pathname === "/" ||
+    pathname === "/en" ||
+    pathname === "/fr" ||
+    pathname === "/ar";
   const [hasScrolled, setHasScrolled] = useState(false);
   const { scrollY } = useScroll();
   const [prevScrollY, setPrevScrollY] = useState(0);
@@ -93,53 +102,55 @@ const Navbar = () => {
         >
           <div className="mx-auto flex justify-between items-center">
             <Link href="/" className="flex items-center space-x-1">
-              <Image 
+              <Image
                 src="/logo_navix.png"
                 alt="Navix Marketing Logo"
                 width={24}
                 height={24}
                 className="rounded-full w-6 h-6 object-cover"
               />
-              <span className="text-xl font-extrabold text-lochmara-500 uppercase tracking-wider">Navix</span>
+              <span className="text-xl font-extrabold text-lochmara-500 uppercase tracking-wider">
+                Navix
+              </span>
             </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex gap-x-10 items-center">
-              {/* <Link href="/#showcase" className="text-gray-700 hover:text-lochmara-500 transition-colors">
-                Showcase
-              </Link> */}
-              <Link href={"/about"}className="text-gray-700 hover:text-lochmara-500 transition-colors">
-              About
+              <Link
+                href="/about"
+                className="text-gray-700 hover:text-lochmara-500 transition-colors"
+              >
+                {t("Navigation.about")}
               </Link>
-              <Link href={"/projects"}className="text-gray-700 hover:text-lochmara-500 transition-colors">
-              Projects
+              <Link
+                href="/projects"
+                className="text-gray-700 hover:text-lochmara-500 transition-colors"
+              >
+                {t("Navigation.projects")}
               </Link>
-              <Link href="/#process" className="text-gray-700 hover:text-lochmara-500 transition-colors">
-                Process
+              <Link
+                href="/#process"
+                className="text-gray-700 hover:text-lochmara-500 transition-colors"
+              >
+                {t("Navigation.process")}
               </Link>
-              <Link href="/#services" className="text-gray-700 hover:text-lochmara-500 transition-colors">
-                Services
+              <Link
+                href="/#services"
+                className="text-gray-700 hover:text-lochmara-500 transition-colors"
+              >
+                {t("Navigation.services")}
               </Link>
-              <Link href="/#guarentees" className="text-gray-700 hover:text-lochmara-500 transition-colors">
-                Guarantees
+              <Link
+                href="/#guarentees"
+                className="text-gray-700 hover:text-lochmara-500 transition-colors"
+              >
+                {t("Navigation.guarantees")}
               </Link>
-              {/* <a href="tel:50699724" className="text-gray-700 hover:text-lochmara-500">
-                (+216) 50 699 724
-              </a> */}
             </div>
 
-            {/* Mobile CTA Button with Blur */}
-            <div className="flex items-center gap-x-4">
-              
-              <Link href="/meeting" className="hover:scale-105 transition-transform md:hidden">
-                <InteractiveHoverButton className='
-                  backdrop-blur-sm bg-white/30 border border-white/20
-                  hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
-                  dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground)]'>
-                  Book a Call
-                </InteractiveHoverButton>
-              </Link>
-              
+            {/* Mobile Actions */}
+            <div className="flex items-center gap-x-2 md:hidden">
+              <LanguageSwitcher />
               <button
                 className="md:hidden"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -152,14 +163,20 @@ const Navbar = () => {
               </button>
             </div>
 
-            {/* Desktop CTA Button */}
-            <Link href="/meeting" className="hidden md:block hover:scale-105 transition-transform">
-              <InteractiveHoverButton className='
-                hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
-                dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground)]'>
-                Book a Call
-              </InteractiveHoverButton>
-            </Link>
+            {/* Desktop Actions */}
+            <div className="hidden md:flex items-center gap-x-4">
+              <LanguageSwitcher />
+              <Link
+                href="/meeting"
+                className="hover:scale-105 transition-transform"
+              >
+                <InteractiveHoverButton className="
+                  hover:shadow-[1px_1px_var(--color-primary),2px_2px_var(--color-primary),3px_3px_var(--color-primary),4px_4px_var(--color-primary),5px_5px_0px_0px_var(--color-primary)]
+                  dark:hover:shadow-[1px_1px_var(--color-primary-foreground),2px_2px_var(--color-primary-foreground),3px_3px_var(--color-primary-foreground),4px_4px_var(--color-primary-foreground),5px_5px_0px_0px_var(--color-primary-foreground]">
+                  {t("Common.bookCall")}
+                </InteractiveHoverButton>
+              </Link>
+            </div>
           </div>
 
           {/* Mobile Menu */}
@@ -167,28 +184,55 @@ const Navbar = () => {
             initial="closed"
             animate={mobileMenuOpen ? "open" : "closed"}
             variants={menuVariants}
-            className="md:hidden overflow-hidden"
+            className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 md:hidden overflow-hidden"
           >
-            <div className="flex flex-col space-y-4 pt-4">
-              {/* <Link href="/#showcase" className="text-gray-700 hover:text-lochmara-500">
-                Showcase
-              </Link> */}
-              <Link href={"/about"}className="text-gray-700 hover:text-lochmara-500 transition-colors">
-              About
+            <div className="flex flex-col space-y-4 p-4">
+              <Link
+                href="/about"
+                className="text-gray-700 hover:text-lochmara-500 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("Navigation.about")}
               </Link>
-              <Link href={"/projects"}className="text-gray-700 hover:text-lochmara-500 transition-colors">
-              Projects
+              <Link
+                href="/projects"
+                className="text-gray-700 hover:text-lochmara-500 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("Navigation.projects")}
               </Link>
-              <Link href="/#process" className="text-gray-700 hover:text-lochmara-500 cursor-pointer">
-                Process
+              <Link
+                href="/#process"
+                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("Navigation.process")}
               </Link>
-              <Link href="/#services" className="text-gray-700 hover:text-lochmara-500 cursor-pointer">
-                Services
+              <Link
+                href="/#services"
+                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("Navigation.services")}
               </Link>
-              <Link href="/#guarentees" className="text-gray-700 hover:text-lochmara-500 cursor-pointer">
-                Guarantees
+              <Link
+                href="/#guarentees"
+                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("Navigation.guarantees")}
               </Link>
-              <a href="tel:50699724" className="text-gray-700 hover:text-lochmara-500">
+              <Link
+                href="/meeting"
+                className="text-center bg-lochmara-500 text-white py-2 px-4 rounded-lg hover:bg-lochmara-600 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                {t("Common.bookCall")}
+              </Link>
+              <a
+                href="tel:50699724"
+                className="text-gray-700 hover:text-lochmara-500"
+              >
                 (+216) 50 699 724
               </a>
             </div>
@@ -201,11 +245,11 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-oppacity-30 z-40 md:hidden"
-          onClick={() => setMobileMenuOpen(false)}
-        />
-      )}
-    </AnimatePresence>
+            className="fixed inset-0 bg-black bg-opacity-30 z-40 md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </Element>
   );
 };

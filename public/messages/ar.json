@@ -3,8 +3,21 @@
     "home": "الرئيسية",
     "about": "حولنا",
     "projects": "المشاريع",
+    "process": "العملية",
+    "services": "الخدمات",
+    "guarantees": "الضمانات",
     "meeting": "احجز اجتماع"
   },
+"Footer": {
+  "letsTalk": "تواصل معنا",
+  "newsletter": "اشترك في النشرة",
+  "emailPlaceholder": "أدخل بريدك الإلكتروني",
+  "subscribe": "اشترك الآن",
+  "subscribeSuccess": "تم الاشتراك بنجاح!",
+  "privacy": "سياسة الخصوصية",
+  "terms": "شروط الاستخدام",
+  "sitemap": "خريطة الموقع"
+},
   "HomePage": {
     "hero": {
       "title": "حوّل عملك بالتميز الرقمي",

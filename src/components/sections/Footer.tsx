@@ -9,24 +9,26 @@ import {
   PiLinkedinLogo,
   PiTwitterLogo,
 } from "react-icons/pi";
+import { useTranslations } from "../../hooks/useTranslations";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [subscriptionStatus, setSubscriptionStatus] = useState("");
+  const { t } = useTranslations();
 
   const mainLinks = [
-    { name: "Projects", href: "/projects" },
-    { name: "Services", href: "/services" },
+    { name: t("Navigation.projects"), href: "/projects" },
+    { name: t("Navigation.services"), href: "/services" },
 
     { name: "Clients", href: "/projects" },
-    { name: "About", href: "/about" },
+    { name: t("Navigation.about"), href: "/about" },
     { name: "Contact", href: "/contact" },
   ];
 
   const legalLinks = [
-    { name: "Privacy", href: "#" },
-    { name: "Terms", href: "#" },
-    { name: "Sitemap", href: "#" },
+    { name: t("Footer.privacy"), href: "#" },
+    { name: t("Footer.terms"), href: "#" },
+    { name: t("Footer.sitemap"), href: "#" },
   ];
 
   const socialLinks = [
@@ -53,17 +55,17 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* left side */}
           <div>
-            <h2 className="text-4xl font-bold mb-4">Let&apos;s Talk!</h2>
+            <h2 className="text-4xl font-bold mb-4">{t("Footer.letsTalk")}</h2>
             <Link
-              href="mailto:hi@email.com"
+              href="mailto:contact@navix.com"
               className="text-xl hover:underline inline-block mb-8"
             >
-              contact@Navix.com
+              contact@navix.com
             </Link>
             <p className="text-gray-600">
               Manzel Jemil, Bizerte
               <br />
-              Azib,Bizerte
+              Azib, Bizerte
             </p>
           </div>
 
@@ -96,7 +98,7 @@ const Footer = () => {
           {/* Right side - Newsletter */}
           <div>
             <h3 className="text-lg font-semibold mb-4">
-              Subscribe to our newsletter
+              {t("Footer.newsletter")}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="relative">
@@ -104,7 +106,7 @@ const Footer = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
+                  placeholder={t("Footer.emailPlaceholder")}
                   className="w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 
                   focus:ring-black focus:border-transparent"
                   required
@@ -114,18 +116,20 @@ const Footer = () => {
                   className="mt-2 w-full bg-black
                    text-white px-4 py-2  hover:bg-lochmara-500-800 transition-colors duration-200"
                 >
-                  Subscribe
+                  {t("Footer.subscribe")}
                 </button>
               </div>
               {subscriptionStatus === "success" && (
-                <p className="text-black text-sm">Thanks for subscribing!</p>
+                <p className="text-black text-sm">
+                  {t("Footer.subscribeSuccess")}
+                </p>
               )}
             </form>
           </div>
         </div>
 
-          {/* Bottom section */}
-          <div
+        {/* Bottom section */}
+        <div
           className="flex flex-col md:flex-row 
         justify-between items-start md:items-center pt-8 border-t border-gray-200"
         >
@@ -161,8 +165,6 @@ const Footer = () => {
           {/* Copyright */}
           <div className="text-[#7b7b7b] text-sm">© 2025 Navix, Inc</div>
         </div>
-
-
       </div>
     </footer>
   );

@@ -11,13 +11,16 @@ import {
   PiTwitterLogo,
 } from "react-icons/pi";
 import { useData } from "../context/DataContext";
+import { useTranslations } from "../../hooks/useTranslations";
 import Link from "next/link";
 
 const Founders = () => {
   const { clients, isLoading } = useData();
+  const { t, locale } = useTranslations();
+  const isRTL = locale === "ar";
   const [startIndex, setStartIndex] = useState(0);
   const [itemsToShow, setItemsToShow] = useState(4);
-  
+
   // Filter clients with representatives
   const featuredClients = useMemo(() => 
     clients.filter(client => client.representative), 
@@ -123,18 +126,21 @@ const Founders = () => {
   }
 
   return ( 
-    <div className="px-6 mx-auto 2xl:w-4/5 md:px-16 py-16 md:py-32">
-      <div className="flex justify-between items-center mb-12">
-        <div>
+    <div 
+      className="px-6 mx-auto 2xl:w-4/5 md:px-16 py-16 md:py-32"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      <div className={`flex justify-between items-center mb-12 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className="text-center flex-1">
           <h2 className="text-3xl font-bold mb-2">
-            Trusted by {clients.length}+ Business Owners
+            {t("Founders.title").replace("{count}", clients.length.toString())}
           </h2>
           <p className="text-gray-600">
-            Meet our valued clients and their experiences.
+            {t("Founders.subtitle")}
           </p>
         </div>
         {featuredClients.length > itemsToShow && (
-          <div className="hidden md:flex gap-2">
+          <div className={`hidden md:flex gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <motion.button onClick={prev} whileHover={{ scale: 1.1 }}>
               <PiArrowArcLeft className="text-black border rounded-full flex items-center justify-center text-5xl p-3 hover:bg-black/10 transition-colors" />
             </motion.button>
@@ -162,6 +168,7 @@ const Founders = () => {
                   key={client._id}
                   variants={item}
                   className="md:mb-0 mb-8"
+                  dir={isRTL ? "rtl" : "ltr"}
                 >
                   <div className="bg-gray-100 aspect-square mb-4 overflow-hidden rounded-xl">
                     {rep?.image ? (
@@ -186,22 +193,22 @@ const Founders = () => {
                       </div>
                     )}
                   </div>
-                  <h3 className="font-bold text-lg mb-1">
+                  <h3 className={`font-bold text-lg mb-1 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {rep?.name || client.name}
                   </h3>
-                  <p className="text-[#7b7b7b] text-sm mb-2">
+                  <p className={`text-[#7b7b7b] text-sm mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
                     {rep?.role || client.category}
                   </p>
                   {client.testimonial ? (
-                    <p className="text-gray-700 text-sm mb-4 italic">
+                    <p className={`text-gray-700 text-sm mb-4 italic ${isRTL ? 'text-right' : 'text-left'}`}>
                       &quot;{client.testimonial}&quot;
                     </p>
                   ) : (
-                    <p className="text-gray-700 text-sm mb-4">
+                    <p className={`text-gray-700 text-sm mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
                       {client.description}
                     </p>
                   )}
-                  <div className="flex gap-4">
+                  <div className={`flex gap-4 ${isRTL ? 'justify-end' : 'justify-start'}`}>
                     {client.social?.linkedin && (
                       <Link href={client.social.linkedin} target="_blank" rel="noopener noreferrer">
                         <motion.div
@@ -241,7 +248,7 @@ const Founders = () => {
         
         {/* Mobile Navigation Arrows */}
         {featuredClients.length > itemsToShow && (
-          <div className="md:hidden flex justify-center gap-4 mt-8">
+          <div className={`md:hidden flex justify-center gap-4 mt-8 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <motion.button 
               onClick={prev} 
               whileHover={{ scale: 1.1 }}

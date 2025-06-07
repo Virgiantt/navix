@@ -105,5 +105,9 @@
     "bookCall": "Réserver un appel",
     "getStarted": "Commencer",
     "learnMore": "En savoir plus"
+  },
+  "Founders": {
+    "title": "Approuvé par plus de {count} propriétaires d'entreprise",
+    "subtitle": "Rencontrez nos clients précieux et leurs expériences."
   }
 }

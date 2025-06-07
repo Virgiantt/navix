@@ -105,5 +105,9 @@
     "bookCall": "Book a Call",
     "getStarted": "Get Started",
     "learnMore": "Learn More"
+  },
+  "Founders": {
+    "title": "Trusted by {count}+ Business Owners",
+    "subtitle": "Meet our valued clients and their experiences."
   }
 }

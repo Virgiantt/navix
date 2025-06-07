@@ -14,7 +14,8 @@ import { useTranslations } from "../../hooks/useTranslations";
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [subscriptionStatus, setSubscriptionStatus] = useState("");
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
+  const isRTL = locale === "ar";
 
   const mainLinks = [
     { name: t("Navigation.projects"), href: "/projects" },
@@ -49,13 +50,18 @@ const Footer = () => {
   };
 
   return (
-    <footer className="py-10 md:py-16 md:mt-20 px-6 2xl:w-4/5 md:mx-auto md:px-16">
+    <footer
+      className="py-10 md:py-16 md:mt-20 px-6 2xl:w-4/5 md:mx-auto md:px-16"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
       <Separator className="mb-12" />
       <div className="mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
           {/* left side */}
-          <div>
-            <h2 className="text-4xl font-bold mb-4">{t("Footer.letsTalk")}</h2>
+          <div className={isRTL ? "text-right" : "text-left"}>
+            <h2 className="text-4xl font-bold mb-4">
+              {t("Footer.letsTalk")}
+            </h2>
             <Link
               href="mailto:contact@navix.com"
               className="text-xl hover:underline inline-block mb-8"
@@ -71,7 +77,7 @@ const Footer = () => {
 
           {/* Middle - Navigation */}
           <div className="grid grid-cols-2 gap-8">
-            <div className="space-y-4">
+            <div className={`space-y-4 ${isRTL ? "text-right" : "text-left"}`}>
               {mainLinks.slice(0, 3).map((link) => (
                 <Link
                   key={link.name}
@@ -82,7 +88,7 @@ const Footer = () => {
                 </Link>
               ))}
             </div>
-            <div className="space-y-4">
+            <div className={`space-y-4 ${isRTL ? "text-right" : "text-left"}`}>
               {mainLinks.slice(3).map((link) => (
                 <Link
                   key={link.name}
@@ -96,7 +102,7 @@ const Footer = () => {
           </div>
 
           {/* Right side - Newsletter */}
-          <div>
+          <div className={isRTL ? "text-right" : "text-left"}>
             <h3 className="text-lg font-semibold mb-4">
               {t("Footer.newsletter")}
             </h3>
@@ -107,8 +113,11 @@ const Footer = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={t("Footer.emailPlaceholder")}
-                  className="w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 
-                  focus:ring-black focus:border-transparent"
+                  className={`w-full px-4 py-2 border border-gray-300 focus:outline-none focus:ring-2 
+                  focus:ring-black focus:border-transparent ${
+                    isRTL ? "text-right" : "text-left"
+                  }`}
+                  dir={isRTL ? "rtl" : "ltr"}
                   required
                 />
                 <button
@@ -130,11 +139,16 @@ const Footer = () => {
 
         {/* Bottom section */}
         <div
-          className="flex flex-col md:flex-row 
-        justify-between items-start md:items-center pt-8 border-t border-gray-200"
+          className={`flex flex-col md:flex-row ${
+            isRTL ? "md:flex-row-reverse" : ""
+          } justify-between items-start md:items-center pt-8 border-t border-gray-200`}
         >
           {/* Legal links */}
-          <div className="flex gap-6 mb-4 md:mb-0">
+          <div
+            className={`flex gap-6 mb-4 md:mb-0 ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}
+          >
             {legalLinks.map((link) => (
               <Link
                 key={link.name}
@@ -147,7 +161,11 @@ const Footer = () => {
           </div>
 
           {/* Social links */}
-          <div className="flex gap-6 mb-4 md:mb-0">
+          <div
+            className={`flex gap-6 mb-4 md:mb-0 ${
+              isRTL ? "flex-row-reverse" : ""
+            }`}
+          >
             {socialLinks.map((link, index) => {
               const Icon = link.icon;
               return (
@@ -163,7 +181,13 @@ const Footer = () => {
           </div>
 
           {/* Copyright */}
-          <div className="text-[#7b7b7b] text-sm">© 2025 Navix, Inc</div>
+          <div
+            className={`text-[#7b7b7b] text-sm ${
+              isRTL ? "text-right" : "text-left"
+            }`}
+          >
+            © 2025 Navix, Inc
+          </div>
         </div>
       </div>
     </footer>

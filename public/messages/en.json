@@ -18,8 +18,84 @@
     "terms": "Terms of Service",
     "sitemap": "Sitemap"
   },
+  "FAQ": {
+    "title": "Frequently Asked Questions",
+    "questions": {
+      "services": {
+        "question": "What services do you offer?",
+        "answer": "We offer comprehensive digital marketing, web development, UX/UI design, branding, and video editing services to help your business grow online."
+      },
+      "different": {
+        "question": "What makes Navix different from other agencies?",
+        "answer": "We combine strategic thinking with creative execution, offering personalized solutions tailored to your specific business needs. Our team brings years of experience across multiple industries."
+      },
+      "international": {
+        "question": "Do you work with international clients?",
+        "answer": "Yes, we work with clients globally. Our team is equipped to handle projects across different time zones and cultural contexts."
+      },
+      "pricing": {
+        "question": "How do you price your services?",
+        "answer": "Our pricing is project-based and depends on the scope and complexity of your needs. We provide transparent quotes after understanding your requirements."
+      },
+      "workflow": {
+        "question": "What is your typical workflow?",
+        "answer": "We start with a strategy session, followed by planning, execution, and regular reviews. We maintain constant communication throughout the project lifecycle."
+      },
+      "timeline": {
+        "question": "How long does a typical project take?",
+        "answer": "Project timelines vary based on complexity. Simple projects may take 2-4 weeks, while comprehensive solutions can take 2-3 months. We'll provide specific timelines during consultation."
+      }
+    }
+  },
   "LanguageSwitcher": {
     "selectLanguage": "Select Language"
+  },
+  "LetsMakeThingsHappen": {
+    "title": "Let's make things happen",
+    "description": "Contact us today and discover how our digital marketing services can help your business grow and succeed in the digital world.",
+    "cta": "Book a Call"
+  },
+  "Guarantees": {
+    "title": "Our guarantees to you.",
+    "subtitle": "We ensure the highest quality of work, with the fastest delivery times.",
+    "features": {
+      "rapidExecution": {
+        "title": "Rapid Execution",
+        "description": "90% of projects launched within 14 days using our proven agile workflow"
+      },
+      "fullStackDevelopment": {
+        "title": "Full-Stack Development",
+        "description": "Conversion-optimized websites built with modern tech stacks (Next.js, Tailwind, Shopify)"
+      },
+      "growthReady": {
+        "title": "Growth-Ready Infrastructure",
+        "description": "Auto-scaling solutions handling 10x traffic spikes without downtime"
+      },
+      "crossDisciplinary": {
+        "title": "Cross-Disciplinary Teams",
+        "description": "Dedicated squads of developers, strategists & creatives working in sync"
+      },
+      "enterpriseSecurity": {
+        "title": "Enterprise-Grade Security",
+        "description": "GDPR/CCPA compliant solutions with daily vulnerability scans"
+      },
+      "realTimeTracking": {
+        "title": "Real-Time Performance Tracking",
+        "description": "Live dashboards monitoring ROAS, LTV & conversion metrics"
+      },
+      "dynamicCMS": {
+        "title": "Dynamic CMS Solutions",
+        "description": "Easy-to-update sites with Sanity/Contentful integration"
+      },
+      "priorityResponse": {
+        "title": "Priority Response",
+        "description": "24/7 support with 2-hour SLA for critical issues"
+      },
+      "roiPricing": {
+        "title": "ROI-First Pricing",
+        "description": "Flexible plans scaling with your growth - no lock-in contracts"
+      }
+    }
   },
   "Common": {
     "loading": "Loading...",
@@ -29,5 +105,34 @@
     "bookCall": "Book a Call",
     "getStarted": "Get Started",
     "learnMore": "Learn More"
+  },
+  "Founders": {
+    "title": "Trusted by {count}+ Business Owners",
+    "subtitle": "Meet our valued clients and their experiences."
+  },
+  "Process": {
+    "title": {
+      "our": "Our",
+      "process": "Process"
+    },
+    "subtitle": "We blend design, video storytelling, and performance marketing to drive growth at every stage.",
+    "words": ["Agile", "Strategic", "Measurable", "End-to-End"]
+  },
+  "BoxReveal": {
+    "steps": {
+      "connect": {
+        "title": "1. Connect",
+        "description": "Start with a free consultation via meeting"
+      },
+      "collaborate": {
+        "title": "2. Collaborate", 
+        "description": "Together, we set goals and KPIs through collaborative workshops."
+      },
+      "createScale": {
+        "title": "3. Create & Scale",
+        "description": "We execute with weekly updates, so you stay focused on growth."
+      }
+    },
+    "meetingLink": "meeting"
   }
 }

@@ -109,5 +109,30 @@
   "Founders": {
     "title": "Approuvé par plus de {count} propriétaires d'entreprise",
     "subtitle": "Rencontrez nos clients précieux et leurs expériences."
+  },
+  "Process": {
+    "title": {
+      "our": "Notre",
+      "process": "Processus"
+    },
+    "subtitle": "Nous combinons design, narration vidéo et marketing de performance pour stimuler la croissance à chaque étape.",
+    "words": ["Agile", "Stratégique", "Mesurable", "Complet"]
+  },
+  "BoxReveal": {
+    "steps": {
+      "connect": {
+        "title": "1. Connecter",
+        "description": "Commencez par une consultation gratuite via réunion"
+      },
+      "collaborate": {
+        "title": "2. Collaborer", 
+        "description": "Ensemble, nous définissons les objectifs et KPI grâce à des ateliers collaboratifs."
+      },
+      "createScale": {
+        "title": "3. Créer et Développer",
+        "description": "Nous exécutons avec des mises à jour hebdomadaires, pour que vous restiez concentré sur la croissance."
+      }
+    },
+    "meetingLink": "réunion"
   }
 }

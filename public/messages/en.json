@@ -109,5 +109,30 @@
   "Founders": {
     "title": "Trusted by {count}+ Business Owners",
     "subtitle": "Meet our valued clients and their experiences."
+  },
+  "Process": {
+    "title": {
+      "our": "Our",
+      "process": "Process"
+    },
+    "subtitle": "We blend design, video storytelling, and performance marketing to drive growth at every stage.",
+    "words": ["Agile", "Strategic", "Measurable", "End-to-End"]
+  },
+  "BoxReveal": {
+    "steps": {
+      "connect": {
+        "title": "1. Connect",
+        "description": "Start with a free consultation via meeting"
+      },
+      "collaborate": {
+        "title": "2. Collaborate", 
+        "description": "Together, we set goals and KPIs through collaborative workshops."
+      },
+      "createScale": {
+        "title": "3. Create & Scale",
+        "description": "We execute with weekly updates, so you stay focused on growth."
+      }
+    },
+    "meetingLink": "meeting"
   }
 }

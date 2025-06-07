@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 
@@ -42,7 +43,7 @@ export const useTranslations = () => {
     loadTranslations();
   }, [currentLocale]);
 
-  const t = (key: string) => {
+  const t = (key: string, variables?: Record<string, any>) => {
     const keys = key.split('.');
     let value = translations;
     
@@ -50,7 +51,16 @@ export const useTranslations = () => {
       value = value?.[k];
     }
     
-    return value || key;
+    if (!value) return key;
+    
+    // Handle interpolation if variables are provided
+    if (variables && typeof value === 'string') {
+      return value.replace(/\{(\w+)\}/g, (match, variableName) => {
+        return variables[variableName] !== undefined ? variables[variableName] : match;
+      });
+    }
+    
+    return value;
   };
 
   return { t, locale: currentLocale };

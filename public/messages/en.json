@@ -52,8 +52,50 @@
   },
   "LetsMakeThingsHappen": {
     "title": "Let's make things happen",
-    "description": "Contact us today to learn more about how our digital marketing services can help your business grow and succeed online.",
-    "bookCall": "Book a Call"
+    "description": "Contact us today and discover how our digital marketing services can help your business grow and succeed in the digital world.",
+    "cta": "Book a Call"
+  },
+  "Guarantees": {
+    "title": "Our guarantees to you.",
+    "subtitle": "We ensure the highest quality of work, with the fastest delivery times.",
+    "features": {
+      "rapidExecution": {
+        "title": "Rapid Execution",
+        "description": "90% of projects launched within 14 days using our proven agile workflow"
+      },
+      "fullStackDevelopment": {
+        "title": "Full-Stack Development",
+        "description": "Conversion-optimized websites built with modern tech stacks (Next.js, Tailwind, Shopify)"
+      },
+      "growthReady": {
+        "title": "Growth-Ready Infrastructure",
+        "description": "Auto-scaling solutions handling 10x traffic spikes without downtime"
+      },
+      "crossDisciplinary": {
+        "title": "Cross-Disciplinary Teams",
+        "description": "Dedicated squads of developers, strategists & creatives working in sync"
+      },
+      "enterpriseSecurity": {
+        "title": "Enterprise-Grade Security",
+        "description": "GDPR/CCPA compliant solutions with daily vulnerability scans"
+      },
+      "realTimeTracking": {
+        "title": "Real-Time Performance Tracking",
+        "description": "Live dashboards monitoring ROAS, LTV & conversion metrics"
+      },
+      "dynamicCMS": {
+        "title": "Dynamic CMS Solutions",
+        "description": "Easy-to-update sites with Sanity/Contentful integration"
+      },
+      "priorityResponse": {
+        "title": "Priority Response",
+        "description": "24/7 support with 2-hour SLA for critical issues"
+      },
+      "roiPricing": {
+        "title": "ROI-First Pricing",
+        "description": "Flexible plans scaling with your growth - no lock-in contracts"
+      }
+    }
   },
   "Common": {
     "loading": "Loading...",

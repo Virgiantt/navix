@@ -53,7 +53,49 @@
   "LetsMakeThingsHappen": {
     "title": "Faisons en sorte que les choses se passent",
     "description": "Contactez-nous dès aujourd'hui pour en savoir plus sur la façon dont nos services de marketing digital peuvent aider votre entreprise à croître et à réussir en ligne.",
-    "bookCall": "Réserver un appel"
+    "cta": "Réserver un appel"
+  },
+  "Guarantees": {
+    "title": "Nos garanties pour vous.",
+    "subtitle": "Nous garantissons la plus haute qualité de travail, avec les délais de livraison les plus rapides.",
+    "features": {
+      "rapidExecution": {
+        "title": "Exécution Rapide",
+        "description": "90% des projets lancés en 14 jours grâce à notre flux de travail agile éprouvé"
+      },
+      "fullStackDevelopment": {
+        "title": "Développement Full-Stack",
+        "description": "Sites web optimisés pour la conversion avec des technologies modernes (Next.js, Tailwind, Shopify)"
+      },
+      "growthReady": {
+        "title": "Infrastructure Prête pour la Croissance",
+        "description": "Solutions auto-évolutives gérant des pics de trafic 10x sans temps d'arrêt"
+      },
+      "crossDisciplinary": {
+        "title": "Équipes Pluridisciplinaires",
+        "description": "Équipes dédiées de développeurs, stratèges et créatifs travaillant en synchronisation"
+      },
+      "enterpriseSecurity": {
+        "title": "Sécurité de Niveau Entreprise",
+        "description": "Solutions conformes RGPD/CCPA avec analyses de vulnérabilité quotidiennes"
+      },
+      "realTimeTracking": {
+        "title": "Suivi de Performance en Temps Réel",
+        "description": "Tableaux de bord en direct surveillant ROAS, LTV et métriques de conversion"
+      },
+      "dynamicCMS": {
+        "title": "Solutions CMS Dynamiques",
+        "description": "Sites faciles à mettre à jour avec intégration Sanity/Contentful"
+      },
+      "priorityResponse": {
+        "title": "Réponse Prioritaire",
+        "description": "Support 24/7 avec SLA de 2 heures pour les problèmes critiques"
+      },
+      "roiPricing": {
+        "title": "Tarification Axée ROI",
+        "description": "Plans flexibles évoluant avec votre croissance - aucun contrat contraignant"
+      }
+    }
   },
   "Common": {
     "loading": "Chargement...",

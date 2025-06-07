@@ -1,13 +1,13 @@
 {
-  "Navigation": {
-    "home": "الرئيسية",
-    "about": "حولنا",
-    "projects": "المشاريع",
-    "process": "العملية",
-    "services": "الخدمات",
-    "guarantees": "الضمانات",
-    "meeting": "احجز اجتماع"
-  },
+"Navigation": {
+  "home": "الرئيسية",
+  "about": "من نحن",
+  "projects": "المشاريع",
+  "process": "طريقة العمل",
+  "services": "الخدمات",
+  "guarantees": "الضمانات",
+  "meeting": "احجز اجتماع"
+},
   "Footer": {
     "letsTalk": "تواصل معنا",
     "newsletter": "اشترك في النشرة",
@@ -145,6 +145,48 @@
   "title": "لنصنع النجاح معًا",
   "description": "تواصل معنا اليوم واكتشف كيف يمكن لخدماتنا في التسويق الرقمي أن تساعد عملك على النمو وتحقيق النجاح في العالم الرقمي.",
   "cta": "احجز مكالمة"
+},
+"Guarantees": {
+  "title": "ضماناتنا لك.",
+  "subtitle": "نضمن أعلى جودة عمل مع أسرع أوقات تسليم.",
+  "features": {
+    "rapidExecution": {
+      "title": "تنفيذ سريع",
+      "description": "90٪ من المشاريع يتم إطلاقها خلال 14 يومًا باستخدام سير العمل السريع المجرب لدينا"
+    },
+    "fullStackDevelopment": {
+      "title": "تطوير شامل (Full-Stack)",
+      "description": "مواقع محسّنة للتحويل مبنية بأحدث التقنيات (Next.js، Tailwind، Shopify)"
+    },
+    "growthReady": {
+      "title": "جاهزية للنمو",
+      "description": "حلول قابلة للتوسع تلقائيًا للتعامل مع زيادة الزيارات بمعدل 10x دون توقف"
+    },
+    "crossDisciplinary": {
+      "title": "فِرق متعددة التخصصات",
+      "description": "فرق مخصصة من المطورين والاستراتيجيين والمبدعين يعملون بانسجام"
+    },
+    "enterpriseSecurity": {
+      "title": "أمان بدرجة المؤسسات",
+      "description": "حلول متوافقة مع GDPR/CCPA مع فحوصات أمان يومية"
+    },
+    "realTimeTracking": {
+      "title": "تتبع الأداء لحظيًا",
+      "description": "لوحات تحكم مباشرة لمراقبة ROAS وLTV ومعدلات التحويل"
+    },
+    "dynamicCMS": {
+      "title": "أنظمة إدارة محتوى ديناميكية",
+      "description": "مواقع سهلة التحديث بدمج Sanity أو Contentful"
+    },
+    "priorityResponse": {
+      "title": "استجابة ذات أولوية",
+      "description": "دعم على مدار الساعة مع وقت استجابة لا يتجاوز ساعتين في الحالات الحرجة"
+    },
+    "roiPricing": {
+      "title": "تسعير مبني على العائد (ROI)",
+      "description": "خطط مرنة تتوسع مع نموك – بدون عقود إلزامية"
+    }
+  }
 }
 
 }

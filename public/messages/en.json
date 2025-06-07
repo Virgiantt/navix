@@ -134,5 +134,67 @@
       }
     },
     "meetingLink": "meeting"
+  },
+  "Services": {
+    "title": "What We Offer",
+    "subtitle": "All of our services are designed to make your business stand out",
+    "items": {
+      "webDevelopment": {
+        "title": "Full-Stack Web Development",
+        "description": "Convert visitors with lightning-fast, responsive websites built using modern frameworks and optimized for conversions"
+      },
+      "mediaBuying": {
+        "title": "Strategic Media Buying", 
+        "description": "Precision-targeted ad campaigns across Google/Meta platforms that maximize your advertising ROI"
+      },
+      "videoProduction": {
+        "title": "Video Production Suite",
+        "description": "End-to-end video solutions - from concept development to 4K editing and motion graphics"
+      },
+      "marketingStrategy": {
+        "title": "Growth Marketing Strategy",
+        "description": "Data-driven roadmaps combining SEO, content, and paid media for sustainable business growth"
+      },
+      "emailSystems": {
+        "title": "Automated Email Systems",
+        "description": "Convert leads with personalized drip campaigns and AI-driven behavioral triggers"
+      },
+      "analytics": {
+        "title": "Performance Analytics",
+        "description": "Real-time campaign dashboards with conversion optimization recommendations"
+      }
+    }
+  },
+  "Hero": {
+    "description": "Schedule a call with us to discuss your business growth goals and how Navix can help you achieve them.",
+    "buttons": {
+      "bookCall": "Book a Call",
+      "aboutUs": "About us"
+    }
+  },
+  "Projects": {
+    "title": "Strategic Campaign Showcase",
+    "subtitle": "Explore data-driven campaigns where precision targeting met creative execution to boost client revenue by 150%+."
+  },
+  "Trusted": {
+    "title": "Trusted by fast brands",
+    "stats": {
+      "happyClients": "Happy clients",
+      "projectsCompleted": "Projects completed"
+    }
+  },
+  "AnimatedShinyText": {
+    "clientFocused": "100% Client-Focused Solutions"
+  },
+  "Cover": {
+    "title": "Transform Your Business Through",
+    "subtitle": "360° Digital Growth Solutions"
+  },
+  "WhatWeOffer": {
+    "videoProduction": "Video Production & Editing",
+    "webDevelopment": "Full-Stack Web Development", 
+    "marketingStrategy": "Data-Driven Marketing Strategy",
+    "mediaBuying": "Targeted Media Buying",
+    "emailCampaigns": "Automated Email Campaigns"
   }
 }

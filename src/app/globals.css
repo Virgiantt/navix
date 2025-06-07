@@ -82,7 +82,27 @@
 }
 
 @keyframes scroll {
-    to { transform: translate(calc(-50% - 0.5rem)) }
+    0% { 
+        transform: translateX(0);
+    }
+    100% { 
+        transform: translateX(calc(-50% - 0.5rem));
+    }
+}
+
+/* Ensure animation works in all directions */
+.animate-scroll {
+    animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite;
+    direction: ltr !important;
+}
+
+/* Force LTR for infinite scroll components */
+.scroller {
+    direction: ltr !important;
+}
+
+.scroller * {
+    direction: ltr !important;
 }
 
 @keyframes shimmer {

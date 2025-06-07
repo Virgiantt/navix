@@ -134,5 +134,67 @@
       }
     },
     "meetingLink": "réunion"
+  },
+  "Services": {
+    "title": "Ce Que Nous Offrons",
+    "subtitle": "Tous nos services sont conçus pour faire ressortir votre entreprise",
+    "items": {
+      "webDevelopment": {
+        "title": "Développement Web Full-Stack",
+        "description": "Convertissez les visiteurs avec des sites web ultra-rapides et responsifs construits avec des frameworks modernes et optimisés pour les conversions"
+      },
+      "mediaBuying": {
+        "title": "Achat Média Stratégique", 
+        "description": "Campagnes publicitaires ciblées de précision sur les plateformes Google/Meta qui maximisent votre ROI publicitaire"
+      },
+      "videoProduction": {
+        "title": "Suite de Production Vidéo",
+        "description": "Solutions vidéo de bout en bout - du développement de concept au montage 4K et motion graphics"
+      },
+      "marketingStrategy": {
+        "title": "Stratégie Marketing de Croissance",
+        "description": "Feuilles de route basées sur les données combinant SEO, contenu et médias payants pour une croissance durable"
+      },
+      "emailSystems": {
+        "title": "Systèmes Email Automatisés",
+        "description": "Convertissez les prospects avec des campagnes goutte-à-goutte personnalisées et des déclencheurs comportementaux IA"
+      },
+      "analytics": {
+        "title": "Analyses de Performance",
+        "description": "Tableaux de bord de campagne en temps réel avec recommandations d'optimisation de conversion"
+      }
+    }
+  },
+  "Hero": {
+    "description": "Planifiez un appel avec nous pour discuter de vos objectifs de croissance d'entreprise et comment Navix peut vous aider à les atteindre.",
+    "buttons": {
+      "bookCall": "Réserver un Appel",
+      "aboutUs": "À propos de nous"
+    }
+  },
+  "Projects": {
+    "title": "Vitrine de Campagnes Stratégiques",
+    "subtitle": "Explorez des campagnes basées sur les données où le ciblage de précision a rencontré l'exécution créative pour augmenter les revenus clients de 150%+."
+  },
+  "Trusted": {
+    "title": "Approuvé par des marques dynamiques",
+    "stats": {
+      "happyClients": "clients satisfaits",
+      "projectsCompleted": "projets réalisés"
+    }
+  },
+  "AnimatedShinyText": {
+    "clientFocused": "Solutions 100% Centrées Client"
+  },
+  "Cover": {
+    "title": "Transformez Votre Entreprise Grâce À",
+    "subtitle": "Solutions de Croissance Digitale 360°"
+  },
+  "WhatWeOffer": {
+    "videoProduction": "Production et Montage Vidéo",
+    "webDevelopment": "Développement Web Full-Stack", 
+    "marketingStrategy": "Stratégie Marketing Basée sur les Données",
+    "mediaBuying": "Achat Média Ciblé",
+    "emailCampaigns": "Campagnes Email Automatisées"
   }
 }

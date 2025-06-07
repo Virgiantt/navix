@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import ScrollFloat from "../TextAnimations/ScrollFloat/ScrollFloat";
 import { client } from "@/sanity/lib/client";
+import { useTranslations } from "../../hooks/useTranslations";
 
 // Skeleton component for loading state
 const SkeletonCard = () => (
@@ -19,6 +20,9 @@ const SkeletonCard = () => (
 );
 
 export function Projects() {
+  const { t, locale } = useTranslations();
+  const isRTL = locale === 'ar';
+
   const [projects, setProjects] = useState<{ src: string; name: string, slug: string }[]>([]);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,7 +101,7 @@ export function Projects() {
   const skeletonRow = Array(5).fill(0).map((_, i) => <SkeletonCard key={i} />);
 
   return (
-    <section className="w-full bg-white py-16 md:mx-auto 2xl:w-4/5 md:px-16">
+    <section className="w-full bg-white py-16 md:mx-auto 2xl:w-4/5 md:px-16" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="mx-auto mb-8 px-6 md:px-0">
         <ScrollFloat
           animationDuration={1}
@@ -108,10 +112,10 @@ export function Projects() {
           textClassName="text-3xl md:text-5xl md:text-center font-medium"
           containerClassName="flex items-center justify-center"
         >
-          Strategic Campaign Showcase
+          {t("Projects.title")}
         </ScrollFloat>
-        <p className="text-center py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500">
-          Explore data-driven campaigns where precision targeting met creative execution to boost client revenue by 150%+.
+        <p className={`text-center py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 ${isRTL ? 'text-center' : ''}`}>
+          {t("Projects.subtitle")}
         </p>
       </div>
 

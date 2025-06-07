@@ -18,8 +18,42 @@
     "terms": "Conditions d'utilisation",
     "sitemap": "Plan du site"
   },
+  "FAQ": {
+    "title": "Questions Fréquemment Posées",
+    "questions": {
+      "services": {
+        "question": "Quels services offrez-vous ?",
+        "answer": "Nous offrons des services complets de marketing digital, développement web, design UX/UI, branding et montage vidéo pour aider votre entreprise à croître en ligne."
+      },
+      "different": {
+        "question": "Qu'est-ce qui rend Navix différent des autres agences ?",
+        "answer": "Nous combinons la réflexion stratégique avec l'exécution créative, offrant des solutions personnalisées adaptées à vos besoins commerciaux spécifiques. Notre équipe apporte des années d'expérience dans plusieurs industries."
+      },
+      "international": {
+        "question": "Travaillez-vous avec des clients internationaux ?",
+        "answer": "Oui, nous travaillons avec des clients du monde entier. Notre équipe est équipée pour gérer des projets dans différents fuseaux horaires et contextes culturels."
+      },
+      "pricing": {
+        "question": "Comment tarifez-vous vos services ?",
+        "answer": "Notre tarification est basée sur le projet et dépend de la portée et de la complexité de vos besoins. Nous fournissons des devis transparents après avoir compris vos exigences."
+      },
+      "workflow": {
+        "question": "Quel est votre flux de travail typique ?",
+        "answer": "Nous commençons par une session de stratégie, suivie de la planification, de l'exécution et d'examens réguliers. Nous maintenons une communication constante tout au long du cycle de vie du projet."
+      },
+      "timeline": {
+        "question": "Combien de temps prend généralement un projet ?",
+        "answer": "Les délais des projets varient selon la complexité. Les projets simples peuvent prendre 2-4 semaines, tandis que les solutions complètes peuvent prendre 2-3 mois. Nous fournirons des délais spécifiques lors de la consultation."
+      }
+    }
+  },
   "LanguageSwitcher": {
     "selectLanguage": "Sélectionner la langue"
+  },
+  "LetsMakeThingsHappen": {
+    "title": "Faisons en sorte que les choses se passent",
+    "description": "Contactez-nous dès aujourd'hui pour en savoir plus sur la façon dont nos services de marketing digital peuvent aider votre entreprise à croître et à réussir en ligne.",
+    "bookCall": "Réserver un appel"
   },
   "Common": {
     "loading": "Chargement...",

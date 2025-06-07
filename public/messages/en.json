@@ -18,8 +18,42 @@
     "terms": "Terms of Service",
     "sitemap": "Sitemap"
   },
+  "FAQ": {
+    "title": "Frequently Asked Questions",
+    "questions": {
+      "services": {
+        "question": "What services do you offer?",
+        "answer": "We offer comprehensive digital marketing, web development, UX/UI design, branding, and video editing services to help your business grow online."
+      },
+      "different": {
+        "question": "What makes Navix different from other agencies?",
+        "answer": "We combine strategic thinking with creative execution, offering personalized solutions tailored to your specific business needs. Our team brings years of experience across multiple industries."
+      },
+      "international": {
+        "question": "Do you work with international clients?",
+        "answer": "Yes, we work with clients globally. Our team is equipped to handle projects across different time zones and cultural contexts."
+      },
+      "pricing": {
+        "question": "How do you price your services?",
+        "answer": "Our pricing is project-based and depends on the scope and complexity of your needs. We provide transparent quotes after understanding your requirements."
+      },
+      "workflow": {
+        "question": "What is your typical workflow?",
+        "answer": "We start with a strategy session, followed by planning, execution, and regular reviews. We maintain constant communication throughout the project lifecycle."
+      },
+      "timeline": {
+        "question": "How long does a typical project take?",
+        "answer": "Project timelines vary based on complexity. Simple projects may take 2-4 weeks, while comprehensive solutions can take 2-3 months. We'll provide specific timelines during consultation."
+      }
+    }
+  },
   "LanguageSwitcher": {
     "selectLanguage": "Select Language"
+  },
+  "LetsMakeThingsHappen": {
+    "title": "Let's make things happen",
+    "description": "Contact us today to learn more about how our digital marketing services can help your business grow and succeed online.",
+    "bookCall": "Book a Call"
   },
   "Common": {
     "loading": "Loading...",

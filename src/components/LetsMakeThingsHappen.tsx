@@ -1,23 +1,42 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "@/hooks/useTranslations";
 
 function LetsMakeThingsHappenSection() {
+  const { t, locale } = useTranslations();
+  const isRTL = locale === "ar";
+
   return (
-    <section className="container bg-lochmara-300 md:rounded-[45px] p-6 md:p-16 relative pt-12 md:pt-20 pb-12 md:pb-20 mx-auto mt-10 md:mt-20 mb-10 md:mb-20 flex flex-col items-center justify-center gap-8">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-8 w-full">
+    <section
+      className="container bg-lochmara-300 md:rounded-[45px] p-6 md:p-16 relative pt-12 md:pt-20 pb-12 md:pb-20 mx-auto mt-10 md:mt-20 mb-10 md:mb-20 flex flex-col items-center justify-center gap-8"
+      dir={isRTL ? "rtl" : "ltr"}
+    >
+      <div
+        className={`flex flex-col md:flex-row items-center justify-between gap-8 w-full ${
+          isRTL ? "md:flex-row-reverse" : ""
+        }`}
+      >
         {/* Text Content */}
-        <div className="md:flex-1 md:text-left text-center w-full">
+        <div
+          className={`md:flex-1 w-full text-center ${
+            isRTL ? "md:text-right" : "md:text-left"
+          }`}
+        >
           <p className="text-2xl md:text-3xl font-medium mb-4 md:mb-6">
-            Let&apos;s make things happen
+            {t("LetsMakeThingsHappen.title")}
           </p>
 
           <p className="text-lg md:text-xl mb-8 md:mb-10">
-            Contact us today to learn more about how our digital marketing
-            services can help your business grow and succeed online.
+            {t("LetsMakeThingsHappen.description")}
           </p>
 
-          <div className="flex justify-center md:justify-start">
+          <div
+            className={`flex justify-center ${
+              isRTL ? "md:justify-end" : "md:justify-start"
+            }`}
+          >
             <Link
               href="/meeting"
               className="py-3 px-8 md:px-12 text-lg md:text-xl
@@ -27,7 +46,7 @@ function LetsMakeThingsHappenSection() {
                 dark:hover:shadow-[1px_1px_#fff,2px_2px_#fff,3px_3px_#fff,4px_4px_#fff,5px_5px_0_0_#fff]
                 transform hover:-translate-y-1 max-md:text-base"
             >
-              Book a Call
+              {t("LetsMakeThingsHappen.cta")}
             </Link>
           </div>
         </div>

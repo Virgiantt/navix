@@ -4,29 +4,31 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus } from 'lucide-react';
 import WordPullUp from '../magicui/word-pull-up';
+import { useTranslations } from '../../hooks/useTranslations';
 
 interface FAQItemProps {
     question: string;
     answer: string;
+    isRTL: boolean;
     }
 
-
-const FAQItem : React.FC<FAQItemProps> = ({ question, answer }) => {
+const FAQItem : React.FC<FAQItemProps> = ({ question, answer, isRTL }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-800 ">
+    <div className="border-b border-gray-800">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-6 flex items-center justify-between text-left"
+        className={`w-full py-6 flex items-center justify-between ${isRTL ? 'text-right' : 'text-left'}`}
+        dir={isRTL ? 'rtl' : 'ltr'}
       >
         <span className="text-xl font-medium">{question}</span>
         <motion.div
           animate={{ rotate: isOpen ? 45 : 0 }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center flex-shrink-0 ml-4"
         >
-          <Plus className="w-6 h-6 " />
+          <Plus className="w-6 h-6" />
         </motion.div>
       </button>
       <AnimatePresence>
@@ -38,7 +40,10 @@ const FAQItem : React.FC<FAQItemProps> = ({ question, answer }) => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="pb-6 text-neutral-600">
+            <div 
+              className={`pb-6 text-neutral-600 ${isRTL ? 'text-right' : 'text-left'}`}
+              dir={isRTL ? 'rtl' : 'ltr'}
+            >
               {answer}
             </div>
           </motion.div>
@@ -49,47 +54,48 @@ const FAQItem : React.FC<FAQItemProps> = ({ question, answer }) => {
 };
 
 const Faq = () => {
+    const { t, locale } = useTranslations();
+    const isRTL = locale === 'ar';
+    
     const faqData = [
         {
-          question: "What core digital growth services do you offer?",
-          answer: "We specialize in user experience design, brand identity development, and web design services that help businesses create meaningful connections with their audiences."
+          question: t('FAQ.questions.services.question'),
+          answer: t('FAQ.questions.services.answer')
         },
         {
-          question: "What makes Navix different from other digital agencies?",
-          answer: "Our unique approach combines strategic thinking with cutting-edge design practices, ensuring each project delivers both aesthetic excellence and measurable results."
+          question: t('FAQ.questions.different.question'),
+          answer: t('FAQ.questions.different.answer')
         },
         {
-          question: "Do you support international clients across time zones?",
-          answer: "Yes, we have experience working with clients globally and maintain flexible communication schedules to accommodate different time zones."
+          question: t('FAQ.questions.international.question'),
+          answer: t('FAQ.questions.international.answer')
         },
         {
-          question: "What's included in your pricing models?",
-          answer: "Our pricing varies based on project scope and requirements. We offer customized solutions to meet different budget ranges while maintaining high-quality deliverables."
+          question: t('FAQ.questions.pricing.question'),
+          answer: t('FAQ.questions.pricing.answer')
         },
         {
-          question: "What does your project workflow look like?",
-          answer: "Our design process is collaborative and iterative, involving clients at every stage to ensure the final product meets their unique needs and goals while maintaining our high standards of quality."
+          question: t('FAQ.questions.workflow.question'),
+          answer: t('FAQ.questions.workflow.answer')
         },
         {
-          question: "What's your typical campaign launch timeline?",
-          answer: "The timeline for each project varies depending on its complexity and scope. We work closely with clients to establish realistic deadlines and ensure timely delivery."
+          question: t('FAQ.questions.timeline.question'),
+          answer: t('FAQ.questions.timeline.answer')
         }
       ];
 
   return (
-    <div className=" 
-    
-    mx-auto 2xl:w-4/5 md:px-16
-    
-     px-6   py-16 pb-32 ">
-   <WordPullUp
-        words="Frequently Asked Questions"/>
+    <div className="mx-auto 2xl:w-4/5 md:px-16 px-6 py-16 pb-32">
+      <div dir={isRTL ? 'rtl' : 'ltr'} className={isRTL ? 'text-right' : 'text-left'}>
+        <WordPullUp words={t('FAQ.title')}/>
+      </div>
       <div className="space-y-2">
         {faqData.map((item, index) => (
           <FAQItem
             key={index}
             question={item.question}
             answer={item.answer}
+            isRTL={isRTL}
           />
         ))}
       </div>

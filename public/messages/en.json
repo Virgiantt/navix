@@ -196,5 +196,158 @@
     "marketingStrategy": "Data-Driven Marketing Strategy",
     "mediaBuying": "Targeted Media Buying",
     "emailCampaigns": "Automated Email Campaigns"
+  },
+  "About": {
+    "hero": {
+      "title1": "Not just a team,",
+      "title2": "but your growth partners..",
+      "description": "we turn struggling businesses into success stories through powerful design, smart media buying, and high-converting marketing strategies."
+    },
+    "culture": {
+      "title": "/Culture",
+      "description": "At Navix, our culture is built on performance, precision, and relentless ambition. Our values are not just words—they are the operating system behind everything we do. They guide how we work, how we think, and how we deliver results. Here's what defines us:",
+      "values": {
+        "relentlessExecution": {
+          "title": "Relentless Execution",
+          "description": "At Navix, we don't just plan—we deliver. Our focus is on results, precision, and making every campaign count. No excuses, only outcomes."
+        },
+        "ownershipResponsibility": {
+          "title": "Ownership and Responsibility",
+          "description": "When we commit, we own it. Every result—good or bad—is on us. We fix, improve, and scale until success is the only option."
+        },
+        "clientFirst": {
+          "title": "Client-First Mentality",
+          "description": "We treat every brand like our own. We listen, understand, and act with your growth as the only goal. Your success is our reputation."
+        },
+        "calculatedInnovation": {
+          "title": "Calculated Innovation",
+          "description": "We don't chase trends. We use data, experience, and creativity to find smarter, better, more profitable ways to drive performance."
+        },
+        "consistentGrowth": {
+          "title": "Consistent Growth Mindset",
+          "description": "In a fast-moving world, we adapt fast. We learn, test, evolve, and win—again and again. Stagnation is death; progress is our default."
+        }
+      }
+    },
+    "team": {
+      "title": "/Team",
+      "description": "At Navix, we're a squad of specialists obsessed with growth, technology, and high-performance delivery. Every project we take on is driven by precision, creativity, and a bias toward action.",
+      "descriptionBold": "We don't just create solutions — we create momentum, impact, and long-term success.",
+      "members": {
+        "houssem": {
+          "name": "Daas Houssem",
+          "role": "Software Engineer | Media buyer",
+          "description": "Driven by results and powered by code, I build fast, scalable digital experiences that convert. Whether it's developing full-stack web platforms or crafting high-performing ad campaigns, I bring a growth-focused mindset to every challenge"
+        },
+        "sabri": {
+          "name": "Chetouane Sabri",
+          "role": "Video Editor | Designer",
+          "description": "I tell stories that sell. From cinematic product showcases to scroll-stopping social content, I blend visual creativity with brand strategy to create assets that leave a lasting impact—and drive performance"
+        }
+      }
+    }
+  },
+  "Meeting": {
+    "hero": {
+      "title": "Let's Connect",
+      "description": "Tell us about your project through a quick AI-powered conversation, then we'll schedule a strategic session to bring your vision to life."
+    },
+    "features": {
+      "aiDiscovery": {
+        "title": "AI-Powered Project Discovery",
+        "description": "Our intelligent form asks the right questions to understand your unique needs and goals in just minutes."
+      },
+      "personalizedSession": {
+        "title": "Personalized Strategic Session",
+        "description": "Based on your responses, we'll prepare a tailored discussion focused on your specific project requirements."
+      },
+      "actionableSteps": {
+        "title": "Actionable Next Steps",
+        "description": "Walk away with clear recommendations and a roadmap to achieve your business objectives."
+      }
+    }
+  },
+  "AIContactForm": {
+    "title": "Start Your Project Journey",
+    "subtitle": "Choose a service to begin our AI-powered conversation",
+    "questionProgress": "Question {current} of {total}",
+    "changeService": "Change Service",
+    "typePlaceholder": "Type your message...",
+    "send": "Send",
+    "scheduleCall": "Schedule Strategic Call Now",
+    "startOver": "Start Over",
+    "emailInstead": "Email us instead",
+    "errors": {
+      "generic": "Something went wrong. Please try again."
+    },
+    "services": {
+      "marketingStrategy": {
+        "title": "Marketing Strategy",
+        "description": "Growth marketing, campaigns, and analytics"
+      },
+      "videoEditing": {
+        "title": "Video Editing",
+        "description": "Video production and motion graphics"
+      },
+      "development": {
+        "title": "Development",
+        "description": "Web development and full-stack solutions"
+      },
+      "uxUi": {
+        "title": "UX/UI Design",
+        "description": "User experience and interface design"
+      },
+      "branding": {
+        "title": "Branding",
+        "description": "Brand identity and visual systems"
+      }
+    },
+    "chat": {
+      "inputPlaceholder": "Type your message...",
+      "sendButton": "Send",
+      "typing": "AI is typing...",
+      "startOver": "Start Over"
+    },
+    "celebration": {
+      "title": "Perfect! 🎉",
+      "subtitle": "We have everything we need to help you succeed!"
+    },
+    "contactForm": {
+      "title": "Almost Done! Let's Get Your Contact Details",
+      "subtitle": "We'll use this information to prepare our strategic session and send you a personalized proposal.",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
+      "phone": "Phone Number",
+      "phoneOptional": "(optional)",
+      "phonePlaceholder": "Enter your phone number",
+      "submitButton": "Submit & Get Strategy",
+      "submitting": "Submitting...",
+      "skipForNow": "Skip for now"
+    },
+    "calendly": {
+      "title": "Schedule Your Strategic Call",
+      "subtitle": "Let's discuss your project and goals",
+      "mobileHint": "Tip: Scroll within the calendar to see all available slots",
+      "contactAlternatives": "Having trouble? Contact us directly",
+      "emailUs": "Email us",
+      "callUs": "Call us",
+      "closeButton": "Close"
+    },
+    "success": {
+      "title": "Thank You! 🎉",
+      "subtitle": "Your project details have been successfully submitted.",
+      "description": "Our team will review your information and get back to you within 24 hours with a personalized strategic proposal.",
+      "nextSteps": "What happens next:",
+      "steps": {
+        "review": "• We'll review your project requirements",
+        "prepare": "• Prepare a personalized strategic proposal",
+        "contact": "• Contact you within 24 hours",
+        "schedule": "• Schedule your strategic session"
+      },
+      "scheduleCall": "Schedule Strategic Call Now",
+      "backToWebsite": "Back to Website"
+    }
   }
 }

@@ -36,7 +36,7 @@ const CalendlyScheduling = () => {
           className="mb-6"
         >
           <Link
-            href="/meeting"
+            href="/meeting "
             className="inline-flex items-center gap-2 text-lochmara-600 hover:text-lochmara-700 transition-colors"
           >
             <PiArrowLeft />

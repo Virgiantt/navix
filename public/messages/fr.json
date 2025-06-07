@@ -196,5 +196,157 @@
     "marketingStrategy": "Stratégie Marketing Basée sur les Données",
     "mediaBuying": "Achat Média Ciblé",
     "emailCampaigns": "Campagnes Email Automatisées"
+  },
+  "About": {
+    "hero": {
+      "title1": "Pas seulement une équipe,",
+      "title2": "mais vos partenaires de croissance..",
+      "description": "nous transformons les entreprises en difficulté en histoires de succès grâce à un design puissant, un achat média intelligent et des stratégies marketing à forte conversion."
+    },
+    "culture": {
+      "title": "/Culture",
+      "description": "Chez Navix, notre culture est bâtie sur la performance, la précision et l'ambition implacable. Nos valeurs ne sont pas que des mots—elles sont le système d'exploitation derrière tout ce que nous faisons. Elles guident notre façon de travailler, de penser et de livrer des résultats. Voici ce qui nous définit :",
+      "values": {
+        "relentlessExecution": {
+          "title": "Exécution Implacable",
+          "description": "Chez Navix, nous ne planifions pas seulement—nous livrons. Notre focus est sur les résultats, la précision, et faire que chaque campagne compte. Pas d'excuses, seulement des résultats."
+        },
+        "ownershipResponsibility": {
+          "title": "Propriété et Responsabilité",
+          "description": "Quand nous nous engageons, nous en sommes propriétaires. Chaque résultat—bon ou mauvais—nous appartient. Nous corrigeons, améliorons et développons jusqu'à ce que le succès soit la seule option."
+        },
+        "clientFirst": {
+          "title": "Mentalité Client d'Abord",
+          "description": "Nous traitons chaque marque comme la nôtre. Nous écoutons, comprenons et agissons avec votre croissance comme seul objectif. Votre succès est notre réputation."
+        },
+        "calculatedInnovation": {
+          "title": "Innovation Calculée",
+          "description": "Nous ne suivons pas les tendances. Nous utilisons les données, l'expérience et la créativité pour trouver des moyens plus intelligents, meilleurs et plus rentables de performer."
+        },
+        "consistentGrowth": {
+          "title": "Mentalité de Croissance Constante",
+          "description": "Dans un monde qui évolue rapidement, nous nous adaptons rapidement. Nous apprenons, testons, évoluons et gagnons—encore et encore. La stagnation est la mort ; le progrès est notre défaut."
+        }
+      }
+    },
+    "team": {
+      "title": "/Équipe",
+      "description": "Chez Navix, nous sommes une équipe de spécialistes obsédés par la croissance, la technologie et la livraison haute performance. Chaque projet que nous entreprenons est motivé par la précision, la créativité et un biais vers l'action.",
+      "descriptionBold": "Nous ne créons pas seulement des solutions — nous créons de l'élan, de l'impact et du succès à long terme.",
+      "members": {
+        "houssem": {
+          "name": "Daas Houssem",
+          "role": "Ingénieur Logiciel | Acheteur Média",
+          "description": "Porté par les résultats et animé par le code, je crée des expériences digitales rapides et évolutives qui convertissent. Du développement web full-stack aux campagnes publicitaires performantes, j'aborde chaque défi avec un esprit de croissance."
+        },
+        "sabri": {
+          "name": "Chetouane Sabri",
+          "role": "Monteur Vidéo | Designer",
+          "description": "Je raconte des histoires qui vendent. Des présentations produits cinématographiques aux contenus sociaux accrocheurs, je combine créativité visuelle et stratégie de marque pour créer des visuels qui marquent — et qui performent."
+        }
+      }
+    }
+  },
+  "Meeting": {
+    "hero": {
+      "title": "Connectons-nous",
+      "description": "Parlez-nous de votre projet grâce à une conversation rapide alimentée par l'IA, puis nous planifierons une session stratégique pour donner vie à votre vision."
+    },
+    "features": {
+      "aiDiscovery": {
+        "title": "Découverte de Projet Alimentée par l'IA",
+        "description": "Notre formulaire intelligent pose les bonnes questions pour comprendre vos besoins uniques et vos objectifs en quelques minutes seulement."
+      },
+      "personalizedSession": {
+        "title": "Session Stratégique Personnalisée",
+        "description": "Basé sur vos réponses, nous préparerons une discussion personnalisée adaptée à vos exigences de projet spécifiques."
+      },
+      "actionableSteps": {
+        "title": "Étapes Actionnables",
+        "description": "Repartez avec des recommandations claires et une feuille de route pour atteindre vos objectifs commerciaux."
+      }
+    }
+  },
+  "AIContactForm": {
+    "title": "Commencez votre parcours projet",
+    "subtitle": "Choisissez un service pour commencer notre conversation assistée par IA",
+    "questionProgress": "Question {current} sur {total}",
+    "changeService": "Changer de service",
+    "typePlaceholder": "Tapez votre message...",
+    "send": "Envoyer",
+    "scheduleCall": "Planifier un appel stratégique maintenant",
+    "startOver": "Recommencer",
+    "emailInstead": "Nous envoyer un email à la place",
+    "errors": {
+      "generic": "Quelque chose s'est mal passé. Veuillez réessayer."
+    },
+    "services": {
+      "marketingStrategy": {
+        "title": "Stratégie Marketing",
+        "description": "Marketing de croissance, campagnes et analytics"
+      },
+      "videoEditing": {
+        "title": "Montage Vidéo",
+        "description": "Production vidéo et animation"
+      },
+      "development": {
+        "title": "Développement",
+        "description": "Développement web et solutions full-stack"
+      },
+      "uxUi": {
+        "title": "Design UX/UI",
+        "description": "Expérience utilisateur et design d'interface"
+      },
+      "branding": {
+        "title": "Branding",
+        "description": "Identité de marque et systèmes visuels"
+      }
+    },
+    "chat": {
+      "inputPlaceholder": "Tapez votre message...",
+      "sendButton": "Envoyer",
+      "typing": "L'IA tape...",
+      "startOver": "Recommencer"
+    },
+    "celebration": {
+      "title": "Parfait ! 🎉",
+      "subtitle": "Nous avons tout ce qu'il faut pour vous aider à réussir !"
+    },
+    "contactForm": {
+      "title": "Nous y sommes presque ! Donnez-nous vos coordonnées",
+      "subtitle": "Nous utiliserons ces informations pour organiser notre session stratégique et vous envoyer une proposition personnalisée.",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "Entrez votre nom complet",
+      "email": "Adresse email",
+      "emailPlaceholder": "Entrez votre adresse email",
+      "phone": "Numéro de téléphone",
+      "phoneOptional": "(optionnel)",
+      "phonePlaceholder": "Entrez votre numéro de téléphone",
+      "submitButton": "Envoyer et obtenir la stratégie",
+      "submitting": "Envoi en cours...",
+      "skipForNow": "Ignorer pour l'instant"
+    },
+    "calendly": {
+      "title": "Planifiez votre appel stratégique",
+      "subtitle": "Discutons de votre projet et de vos objectifs",
+      "mobileHint": "Astuce : Faites défiler dans le calendrier pour voir tous les créneaux disponibles",
+      "contactAlternatives": "Des problèmes ? Contactez-nous directement",
+      "emailUs": "Nous envoyer un email",
+      "callUs": "Nous appeler",
+      "closeButton": "Fermer"
+    },
+    "success": {
+      "title": "Merci ! 🎉",
+      "subtitle": "Vos détails de projet ont été envoyés avec succès.",
+      "description": "Notre équipe examinera vos informations et vous recontactera dans les 24 heures avec une proposition stratégique personnalisée.",
+      "nextSteps": "Prochaines étapes :",
+      "steps": {
+        "review": "• Nous examinerons vos exigences de projet",
+        "prepare": "• Nous préparerons une proposition stratégique personnalisée",
+        "contact": "• Nous vous contacterons avec des recommandations et prochaines étapes"
+      },
+      "questions": "Des questions ? Contactez-nous à hello@navix.ma",
+      "closeButton": "Fermer"
+    }
   }
 }

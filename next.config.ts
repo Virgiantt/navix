@@ -7,7 +7,6 @@ const withNextIntl = createNextIntlPlugin(
 );
 
 const nextConfig: NextConfig = {
-  serverExternalPackages: ['next-intl'],
   images: {
     remotePatterns: [
       {

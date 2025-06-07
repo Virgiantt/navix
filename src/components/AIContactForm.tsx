@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PiSparkle, PiCalendarCheck } from "react-icons/pi";
 import Confetti from "./Confetti";
+import { useTranslations } from "@/hooks/useTranslations";
 
 type ConversationMessage = { 
   role: 'user' | 'assistant'; 
@@ -24,40 +25,10 @@ type ContactInfo = {
   phone: string;
 };
 
-const services = [
-  {
-    id: 'marketing-strategy',
-    title: 'Marketing Strategy',
-    description: 'Growth marketing, campaigns & analytics',
-    icon: '📈'
-  },
-  {
-    id: 'video-editing',
-    title: 'Video Editing',
-    description: 'Video production & motion graphics',
-    icon: '🎬'
-  },
-  {
-    id: 'development',
-    title: 'Development',
-    description: 'Web development & full-stack solutions',
-    icon: '💻'
-  },
-  {
-    id: 'ux-ui',
-    title: 'UX/UI',
-    description: 'User experience & interface design',
-    icon: '🎨'
-  },
-  {
-    id: 'branding',
-    title: 'Branding',
-    description: 'Brand identity & visual systems',
-    icon: '✨'
-  }
-];
-
 export default function AIContactForm() {
+  const { t, locale } = useTranslations();
+  const isRTL = locale === "ar";
+
   const [selectedService, setSelectedService] = useState<string>('');
   const [messages, setMessages] = useState<ConversationMessage[]>([]);
   const [input, setInput] = useState('');
@@ -135,6 +106,39 @@ export default function AIContactForm() {
     }
   }, [formSubmitted]);
 
+  const services = [
+    {
+      id: 'marketing-strategy',
+      title: t('AIContactForm.services.marketingStrategy.title'),
+      description: t('AIContactForm.services.marketingStrategy.description'),
+      icon: '📈'
+    },
+    {
+      id: 'video-editing',
+      title: t('AIContactForm.services.videoEditing.title'),
+      description: t('AIContactForm.services.videoEditing.description'),
+      icon: '🎬'
+    },
+    {
+      id: 'development',
+      title: t('AIContactForm.services.development.title'),
+      description: t('AIContactForm.services.development.description'),
+      icon: '💻'
+    },
+    {
+      id: 'ux-ui',
+      title: t('AIContactForm.services.uxUi.title'),
+      description: t('AIContactForm.services.uxUi.description'),
+      icon: '🎨'
+    },
+    {
+      id: 'branding',
+      title: t('AIContactForm.services.branding.title'),
+      description: t('AIContactForm.services.branding.description'),
+      icon: '✨'
+    }
+  ];
+
   const handleServiceSelect = async (serviceId: string) => {
     setSelectedService(serviceId);
     const service = services.find(s => s.id === serviceId);
@@ -160,7 +164,8 @@ export default function AIContactForm() {
         body: JSON.stringify({
           message: `I'm interested in ${service.title} services.`,
           history: [],
-          conversationState: initialState
+          conversationState: initialState,
+          locale // Pass the current locale to the API
         })
       });
 
@@ -170,7 +175,7 @@ export default function AIContactForm() {
       setMessages([{ role: 'assistant', content: data.reply }]);
       setConversationState(data.conversationState);
     } catch {
-      setError('Sorry, something went wrong. Please try again.');
+      setError(t('AIContactForm.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -192,7 +197,8 @@ export default function AIContactForm() {
         body: JSON.stringify({
           message: userMessage,
           history: messages,
-          conversationState
+          conversationState,
+          locale // Pass the current locale to the API
         })
       });
 
@@ -202,7 +208,7 @@ export default function AIContactForm() {
       setMessages(prev => [...prev, { role: 'assistant', content: data.reply }]);
       setConversationState(data.conversationState);
     } catch {
-      setError('Sorry, something went wrong. Please try again.');
+      setError(t('AIContactForm.errors.generic'));
     } finally {
       setLoading(false);
     }
@@ -288,7 +294,7 @@ export default function AIContactForm() {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-2xl mx-auto" dir={isRTL ? "rtl" : "ltr"}>
       {/* Confetti Animation */}
       {showCelebration && <Confetti />}
       
@@ -311,14 +317,14 @@ export default function AIContactForm() {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modern Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-lochmara-50 to-blue-50">
-                <div className="flex items-center gap-3">
+              <div className={`flex items-center justify-between p-6 border-b border-gray-100 bg-gradient-to-r from-lochmara-50 to-blue-50 ${isRTL ? "flex-row-reverse" : ""}`}>
+                <div className={`flex items-center gap-3 ${isRTL ? "flex-row-reverse" : ""}`}>
                   <div className="w-10 h-10 bg-gradient-to-br from-lochmara-500 to-lochmara-600 rounded-full flex items-center justify-center">
                     <PiCalendarCheck className="text-white text-xl" />
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900">Schedule Your Strategy Call</h3>
-                    <p className="text-sm text-gray-600">Let&apos;s discuss your project and goals</p>
+                  <div className={isRTL ? "text-right" : ""}>
+                    <h3 className="text-xl font-bold text-gray-900">{t('AIContactForm.calendly.title')}</h3>
+                    <p className="text-sm text-gray-600">{t('AIContactForm.calendly.subtitle')}</p>
                   </div>
                 </div>
                 <motion.button
@@ -343,31 +349,31 @@ export default function AIContactForm() {
                 />
                 
                 {/* Mobile-friendly overlay hint */}
-                <div className="absolute top-4 left-4 right-4 md:hidden">
+                <div className={`absolute top-4 left-4 right-4 md:hidden ${isRTL ? "text-right" : ""}`}>
                   <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3 text-sm text-gray-600 border border-gray-200 shadow-sm">
-                    💡 Tip: Scroll within the calendar to see all available times
+                    💡 {t('AIContactForm.calendly.mobileHint')}
                   </div>
                 </div>
               </div>
 
               {/* Footer with contact alternatives */}
               <div className="p-6 bg-gray-50 border-t border-gray-100">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-sm text-gray-600 text-center sm:text-left">
-                    Having trouble? Contact us directly
+                <div className={`flex flex-col sm:flex-row items-center justify-between gap-4 ${isRTL ? "sm:flex-row-reverse" : ""}`}>
+                  <div className={`text-sm text-gray-600 text-center ${isRTL ? "sm:text-right" : "sm:text-left"}`}>
+                    {t('AIContactForm.calendly.contactAlternatives')}
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <a
                       href="mailto:contact@navix.com"
                       className="px-4 py-2 text-sm font-medium text-lochmara-600 hover:text-lochmara-700 hover:bg-lochmara-50 rounded-lg transition-colors"
                     >
-                      📧 Email us
+                      📧 {t('AIContactForm.calendly.emailUs')}
                     </a>
                     <a
                       href="tel:50699724"
                       className="px-4 py-2 text-sm font-medium text-lochmara-600 hover:text-lochmara-700 hover:bg-lochmara-50 rounded-lg transition-colors"
                     >
-                      📞 Call us
+                      📞 {t('AIContactForm.calendly.callUs')}
                     </a>
                   </div>
                 </div>
@@ -388,13 +394,13 @@ export default function AIContactForm() {
             transition={{ duration: 0.3 }}
             className="space-y-6"
           >
-            <div className="text-center mb-8">
-              <h3 className="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+            <div className={`text-center mb-8 ${isRTL ? "text-right" : ""}`}>
+              <h3 className={`text-2xl font-bold mb-2 flex items-center gap-2 ${isRTL ? "justify-end flex-row-reverse" : "justify-center"}`}>
                 <PiSparkle className="text-lochmara-500" />
-                What can we help you with?
+                {t('AIContactForm.title')}
               </h3>
               <p className="text-gray-600">
-                Choose a service to start a quick conversation about your project
+                {t('AIContactForm.subtitle')}
               </p>
             </div>
 
@@ -403,11 +409,11 @@ export default function AIContactForm() {
                 <motion.button
                   key={service.id}
                   onClick={() => handleServiceSelect(service.id)}
-                  className="p-6 bg-white border-2 border-gray-200 rounded-xl hover:border-lochmara-500 hover:shadow-lg transition-all duration-200 text-left group"
+                  className={`p-6 bg-white border-2 border-gray-200 rounded-xl hover:border-lochmara-500 hover:shadow-lg transition-all duration-200 group ${isRTL ? "text-right" : "text-left"}`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="flex items-start gap-4">
+                  <div className={`flex items-start gap-4 ${isRTL ? "flex-row-reverse" : ""}`}>
                     <span className="text-3xl">{service.icon}</span>
                     <div>
                       <h4 className="font-semibold text-lg group-hover:text-lochmara-500 transition-colors">
@@ -433,17 +439,17 @@ export default function AIContactForm() {
             className="space-y-6"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 bg-lochmara-50 rounded-xl">
-              <div className="flex items-center gap-3">
+            <div className={`flex items-center justify-between p-4 bg-lochmara-50 rounded-xl ${isRTL ? "flex-row-reverse" : ""}`}>
+              <div className={`flex items-center gap-3 ${isRTL ? "flex-row-reverse" : ""}`}>
                 <span className="text-2xl">
                   {services.find(s => s.id === selectedService)?.icon}
                 </span>
-                <div>
+                <div className={isRTL ? "text-right" : ""}>
                   <h3 className="font-semibold">
                     {services.find(s => s.id === selectedService)?.title}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Question {conversationState.questionCount} of 6
+                    {t('AIContactForm.questionProgress', { current: conversationState.questionCount, total: 6 })}
                   </p>
                 </div>
               </div>
@@ -451,7 +457,7 @@ export default function AIContactForm() {
                 onClick={resetForm}
                 className="text-sm text-gray-500 hover:text-gray-700 underline"
               >
-                Change Service
+                {t('AIContactForm.changeService')}
               </button>
             </div>
 
@@ -472,13 +478,13 @@ export default function AIContactForm() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className={msg.role === 'user' ? 'flex justify-end' : 'flex justify-start'}
+                    className={msg.role === 'user' ? `flex ${isRTL ? "justify-start" : "justify-end"}` : `flex ${isRTL ? "justify-end" : "justify-start"}`}
                   >
                     <div
                       className={
                         msg.role === 'user'
-                          ? 'bg-lochmara-500 text-white rounded-2xl px-4 py-3 max-w-[80%] rounded-br-md'
-                          : 'bg-gray-100 text-gray-800 rounded-2xl px-4 py-3 max-w-[80%] rounded-bl-md'
+                          ? `bg-lochmara-500 text-white rounded-2xl px-4 py-3 max-w-[80%] ${isRTL ? "rounded-bl-md" : "rounded-br-md"}`
+                          : `bg-gray-100 text-gray-800 rounded-2xl px-4 py-3 max-w-[80%] ${isRTL ? "rounded-br-md" : "rounded-bl-md"}`
                       }
                     >
                       {msg.content}
@@ -500,7 +506,7 @@ export default function AIContactForm() {
                     }}
                     className="flex justify-center my-8"
                   >
-                    <div className="text-center space-y-4 p-6 bg-gradient-to-br from-lochmara-50 to-blue-50 rounded-2xl border border-lochmara-200 max-w-sm">
+                    <div className={`text-center space-y-4 p-6 bg-gradient-to-br from-lochmara-50 to-blue-50 rounded-2xl border border-lochmara-200 max-w-sm ${isRTL ? "text-right" : ""}`}>
                       <motion.div
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
@@ -519,10 +525,10 @@ export default function AIContactForm() {
                         transition={{ delay: 0.8 }}
                       >
                         <h3 className="text-xl font-bold text-lochmara-700 mb-2">
-                          Thanks for choosing Navix!
+                          {t('AIContactForm.celebration.title')}
                         </h3>
                         <p className="text-lochmara-600 text-sm">
-                          We&apos;re excited to explore your project and help bring your vision to life.
+                          {t('AIContactForm.celebration.subtitle')}
                         </p>
                       </motion.div>
                     </div>
@@ -530,8 +536,8 @@ export default function AIContactForm() {
                 )}
                 
                 {loading && (
-                  <div className="flex justify-start">
-                    <div className="bg-gray-100 rounded-2xl px-4 py-3 rounded-bl-md">
+                  <div className={`flex ${isRTL ? "justify-end" : "justify-start"}`}>
+                    <div className={`bg-gray-100 rounded-2xl px-4 py-3 ${isRTL ? "rounded-br-md" : "rounded-bl-md"}`}>
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
@@ -546,12 +552,12 @@ export default function AIContactForm() {
             </div>
 
             {error && (
-              <div className="text-red-500 text-sm text-center bg-red-50 p-3 rounded-lg">
+              <div className={`text-red-500 text-sm bg-red-50 p-3 rounded-lg ${isRTL ? "text-right" : "text-center"}`}>
                 {error}
               </div>
             )}
 
-            {/* Input Area or Call to Action */}
+            {/* Contact Form or Input Area */}
             {showContactForm ? (
               // Contact Information Form
               <motion.div
@@ -561,41 +567,41 @@ export default function AIContactForm() {
                 className="p-6 bg-gradient-to-br from-lochmara-50 to-blue-50 rounded-2xl border border-lochmara-200"
                 ref={contactFormRef}
               >
-                <div className="text-center mb-6">
+                <div className={`text-center mb-6 ${isRTL ? "text-right" : ""}`}>
                   <h3 className="text-xl font-bold text-lochmara-700 mb-2">
-                    🎯 Almost there!
+                    🎯 {t('AIContactForm.contactForm.title')}
                   </h3>
                   <p className="text-lochmara-600 text-sm">
-                    Just a few details so we can follow up with your personalized strategy
+                    {t('AIContactForm.contactForm.subtitle')}
                   </p>
                 </div>
 
                 <form onSubmit={handleContactSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Full Name *
+                      <label className={`block text-sm font-medium text-gray-700 mb-2 ${isRTL ? "text-right" : ""}`}>
+                        {t('AIContactForm.contactForm.fullName')} *
                       </label>
                       <input
                         type="text"
                         value={contactInfo.fullName}
                         onChange={(e) => setContactInfo({ ...contactInfo, fullName: e.target.value })}
-                        placeholder="Your full name"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lochmara-500 focus:border-transparent bg-white"
+                        placeholder={t('AIContactForm.contactForm.fullNamePlaceholder')}
+                        className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lochmara-500 focus:border-transparent bg-white ${isRTL ? "text-right" : ""}`}
                         required
                         disabled={isSubmittingForm}
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Email Address *
+                      <label className={`block text-sm font-medium text-gray-700 mb-2 ${isRTL ? "text-right" : ""}`}>
+                        {t('AIContactForm.contactForm.email')} *
                       </label>
                       <input
                         type="email"
                         value={contactInfo.email}
                         onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
-                        placeholder="your@email.com"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lochmara-500 focus:border-transparent bg-white"
+                        placeholder={t('AIContactForm.contactForm.emailPlaceholder')}
+                        className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lochmara-500 focus:border-transparent bg-white ${isRTL ? "text-right" : ""}`}
                         required
                         disabled={isSubmittingForm}
                       />
@@ -603,15 +609,15 @@ export default function AIContactForm() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Phone / WhatsApp <span className="text-gray-400">(optional)</span>
+                    <label className={`block text-sm font-medium text-gray-700 mb-2 ${isRTL ? "text-right" : ""}`}>
+                      {t('AIContactForm.contactForm.phone')} <span className="text-gray-400">{t('AIContactForm.contactForm.phoneOptional')}</span>
                     </label>
                     <input
                       type="tel"
                       value={contactInfo.phone}
                       onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
-                      placeholder="+1 (555) 123-4567"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lochmara-500 focus:border-transparent bg-white"
+                      placeholder={t('AIContactForm.contactForm.phonePlaceholder')}
+                      className={`w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lochmara-500 focus:border-transparent bg-white ${isRTL ? "text-right" : ""}`}
                       disabled={isSubmittingForm}
                     />
                   </div>
@@ -627,11 +633,11 @@ export default function AIContactForm() {
                       {isSubmittingForm ? (
                         <>
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          Submitting...
+                          {t('AIContactForm.contactForm.submitting')}
                         </>
                       ) : (
                         <>
-                          ✨ Submit & Get Strategy
+                          ✨ {t('AIContactForm.contactForm.submitButton')}
                         </>
                       )}
                     </motion.button>
@@ -640,7 +646,7 @@ export default function AIContactForm() {
                       onClick={() => setShowContactForm(false)}
                       className="sm:w-auto px-6 py-4 bg-white text-gray-600 rounded-xl hover:bg-gray-50 transition-colors border border-gray-300"
                     >
-                      Skip for now
+                      {t('AIContactForm.contactForm.skipForNow')}
                     </button>
                   </div>
                 </form>
@@ -661,7 +667,7 @@ export default function AIContactForm() {
                   className="w-full bg-gradient-to-r from-lochmara-500 to-lochmara-600 text-white py-4 md:py-5 px-6 rounded-2xl font-bold text-lg md:text-xl hover:from-lochmara-600 hover:to-lochmara-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 group"
                 >
                   <PiCalendarCheck className="text-2xl group-hover:scale-110 transition-transform" />
-                  Schedule Your Strategy Call
+                  {t('AIContactForm.scheduleCall')}
                 </motion.button>
 
                 {/* Alternative Options */}
@@ -670,33 +676,33 @@ export default function AIContactForm() {
                     onClick={resetForm}
                     className="flex-1 text-sm text-gray-500 hover:text-gray-700 py-3 px-4 rounded-xl hover:bg-gray-50 transition-colors"
                   >
-                    Start Over
+                    {t('AIContactForm.startOver')}
                   </button>
                   <a
                     href="mailto:contact@navix.com"
                     className="flex-1 text-sm text-lochmara-600 hover:text-lochmara-700 py-3 px-4 rounded-xl hover:bg-lochmara-50 transition-colors font-medium"
                   >
-                    Email Us Instead
+                    {t('AIContactForm.emailInstead')}
                   </a>
                 </div>
               </motion.div>
             ) : conversationState.isComplete ? (
               // Just show contact form prompt if conversation complete but no form shown yet
-              <div className="text-center p-6 bg-lochmara-50 rounded-xl">
+              <div className={`text-center p-6 bg-lochmara-50 rounded-xl ${isRTL ? "text-right" : ""}`}>
                 <p className="text-lochmara-600">
-                  Preparing your contact form...
+                  {t('Common.loading')}
                 </p>
               </div>
             ) : (
               // Regular message input
-              <div className="flex gap-2">
+              <div className={`flex gap-2 ${isRTL ? "flex-row-reverse" : ""}`}>
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Type your answer..."
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lochmara-500 focus:border-transparent"
+                  placeholder={t('AIContactForm.typePlaceholder')}
+                  className={`flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-lochmara-500 focus:border-transparent ${isRTL ? "text-right" : ""}`}
                   disabled={loading}
                 />
                 <button
@@ -704,7 +710,7 @@ export default function AIContactForm() {
                   disabled={loading || !input.trim()}
                   className="px-6 py-3 bg-lochmara-500 text-white rounded-xl hover:bg-lochmara-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  Send
+                  {t('AIContactForm.send')}
                 </button>
               </div>
             )}

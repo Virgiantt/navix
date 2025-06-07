@@ -1,7 +1,6 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
@@ -15,6 +14,7 @@ import { InteractiveHoverButton } from "../magicui/interactive-hover-button";
 import { Element } from "react-scroll";
 import LanguageSwitcher from "../LanguageSwitcher";
 import { useTranslations } from "../../hooks/useTranslations";
+import { Link } from "@/i18n/routing"; // Use the internationalized Link
 
 const Navbar = () => {
   const pathname = usePathname();

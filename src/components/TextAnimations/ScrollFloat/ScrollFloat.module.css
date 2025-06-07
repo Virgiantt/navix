@@ -1,0 +1,29 @@
+/* ...existing styles... */
+
+.word-segment,
+.char-segment {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.word-segment:hover,
+.char-segment:hover {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Add staggered glow effect for better visibility */
+@keyframes subtle-glow {
+  0%, 100% { 
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.1); 
+  }
+  50% { 
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2); 
+  }
+}
+
+.scroll-float-container .word-segment,
+.scroll-float-container .char-segment {
+  animation: subtle-glow 3s ease-in-out infinite;
+  animation-delay: calc(var(--stagger-delay, 0) * 0.1s);
+}

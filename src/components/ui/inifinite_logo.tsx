@@ -75,6 +75,8 @@ export const InfiniteMovingLogos = ({
         "scroller relative z-20 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className
       )}
+      dir="ltr"
+      style={{ direction: 'ltr' }}
     >
       <ul
         ref={scrollerRef}
@@ -83,13 +85,17 @@ export const InfiniteMovingLogos = ({
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
+        dir="ltr"
+        style={{ direction: 'ltr' }}
       >
         {items.map((item) => (
           <li
             className="flex items-center flex-shrink-0 px-8"
             key={item.name}
+            dir="ltr"
+            style={{ direction: 'ltr' }}
           >
-            <div className="w-40 md:w-40  flex items-center justify-center">
+            <div className="w-40 md:w-40 flex items-center justify-center" dir="ltr" style={{ direction: 'ltr' }}>
               {item.link ? (
                 <Link
                   href={item.link}

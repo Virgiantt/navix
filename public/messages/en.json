@@ -174,13 +174,55 @@
   },
   "Projects": {
     "title": "Strategic Campaign Showcase",
-    "subtitle": "Explore data-driven campaigns where precision targeting met creative execution to boost client revenue by 150%+."
-  },
-  "Trusted": {
-    "title": "Trusted by fast brands",
-    "stats": {
-      "happyClients": "Happy clients",
-      "projectsCompleted": "Projects completed"
+    "subtitle": "Explore data-driven campaigns where precision targeting met creative execution to boost client revenue by 150%+.",
+    "hero": {
+      "title1": "Projects that speak,",
+      "title2": "results that matter.",
+      "description": "Each project we take on is built around one goal: growth. From boosting ROAS through paid ads to designing landing pages that convert — here's a glimpse of what we've achieved for our partners."
+    },
+    "filters": {
+      "all": "All",
+      "search": "Search projects...",
+      "searchClients": "Search clients...",
+      "filters": "Filters",
+      "viewGrid": "Grid View",
+      "viewList": "List View",
+      "noResults": "No results found",
+      "featured": "Featured",
+      "projects": "projects",
+      "clients": "clients"
+    },
+    "project": {
+      "visitWebsite": "Visit Website",
+      "noImage": "No Image",
+      "client": "Client",
+      "format": "Format",
+      "viewProject": "View Project",
+      "projectImpact": "Project Impact",
+      "keyTakeaways": "Key Takeaways",
+      "readyToStart": "Ready to start your project?",
+      "readyDescription": "Let's collaborate to create something extraordinary. Our team is ready to bring your vision to life.",
+      "bookCall": "Book a Call",
+      "resultsTitle": "results that matter.",
+      "projectSummaryDescription": "This project demonstrates our commitment to delivering exceptional results through innovative solutions. Our approach combines strategic thinking with creative execution to drive measurable outcomes.",
+      "takeaways": {
+        "measurable": "Delivered measurable results within the timeline",
+        "scalable": "Created a scalable solution for future growth",
+        "enhanced": "Enhanced user experience and engagement metrics"
+      }
+    },
+    "contentBlocks": {
+      "videoShowcase": "Video Showcase",
+      "imageGallery": "Image Gallery",
+      "keyResults": "Key Results",
+      "uiShowcase": "UI Showcase",
+      "brandAssets": "Brand Assets",
+      "viewPrototype": "View Prototype",
+      "viewStyleGuide": "View Style Guide"
+    },
+    "navigation": {
+      "home": "Home",
+      "projects": "Projects"
     }
   },
   "AnimatedShinyText": {

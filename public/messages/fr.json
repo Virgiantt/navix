@@ -174,13 +174,55 @@
   },
   "Projects": {
     "title": "Vitrine de Campagnes Stratégiques",
-    "subtitle": "Explorez des campagnes basées sur les données où le ciblage de précision a rencontré l'exécution créative pour augmenter les revenus clients de 150%+."
-  },
-  "Trusted": {
-    "title": "Approuvé par des marques dynamiques",
-    "stats": {
-      "happyClients": "clients satisfaits",
-      "projectsCompleted": "projets réalisés"
+    "subtitle": "Explorez des campagnes basées sur les données où le ciblage de précision a rencontré l'exécution créative pour augmenter les revenus clients de 150%+.",
+    "hero": {
+      "title1": "Des projets qui parlent,",
+      "title2": "des résultats qui comptent.",
+      "description": "Chaque projet que nous entreprenons est construit autour d'un objectif : la croissance. De l'augmentation du ROAS grâce à la publicité payante à la conception de pages de destination qui convertissent — voici un aperçu de ce que nous avons accompli pour nos partenaires."
+    },
+    "filters": {
+      "all": "Tout",
+      "search": "Rechercher des projets...",
+      "searchClients": "Rechercher des clients...",
+      "filters": "Filtres",
+      "viewGrid": "Vue grille",
+      "viewList": "Vue liste",
+      "noResults": "Aucun résultat trouvé",
+      "featured": "En vedette",
+      "projects": "projets",
+      "clients": "clients"
+    },
+    "project": {
+      "visitWebsite": "Visiter le site",
+      "noImage": "Aucune image",
+      "client": "Client",
+      "format": "Format",
+      "viewProject": "Voir le projet",
+      "projectImpact": "Impact du projet",
+      "keyTakeaways": "Points clés à retenir",
+      "readyToStart": "Prêt à commencer votre projet ?",
+      "readyDescription": "Collaborons pour créer quelque chose d'extraordinaire. Notre équipe est prête à donner vie à votre vision.",
+      "bookCall": "Réserver un appel",
+      "resultsTitle": "des résultats qui comptent.",
+      "projectSummaryDescription": "Ce projet démontre notre engagement à fournir des résultats exceptionnels grâce à des solutions innovantes. Notre approche combine la réflexion stratégique avec une exécution créative pour générer des résultats mesurables.",
+      "takeaways": {
+        "measurable": "Livré des résultats mesurables dans les délais",
+        "scalable": "Créé une solution évolutive pour la croissance future",
+        "enhanced": "Améliorer l'expérience utilisateur et les métriques d'engagement"
+      }
+    },
+    "contentBlocks": {
+      "videoShowcase": "Vitrine vidéo",
+      "imageGallery": "Galerie d'images",
+      "keyResults": "Résultats clés",
+      "uiShowcase": "Vitrine UI",
+      "brandAssets": "Éléments de marque",
+      "viewPrototype": "Voir le prototype",
+      "viewStyleGuide": "Voir le guide de style"
+    },
+    "navigation": {
+      "home": "Accueil",
+      "projects": "Projets"
     }
   },
   "AnimatedShinyText": {

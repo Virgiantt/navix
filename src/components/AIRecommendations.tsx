@@ -104,7 +104,7 @@ export default function AIRecommendations({ projectId }: { projectId: string }) 
                   </div>
                 )}
                 <div className="p-4 flex-grow">
-                  <h4 className="font-bold text-lg mb-1 group-hover:text-blue-600 transition-colors">
+                  <h4 className="font-bold text-lg mb-1 group-hover:text-lochmara-600 transition-colors">
                     {project.title}
                   </h4>
                   <p className="text-gray-600 text-sm line-clamp-2">

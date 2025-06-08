@@ -7,7 +7,7 @@ import We_Offer from '../What-We-Offer'
 import Trusted from '../Trusted'
 
 import { InteractiveHoverButton } from '../magicui/interactive-hover-button'
-import Link from 'next/link'
+import { Link } from '@/i18n/routing'; // Use internationalized Link
 import { useTranslations } from '../../hooks/useTranslations'
 
 const Hero = () => {

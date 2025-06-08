@@ -1,6 +1,7 @@
 'use client';
 
-import Link from 'next/link';
+import React from 'react';
+import { Link } from '@/i18n/routing';
 import { useParams } from 'next/navigation';
 
 // Inline translations object

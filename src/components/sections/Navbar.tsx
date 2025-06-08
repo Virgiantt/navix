@@ -19,7 +19,7 @@ import { Link } from "@/i18n/routing"; // Use the internationalized Link
 const Navbar = () => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { t } = useTranslations();
+  const { t, locale } = useTranslations();
 
   // Check if we're on the home page (considering locale)
   const isHomePage =
@@ -46,6 +46,21 @@ const Navbar = () => {
     }
     setPrevScrollY(latest);
   });
+
+  // Handle navigation to home sections with proper locale
+  const handleSectionNavigation = (sectionId: string) => {
+    if (isHomePage) {
+      // If we're already on home page, just scroll to section
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // If we're not on home page, navigate to home with hash
+      window.location.href = `/${locale}/#${sectionId}`;
+    }
+    setMobileMenuOpen(false);
+  };
 
   const menuVariants = {
     open: {
@@ -128,24 +143,24 @@ const Navbar = () => {
               >
                 {t("Navigation.projects")}
               </Link>
-              <Link
-                href="/#process"
+              <button
+                onClick={() => handleSectionNavigation("process")}
                 className="text-gray-700 hover:text-lochmara-500 transition-colors"
               >
                 {t("Navigation.process")}
-              </Link>
-              <Link
-                href="/#services"
+              </button>
+              <button
+                onClick={() => handleSectionNavigation("services")}
                 className="text-gray-700 hover:text-lochmara-500 transition-colors"
               >
                 {t("Navigation.services")}
-              </Link>
-              <Link
-                href="/#guarentees"
+              </button>
+              <button
+                onClick={() => handleSectionNavigation("guarentees")}
                 className="text-gray-700 hover:text-lochmara-500 transition-colors"
               >
                 {t("Navigation.guarantees")}
-              </Link>
+              </button>
             </div>
 
             {/* Mobile Actions */}
@@ -201,27 +216,24 @@ const Navbar = () => {
               >
                 {t("Navigation.projects")}
               </Link>
-              <Link
-                href="/#process"
-                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                onClick={() => handleSectionNavigation("process")}
+                className="text-gray-700 hover:text-lochmara-500 cursor-pointer text-left"
               >
                 {t("Navigation.process")}
-              </Link>
-              <Link
-                href="/#services"
-                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
-                onClick={() => setMobileMenuOpen(false)}
+              </button>
+              <button
+                onClick={() => handleSectionNavigation("services")}
+                className="text-gray-700 hover:text-lochmara-500 cursor-pointer text-left"
               >
                 {t("Navigation.services")}
-              </Link>
-              <Link
-                href="/#guarentees"
-                className="text-gray-700 hover:text-lochmara-500 cursor-pointer"
-                onClick={() => setMobileMenuOpen(false)}
+              </button>
+              <button
+                onClick={() => handleSectionNavigation("guarentees")}
+                className="text-gray-700 hover:text-lochmara-500 cursor-pointer text-left"
               >
                 {t("Navigation.guarantees")}
-              </Link>
+              </button>
               <Link
                 href="/meeting"
                 className="text-center bg-lochmara-500 text-white py-2 px-4 rounded-lg hover:bg-lochmara-600 transition-colors"

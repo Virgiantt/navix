@@ -4,7 +4,7 @@
 import { Marquee } from "@/components/magicui/marquee";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { useState, useEffect } from "react";
 import ScrollFloat from "../TextAnimations/ScrollFloat/ScrollFloat";
 import { client } from "@/sanity/lib/client";

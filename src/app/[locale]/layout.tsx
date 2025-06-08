@@ -28,13 +28,13 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Get messages using the proper next-intl server function
-  const messages = await getMessages();
+  // Get messages using the proper next-intl server function with explicit locale
+  const messages = await getMessages({locale});
 
   return (
-    <html lang={locale} >
+    <html lang={locale}>
       <body className={`${font.className} antialiased`}>
-        <NextIntlClientProvider messages={messages}>
+        <NextIntlClientProvider messages={messages} locale={locale}>
           {children}
         </NextIntlClientProvider>
       </body>

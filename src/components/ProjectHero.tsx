@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { urlFor } from '@/sanity/lib/image';
 import { Project } from '@/sanity/schemaTypes/ProjectType';
 import { FaCalendarAlt, FaExternalLinkAlt, FaArrowRight, FaPlay } from 'react-icons/fa';

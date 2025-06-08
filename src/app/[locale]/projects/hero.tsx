@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useData } from "@/components/context/DataContext";
 import { urlFor } from "@/sanity/lib/image";
-import Link from "next/link";
+import { Link } from "@/i18n/routing";
 import { Search, Filter, Grid, List, Star } from "lucide-react";
 import { useTranslations } from "@/hooks/useTranslations";
 
@@ -49,12 +49,12 @@ const ProjectHero = ({ locale }: ProjectHeroProps) => {
         (activeTab === "clients" && 
          (item as any).category.toLowerCase() === activeCategory.toLowerCase());
 
-      // Search filter
+      // Search filter - handle both Project and Client types
       const searchMatch = searchQuery === "" || 
-        item.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (activeTab === "projects" && (item as any).client?.name?.toLowerCase().includes(searchQuery.toLowerCase()));
+        ('title' in item && item.title?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        ('name' in item && item.name?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        ('description' in item && item.description?.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (activeTab === "projects" && 'client' in item && item.client?.name?.toLowerCase().includes(searchQuery.toLowerCase()));
 
       return categoryMatch && searchMatch;
     });

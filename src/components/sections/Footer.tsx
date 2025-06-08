@@ -1,7 +1,6 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 import React, { useState } from "react";
 import {
   PiFacebookLogo,
@@ -10,6 +9,7 @@ import {
   PiTwitterLogo,
 } from "react-icons/pi";
 import { useTranslations } from "../../hooks/useTranslations";
+import { Link } from "@/i18n/routing";
 
 const Footer = () => {
   const [email, setEmail] = useState("");

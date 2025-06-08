@@ -106,6 +106,14 @@
     "getStarted": "Get Started",
     "learnMore": "Learn More"
   },
+"Trusted": {
+  "title": "Trusted by Fast-Growing Brands",
+  "stats": {
+    "happyClients": "Happy Clients",
+    "projectsCompleted": "Projects Completed"
+  }
+}
+,
   "Founders": {
     "title": "Trusted by {count}+ Business Owners",
     "subtitle": "Meet our valued clients and their experiences."

@@ -48,7 +48,10 @@
     }
   },
   "LanguageSwitcher": {
-    "selectLanguage": "Sélectionner la langue"
+    "selectLanguage": "Sélectionner la langue",
+    "english": "Anglais",
+    "french": "Français",
+    "arabic": "Arabe"
   },
   "LetsMakeThingsHappen": {
     "title": "Faisons en sorte que les choses se passent",
@@ -102,9 +105,16 @@
     "submit": "Soumettre",
     "cancel": "Annuler",
     "close": "Fermer",
-    "bookCall": "Réserver un appel",
-    "getStarted": "Commencer",
-    "learnMore": "En savoir plus"
+    "next": "Suivant",
+    "previous": "Précédent",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "confirm": "Confirmer",
+    "error": "Erreur",
+    "success": "Succès",
+    "warning": "Attention",
+    "info": "Information"
   },
   "Founders": {
     "title": "Approuvé par plus de {count} propriétaires d'entreprise",
@@ -390,5 +400,28 @@
       "questions": "Des questions ? Contactez-nous à hello@navix.ma",
       "closeButton": "Fermer"
     }
+  },
+  "VoiceAgent": {
+    "title": "Assistant Vocal IA",
+    "subtitle": "Parlez avec notre IA pour obtenir de l'aide instantanée",
+    "startListening": "Commencer à écouter",
+    "stopListening": "Arrêter d'écouter",
+    "processing": "Traitement en cours...",
+    "speak": "Parlez maintenant...",
+    "error": "Erreur: Impossible d'accéder au microphone",
+    "noSpeech": "Aucune parole détectée. Veuillez réessayer.",
+    "response": "Réponse de l'IA"
+  },
+  "VoiceAIAgent": {
+    "title": "Assistant IA Vocal",
+    "subtitle": "Parlez avec notre IA pour obtenir des réponses instantanées sur nos services",
+    "startListening": "Commencer à parler",
+    "stopListening": "Arrêter",
+    "processing": "Traitement en cours...",
+    "speak": "Cliquez pour parler",
+    "microphonePermission": "Veuillez autoriser l'accès au microphone pour utiliser les fonctionnalités vocales",
+    "browserNotSupported": "Votre navigateur ne supporte pas la reconnaissance vocale",
+    "error": "Une erreur s'est produite. Veuillez réessayer.",
+    "placeholder": "Demandez-moi tout sur les services Navix..."
   }
 }

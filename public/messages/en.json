@@ -48,7 +48,10 @@
     }
   },
   "LanguageSwitcher": {
-    "selectLanguage": "Select Language"
+    "selectLanguage": "Select Language",
+    "english": "English",
+    "french": "Français", 
+    "arabic": "العربية"
   },
   "LetsMakeThingsHappen": {
     "title": "Let's make things happen",
@@ -106,14 +109,41 @@
     "getStarted": "Get Started",
     "learnMore": "Learn More"
   },
-"Trusted": {
-  "title": "Trusted by Fast-Growing Brands",
-  "stats": {
-    "happyClients": "Happy Clients",
-    "projectsCompleted": "Projects Completed"
+  "VoiceAgent": {
+    "title": "Voice AI Assistant",
+    "subtitle": "Speak with our AI assistant to get instant answers about our services",
+    "startButton": "Start Voice Chat",
+    "stopButton": "Stop Recording",
+    "listening": "Listening...",
+    "processing": "Processing...",
+    "speakPrompt": "Click and speak your question",
+    "error": "Sorry, there was an error processing your request. Please try again.",
+    "noSpeech": "No speech detected. Please try again.",
+    "microphoneError": "Microphone access denied. Please enable microphone access to use voice chat.",
+    "notSupported": "Voice chat is not supported in your browser. Please use Chrome, Safari, or Edge.",
+    "placeholder": "Ask me anything about Navix services...",
+    "tooltip": "Talk to our AI Assistant"
+  },
+  "VoiceAIAgent": {
+    "title": "Voice AI Assistant",
+    "subtitle": "Speak with our AI to get instant answers about our services",
+    "startListening": "Start Talking",
+    "stopListening": "Stop",
+    "processing": "Processing...",
+    "speak": "Click to speak",
+    "microphonePermission": "Please allow microphone access to use voice features",
+    "browserNotSupported": "Your browser doesn't support speech recognition",
+    "error": "Error occurred. Please try again.",
+    "placeholder": "Ask me anything about Navix services..."
+  },
+  "Trusted": {
+    "title": "Trusted by Fast-Growing Brands",
+    "stats": {
+      "happyClients": "Happy Clients",
+      "projectsCompleted": "Projects Completed"
+    }
   }
-}
-,
+  ,
   "Founders": {
     "title": "Trusted by {count}+ Business Owners",
     "subtitle": "Meet our valued clients and their experiences."
@@ -400,4 +430,5 @@
       "backToWebsite": "Back to Website"
     }
   }
+  
 }

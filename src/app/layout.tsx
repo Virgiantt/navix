@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import { DataProvider } from "@/components/context/DataContext";
-import ChatWidget from "@/components/ChatWidget";
+
 
 
 
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <DataProvider>
       {children}
-      <ChatWidget />
+      {/* <ChatWidget /> */}
     </DataProvider>
   );
 }

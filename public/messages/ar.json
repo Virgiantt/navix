@@ -75,9 +75,21 @@
 
   "LanguageSwitcher": {
     "selectLanguage": "اختر اللغة",
-    "english": "English",
-    "french": "Français",
+    "english": "الإنجليزية",
+    "french": "الفرنسية",
     "arabic": "العربية"
+  },
+  "VoiceAIAgent": {
+    "title": "مساعد الذكاء الاصطناعي الصوتي",
+    "subtitle": "تحدث مع الذكاء الاصطناعي للحصول على إجابات فورية حول خدماتنا",
+    "startListening": "ابدأ التحدث",
+    "stopListening": "توقف",
+    "processing": "جاري المعالجة...",
+    "speak": "انقر للتحدث",
+    "microphonePermission": "يرجى السماح بالوصول إلى الميكروفون لاستخدام الميزات الصوتية",
+    "browserNotSupported": "متصفحك لا يدعم التعرف على الصوت",
+    "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "placeholder": "اسألني أي شيء عن خدمات نافيكس..."
   },
 "LetsMakeThingsHappen": {
   "title": "لنصنع النجاح معًا",
@@ -416,7 +428,35 @@
     },
     "questions": "هل لديك أسئلة؟ تواصل معنا على hello@navix.ma",
     "closeButton": "إغلاق"
+  },
+  "VoiceAgent": {
+    "title": "المساعد الصوتي نافي",
+    "tapToSpeak": "اضغط للتحدث مع نافي",
+    "status": {
+      "speaking": "تتحدث...",
+      "listening": "تستمع...",
+      "thinking": "تفكر...",
+      "ready": "جاهزة للمساعدة"
+    },
+    "instructions": {
+      "tapToTalk": "اضغط على الميكروفون لبدء التحدث",
+      "listening": "أستمع إليك... تحدث الآن",
+      "speaking": "أتحدث - اضغط على السماعة للتوقف"
+    },
+    "youSaid": "قلت",
+    "errors": {
+      "speechRecognition": "خطأ في التعرف على الصوت. يرجى المحاولة مرة أخرى.",
+      "processing": "خطأ في معالجة طلبك. يرجى المحاولة مرة أخرى.",
+      "microphoneAccess": "يرجى السماح بالوصول للميكروفون لاستخدام الميزات الصوتية"
+    },
+    "notSupported": {
+      "title": "الصوت غير مدعوم",
+      "message": "متصفحك لا يدعم الميزات الصوتية. يرجى استخدام متصفح حديث مثل Chrome أو Safari."
+    },
+    "greeting": {
+      "welcome": "مرحباً! أنا نافي، مرشدتكم الذكية في وكالة نافيكس!",
+      "howCanIHelp": "كيف يمكنني مساعدتكم اليوم؟",
+      "exploreServices": "يمكنني إخباركم عن خدماتنا ومشاريعنا، أو جدولة استشارة!"
+    }
   }
-}
-
-}
+}}

@@ -24,7 +24,16 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // Ignore ESLint errors
   },
-  // Your other config here
+
+  // Add rewrites to ensure API routes bypass internationalization
+  async rewrites() {
+    return [
+      {
+        source: '/:locale/api/:path*',
+        destination: '/api/:path*',
+      },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

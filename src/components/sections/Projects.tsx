@@ -138,7 +138,7 @@ export function Projects() {
           <div className="text-center py-16 text-red-500">
             {error} - <button 
               onClick={() => window.location.reload()}
-              className="text-blue-500 underline"
+              className="text-lochmara-500 underline"
             >
               Try Again
             </button>

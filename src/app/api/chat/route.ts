@@ -1,16 +1,16 @@
 import { NextRequest } from 'next/server';
-import OpenAI from 'openai';
+
 import { fetchProjects } from '@/services/projectService';
 
 export const runtime = 'edge';
 
 type ChatMessage = { role: 'user' | 'assistant' | 'system'; content: string };
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
 
 export async function POST(req: NextRequest) {
   try {
-    const { message, history, context, locale, isVoiceChat, includeProjects } = await req.json();
+    const { message, history, locale, isVoiceChat, includeProjects } = await req.json();
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       console.error('Missing OPENAI_API_KEY');

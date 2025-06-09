@@ -198,86 +198,33 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     return goodbyePhrases.some(phrase => lowerTranscript.includes(phrase));
   }, []);
 
-  // FIXED: Auto-restart listening function - removed startListening dependency
+  // FIXED: Auto-restart listening function - SIMPLIFIED AND WORKING
   const restartListeningAfterSpeech = useCallback(() => {
-    if (!isEnding && autoListenMode && conversationActive) {
-      console.log('🎤 Scheduling auto-restart of listening...');
+    if (!isEnding && autoListenMode && conversationActive && !isListening && !isSpeaking) {
+      console.log('🎤 AUTO-RESTART: Scheduling restart after speech...');
       restartTimeoutRef.current = setTimeout(() => {
-        if (!isListening && !isSpeaking && !isEnding && conversationActive) {
-          console.log('🎤 Auto-restarting listening after speech!');
-          // Call startListening directly without dependency
-          if (recognitionRef.current && !isRecognitionActiveRef.current) {
-            try {
+        if (!isListening && !isSpeaking && !isEnding && conversationActive && recognitionRef.current) {
+          console.log('🎤 AUTO-RESTART: EXECUTING RESTART NOW!');
+          try {
+            if (!isRecognitionActiveRef.current) {
+              isRecognitionActiveRef.current = true;
+              setIsListening(true);
               recognitionRef.current.start();
-            } catch (error) {
-              console.error('Failed to restart recognition:', error);
             }
+          } catch (error) {
+            console.error('AUTO-RESTART FAILED:', error);
+            isRecognitionActiveRef.current = false;
+            setIsListening(false);
+            // Try again in 1 second
+            setTimeout(() => restartListeningAfterSpeech(), 1000);
           }
         }
-      }, 800);
+      }, 500); // Very short delay
     }
   }, [isEnding, autoListenMode, conversationActive, isListening, isSpeaking]);
 
-  // FIXED: Browser TTS with proper auto-restart
-  const speakWithBrowserTTS = useCallback((text: string, isGoodbye: boolean = false) => {
-    return new Promise<void>((resolve) => {
-      if (!window.speechSynthesis) {
-        resolve();
-        return;
-      }
-
-      setIsSpeaking(true);
-      window.speechSynthesis.cancel();
-      
-      const utterance = new SpeechSynthesisUtterance(text);
-      
-      // Consistent voice settings
-      utterance.lang = locale === 'ar' ? 'ar-SA' : locale === 'fr' ? 'fr-FR' : 'en-US';
-      utterance.rate = 0.9;
-      utterance.pitch = 1.0;
-      utterance.volume = 1.0;
-      
-      // Select consistent voice
-      const voices = window.speechSynthesis.getVoices();
-      if (voices.length > 0) {
-        const preferredVoice = voices.find(voice => 
-          voice.lang.startsWith(locale === 'ar' ? 'ar' : locale === 'fr' ? 'fr' : 'en')
-        );
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
-        }
-      }
-      
-      utterance.onend = () => {
-        console.log('🔊 Browser TTS speech ended, isGoodbye:', isGoodbye);
-        setIsSpeaking(false);
-        resolve();
-        
-        // FIXED: Only restart listening if NOT goodbye
-        if (!isGoodbye) {
-          restartListeningAfterSpeech();
-        }
-      };
-      
-      utterance.onerror = () => {
-        setIsSpeaking(false);
-        resolve();
-      };
-      
-      window.speechSynthesis.speak(utterance);
-    });
-  }, [locale, restartListeningAfterSpeech]);
-
-  // FIXED: ElevenLabs TTS - always use Navi voice unless mobile
+  // FIXED: ALWAYS use ElevenLabs female voice - NO browser TTS fallback
   const speakWithElevenLabs = useCallback(async (text: string, isGoodbye: boolean = false) => {
-    // FIXED: Only use browser TTS for mobile, NOT for goodbye messages
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    
-    if (isMobile) {
-      return speakWithBrowserTTS(text, isGoodbye);
-    }
-
-    // Use ElevenLabs (Navi voice) for ALL messages including goodbye
     try {
       setIsSpeaking(true);
       
@@ -308,39 +255,54 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       return new Promise<void>((resolve) => {
         if (!currentAudioRef.current) {
           resolve();
+          if (!isGoodbye) {
+            restartListeningAfterSpeech();
+          }
           return;
         }
 
         currentAudioRef.current.onended = () => {
-          console.log('🔊 ElevenLabs (Navi) speech ended, isGoodbye:', isGoodbye);
+          console.log('🔊 ELEVENLABS FEMALE VOICE ENDED - isGoodbye:', isGoodbye);
           setIsSpeaking(false);
           URL.revokeObjectURL(audioUrl);
           resolve();
           
-          // FIXED: Only restart listening if NOT goodbye
+          // GUARANTEED RESTART if not goodbye
           if (!isGoodbye) {
+            console.log('🎤 TRIGGERING AUTO-RESTART FROM ELEVENLABS FEMALE VOICE');
             restartListeningAfterSpeech();
           }
         };
         
         currentAudioRef.current.onerror = () => {
+          console.log('🔊 ELEVENLABS ERROR - RETRYING...');
           setIsSpeaking(false);
           URL.revokeObjectURL(audioUrl);
-          console.error('ElevenLabs playback error, falling back to browser TTS');
-          speakWithBrowserTTS(text, isGoodbye).then(resolve);
+          
+          // RETRY with ElevenLabs instead of falling back to browser TTS
+          setTimeout(() => {
+            speakWithElevenLabs(text, isGoodbye).then(resolve);
+          }, 1000);
         };
         
         currentAudioRef.current.play().catch(() => {
-          speakWithBrowserTTS(text, isGoodbye).then(resolve);
+          console.log('🔊 Play failed, retrying ElevenLabs...');
+          setTimeout(() => {
+            speakWithElevenLabs(text, isGoodbye).then(resolve);
+          }, 1000);
         });
       });
       
     } catch (error) {
       console.error('ElevenLabs TTS API error:', error);
       setIsSpeaking(false);
-      return speakWithBrowserTTS(text, isGoodbye);
+      
+      // RETRY instead of browser TTS fallback
+      setTimeout(() => {
+        speakWithElevenLabs(text, isGoodbye);
+      }, 2000);
     }
-  }, [locale, speakWithBrowserTTS, restartListeningAfterSpeech]);
+  }, [locale, restartListeningAfterSpeech]);
 
   // SMOOTH conversation ending
   const endConversation = useCallback(async () => {
@@ -462,11 +424,11 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       setMessages(prev => [...prev, errorVoiceMessage]);
       setIsProcessing(false);
       
-      await speakWithBrowserTTS(errorMessage, false);
+      await speakWithElevenLabs(errorMessage, false);
     }
-  }, [context, locale, messages, checkForGoodbye, endConversation, speakWithElevenLabs, speakWithBrowserTTS]);
+  }, [context, locale, messages, checkForGoodbye, endConversation, speakWithElevenLabs]);
 
-  // ROBUST start listening function
+  // ROBUST start listening function - MOBILE-OPTIMIZED
   const startListening = useCallback(async () => {
     if (isEnding) {
       console.log('🚫 Not starting listening - conversation is ending');
@@ -481,7 +443,7 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     console.log('🎤 Starting to listen...');
     setError('');
     
-    // Initialize recognition if needed
+    // Initialize recognition if needed - MOBILE FIXES
     if (!recognitionRef.current) {
       if (typeof window !== 'undefined') {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -491,18 +453,30 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
         }
 
         const recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
+        
+        // MOBILE-SPECIFIC SETTINGS
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        
+        recognition.continuous = false; // Keep false for mobile stability
+        recognition.interimResults = isMobile ? true : false; // Enable interim for mobile
         recognition.lang = locale === 'ar' ? 'ar-SA' : locale === 'fr' ? 'fr-FR' : 'en-US';
         recognition.maxAlternatives = 1;
+        
+        // MOBILE OPTIMIZATIONS
+        if (isMobile) {
+          console.log('📱 Applying mobile optimizations for speech recognition');
+          // These help with mobile responsiveness
+          recognition.grammars = undefined; // Remove grammars for mobile
+          recognition.serviceURI = undefined; // Use default service
+        }
 
         recognition.onstart = () => {
-          console.log('🎤 Recognition started');
+          console.log('🎤 Recognition started (mobile optimized)');
           setIsListening(true);
           setError('');
           isRecognitionActiveRef.current = true;
           
-          // Set silence timeout
+          // Set silence timeout - SHORTER for mobile
           if (silenceTimeoutRef.current) {
             clearTimeout(silenceTimeoutRef.current);
           }
@@ -515,51 +489,82 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
                 console.log('Recognition already stopped');
               }
             }
-          }, 8000);
+          }, isMobile ? 6000 : 8000); // Shorter timeout for mobile
         };
 
         recognition.onresult = (event: any) => {
+          console.log('🎤 Recognition result event:', event);
+          
           if (silenceTimeoutRef.current) {
             clearTimeout(silenceTimeoutRef.current);
           }
           
-          const transcript = event.results[0][0].transcript.trim();
-          console.log('🎤 Recognition result:', transcript);
+          // IMPROVED: Handle both final and interim results for mobile
+          let transcript = '';
+          let isFinal = false;
           
-          if (transcript && transcript.length > 2) {
-            setConversationActive(true);
-            setHasStartedConversation(true);
-            handleVoiceInput(transcript);
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const result = event.results[i];
+            transcript += result[0].transcript;
+            if (result.isFinal) {
+              isFinal = true;
+            }
+          }
+          
+          transcript = transcript.trim();
+          console.log('🎤 Transcript:', transcript, 'isFinal:', isFinal, 'length:', transcript.length);
+          
+          // MOBILE FIX: Accept shorter transcripts and interim results
+          if (transcript && transcript.length > 1) {
+            if (isFinal || (isMobile && transcript.length > 2)) {
+              console.log('✅ Processing transcript:', transcript);
+              setConversationActive(true);
+              setHasStartedConversation(true);
+              handleVoiceInput(transcript);
+            } else if (isMobile) {
+              // Show interim results on mobile
+              console.log('📱 Mobile interim result:', transcript);
+            }
           }
         };
 
         recognition.onerror = (event: any) => {
-          console.log('🚫 Recognition error:', event.error);
+          console.log('🚫 Recognition error:', event.error, 'message:', event.message);
           isRecognitionActiveRef.current = false;
           
           if (silenceTimeoutRef.current) {
             clearTimeout(silenceTimeoutRef.current);
           }
           
+          // MOBILE-SPECIFIC ERROR HANDLING
           if (event.error === 'no-speech') {
+            console.log('📱 No speech detected - common on mobile');
             setIsListening(false);
-            // Auto-restart after no-speech
+            setError(''); // Don't show error for no-speech on mobile
+            
+            // Auto-restart after no-speech - AGGRESSIVE for mobile
             if (!isEnding && autoListenMode && conversationActive) {
               restartTimeoutRef.current = setTimeout(() => {
                 if (!isListening && !isSpeaking && !isEnding) {
+                  console.log('🔄 Auto-restarting after no-speech (mobile)');
                   startListening();
                 }
-              }, 2000);
+              }, 1500); // Faster restart for mobile
             }
             return;
           } else if (event.error === 'aborted') {
             setIsListening(false);
             return;
           } else if (event.error === 'not-allowed') {
-            setError("Microphone access denied. Please allow microphone access.");
+            setError("🎤 Microphone access denied. Please check browser settings.");
             setAutoListenMode(false);
+          } else if (event.error === 'network') {
+            setError("🌐 Network error. Check your connection.");
+          } else if (event.error === 'service-not-allowed') {
+            setError("🎤 Speech service not available. Try refreshing the page.");
           } else {
-            setError("Speech recognition error. Please try again.");
+            console.error('Speech recognition error:', event.error);
+            setError(`🎤 Recognition error: ${event.error}`);
           }
           setIsListening(false);
         };
@@ -571,48 +576,92 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
             clearTimeout(silenceTimeoutRef.current);
           }
           setIsListening(false);
+          
+          // MOBILE FIX: Auto-restart more aggressively on mobile
+          if (isMobile && !isEnding && autoListenMode && conversationActive && !isSpeaking) {
+            console.log('📱 Mobile recognition ended, scheduling restart...');
+            restartTimeoutRef.current = setTimeout(() => {
+              if (!isListening && !isSpeaking && !isEnding && conversationActive) {
+                console.log('📱 Mobile auto-restart triggered');
+                startListening();
+              }
+            }, 1000);
+          }
         };
 
         recognitionRef.current = recognition;
       }
     }
     
-    // Setup audio context if needed - IMPROVED mobile handling
+    // Setup audio context if needed - MOBILE OPTIMIZED
     if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
       try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioContextRef.current = new AudioContext();
+        // MOBILE FIX: Resume audio context if suspended (common on mobile)
+        if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+          console.log('📱 Resuming suspended audio context');
+          await audioContextRef.current.resume();
+        } else {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          audioContextRef.current = new AudioContext();
+          
+          // MOBILE FIX: Immediately resume if suspended
+          if (audioContextRef.current.state === 'suspended') {
+            await audioContextRef.current.resume();
+          }
+        }
+        
         analyserRef.current = audioContextRef.current.createAnalyser();
         
-        // IMPROVED: Better mobile microphone request
-        const stream = await navigator.mediaDevices.getUserMedia({ 
+        // MOBILE-OPTIMIZED constraints
+        const constraints = {
           audio: {
             echoCancellation: true,
             noiseSuppression: true,
             autoGainControl: true,
-            // Mobile-specific optimizations
-            sampleRate: 16000,
-            channelCount: 1
+            // MOBILE-SPECIFIC optimizations
+            sampleRate: 44100, // Use standard rate for mobile compatibility
+            channelCount: 1,
+            volume: 1.0,
+            // Add mobile-specific constraints
+            googEchoCancellation: true,
+            googAutoGainControl: true,
+            googNoiseSuppression: true,
+            googHighpassFilter: true,
+            googTypingNoiseDetection: true
           }
-        });
+        };
+        
+        console.log('📱 Requesting microphone with mobile-optimized constraints...');
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         
         streamRef.current = stream;
         microphoneRef.current = audioContextRef.current.createMediaStreamSource(stream);
         microphoneRef.current.connect(analyserRef.current);
-        analyserRef.current.fftSize = 256;
+        analyserRef.current.fftSize = 128; // Smaller for mobile performance
         
         startAudioVisualization();
-        console.log('🎤 Microphone access granted successfully');
+        console.log('🎤 Microphone access granted successfully (mobile optimized)');
       } catch (error) {
         console.error('Microphone access error:', error);
         
-        // IMPROVED: Better error messages for mobile
-        if (error.name === 'NotAllowedError') {
-          setError("🎤 Please allow microphone access in your browser settings and refresh the page.");
-        } else if (error.name === 'NotFoundError') {
-          setError("🎤 No microphone found. Please check your device settings.");
-        } else if (error.name === 'NotSupportedError') {
-          setError("🎤 Voice chat not supported in this browser. Try Chrome or Safari.");
+        // ENHANCED mobile error messages - FIXED TypeScript errors
+        if ((error as any)?.name === 'NotAllowedError') {
+          setError("🎤 Please allow microphone access and try again. On mobile, check your browser settings.");
+        } else if ((error as any)?.name === 'NotFoundError') {
+          setError("🎤 No microphone found. Please check your device.");
+        } else if ((error as any)?.name === 'NotSupportedError') {
+          setError("🎤 Voice chat not supported. Try Chrome or Safari.");
+        } else if ((error as any)?.name === 'OverconstrainedError') {
+          setError("🎤 Microphone constraints not supported. Using fallback...");
+          // Try with simpler constraints
+          try {
+            const simpleStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            streamRef.current = simpleStream;
+            console.log('🎤 Fallback microphone access successful');
+          } catch (fallbackError) {
+            setError("🎤 Microphone access failed. Please refresh and try again.");
+            return;
+          }
         } else {
           setError("🎤 Microphone access required. Please allow and try again.");
         }
@@ -620,16 +669,36 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       }
     }
     
-    // Start recognition
+    // Start recognition - MOBILE SAFETY CHECKS
     if (recognitionRef.current && !isRecognitionActiveRef.current && !isEnding) {
       try {
+        // MOBILE FIX: Add a small delay before starting
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        console.log('🎤 Starting speech recognition...');
         recognitionRef.current.start();
       } catch (error) {
         console.error('Failed to start recognition:', error);
-        setError("Could not start voice recognition. Please try again.");
+        
+        // MOBILE-SPECIFIC error handling - FIXED TypeScript
+        if ((error as any)?.name === 'InvalidStateError') {
+          console.log('📱 Recognition already running, stopping and restarting...');
+          try {
+            recognitionRef.current.stop();
+            setTimeout(() => {
+              if (!isRecognitionActiveRef.current) {
+                recognitionRef.current.start();
+              }
+            }, 500);
+          } catch (restartError) {
+            setError("🎤 Could not restart voice recognition. Please try again.");
+          }
+        } else {
+          setError("🎤 Could not start voice recognition. Please try again.");
+        }
       }
     }
-  }, [locale, isEnding, isSpeaking, autoListenMode, conversationActive, startAudioVisualization, handleVoiceInput]);
+  }, [locale, isEnding, isSpeaking, autoListenMode, conversationActive, isListening, startAudioVisualization, handleVoiceInput]);
 
   const stopListening = useCallback(() => {
     console.log('🛑 Stopping listening...');

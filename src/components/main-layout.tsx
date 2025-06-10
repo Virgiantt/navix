@@ -7,12 +7,10 @@ import { PiMicrophone } from 'react-icons/pi';
 import Navbar from './sections/Navbar';
 import Footer from './sections/Footer';
 import VoiceAIAgent from './VoiceAIAgent';
-import { useTranslations } from '@/hooks/useTranslations';
-
 export default function MainLayout({ children }: { children: ReactNode }) {
   const [isVoiceAgentOpen, setIsVoiceAgentOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
-  const { t } = useTranslations();
+
 
   // Hide tooltip after 3 seconds (reduced from 5)
   useEffect(() => {

@@ -25,6 +25,10 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true, // Ignore ESLint errors
   },
 
+  // MOBILE TESTING FIX: (allowedDevOrigins is not a valid Next.js config option and has been removed)
+  experimental: {
+  },
+
   // Add rewrites to ensure API routes bypass internationalization
   async rewrites() {
     return [

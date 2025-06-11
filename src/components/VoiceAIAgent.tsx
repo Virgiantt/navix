@@ -35,6 +35,117 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
   const [hasStartedConversation, setHasStartedConversation] = useState(false);
   const [isEnding, setIsEnding] = useState(false);
   
+  // MOBILE-FIRST: Add compatibility detection and enhanced initialization
+  const [isMobileCompatible, setIsMobileCompatible] = useState(true);
+  const [deviceInfo, setDeviceInfo] = useState<string>('');
+
+  // Check mobile compatibility on mount
+  useEffect(() => {
+    const checkMobileCompatibility = () => {
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isIOS = /iphone|ipad|ipod/.test(userAgent);
+      const isAndroid = userAgent.includes('android');
+      const isChrome = userAgent.includes('chrome');
+      const isSafari = userAgent.includes('safari') && !userAgent.includes('chrome');
+      const isFirefox = userAgent.includes('firefox');
+      const isSamsung = userAgent.includes('samsung');
+
+      const deviceType = isIOS ? 'iOS' : isAndroid ? 'Android' : 'Desktop';
+      const browserType = isChrome ? 'Chrome' : isSafari ? 'Safari' : isFirefox ? 'Firefox' : isSamsung ? 'Samsung Internet' : 'Unknown';
+      
+      setDeviceInfo(`${deviceType} - ${browserType}`);
+      console.log('📱 Device detection:', { deviceType, browserType, userAgent });
+
+      // Check for speech recognition support
+      const hasSpeechRecognition = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+      const hasSpeechSynthesis = !!window.speechSynthesis;
+
+      if (!hasSpeechRecognition) {
+        setIsMobileCompatible(false);
+        setError(`Voice recognition not supported on ${deviceType} ${browserType}. Please use Chrome or Safari.`);
+        return;
+      }
+
+      if (!hasSpeechSynthesis) {
+        console.log('⚠️ Speech synthesis not available, will use fallback');
+      }
+
+      // Firefox has poor mobile speech recognition
+      if (isFirefox) {
+        setIsMobileCompatible(false);
+        setError('Firefox has limited voice support. Please use Chrome, Safari, or Samsung Internet for the best experience.');
+        return;
+      }
+
+      console.log('✅ Mobile compatibility check passed');
+      setIsMobileCompatible(true);
+    };
+
+    checkMobileCompatibility();
+  }, []);
+
+  // Enhanced user gesture detection for mobile audio
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const enableAudioOnInteraction = () => {
+      console.log('📱 User interaction detected - enabling audio contexts');
+      
+      // Enable audio context for mobile
+      if (window.AudioContext || (window as any).webkitAudioContext) {
+        try {
+          const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+          const audioContext = new AudioContext();
+          if (audioContext.state === 'suspended') {
+            audioContext.resume();
+          }
+          audioContext.close(); // Just to test and close
+        } catch (error) {
+          console.log('Audio context setup:', error);
+        }
+      }
+
+      // Test speech synthesis
+      if (window.speechSynthesis) {
+        try {
+          window.speechSynthesis.getVoices(); // Trigger voice loading
+        } catch (error) {
+          console.log('Speech synthesis test:', error);
+        }
+      }
+
+      // ANDROID CHROME FIX: Pre-request microphone permissions
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        console.log('📱 Pre-requesting microphone for Android Chrome...');
+        navigator.mediaDevices.getUserMedia({ audio: true })
+          .then(stream => {
+            console.log('📱 Microphone pre-access successful');
+            // Immediately stop the stream since this is just for permission
+            stream.getTracks().forEach(track => track.stop());
+          })
+          .catch(error => {
+            console.log('📱 Microphone pre-access failed:', error);
+            // Don't show error yet, user hasn't actively tried to use voice
+          });
+      }
+    };
+
+    // Listen for first interaction when modal opens
+    const events = ['touchstart', 'click', 'keydown'];
+    events.forEach(event => {
+      document.addEventListener(event, enableAudioOnInteraction, { once: true, passive: true });
+    });
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, enableAudioOnInteraction);
+      });
+    };
+  }, [isOpen]);
+
+  // Add permission status tracking
+  const [hasTriedMicrophone, setHasTriedMicrophone] = useState(false);
+
   // STABLE initial messages - useMemo to prevent re-creation
   const initialMessages = useMemo<VoiceMessage[]>(() => {
     if (typeof window !== 'undefined') {
@@ -269,6 +380,12 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     console.log('🎤 Recognition manager available:', !!recognitionManagerRef.current);
     
     setError('');
+    setHasTriedMicrophone(true); // Track that user has tried to use microphone
+    
+    if (!isMobileCompatible) {
+      setError('Voice features are not supported on this device/browser combination. Please use Chrome or Safari.');
+      return;
+    }
     
     if (!recognitionManagerRef.current) {
       console.error('❌ Recognition manager not initialized');
@@ -285,7 +402,7 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       setHasStartedConversation(true);
       recognitionManagerRef.current.startListening();
     }
-  }, [isListening, isSpeaking, isEnding]);
+  }, [isListening, isSpeaking, isEnding, isMobileCompatible]);
 
   const clearChat = useCallback(() => {
     console.log('🧹 Clearing chat...');

@@ -481,7 +481,13 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
             initial={{ opacity: 0, scale: 0.9, y: 100 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 100 }}
-            className="fixed bottom-4 left-4 right-4 md:right-4 md:left-auto md:w-96 bg-white rounded-2xl shadow-2xl border overflow-hidden max-h-[85vh]"
+            className="fixed bottom-4 left-4 right-4 md:right-4 md:left-auto md:w-96 bg-white rounded-2xl shadow-2xl border overflow-hidden"
+            style={{ 
+              maxHeight: '85vh',
+              minHeight: '400px', // Prevent collapse
+              height: 'auto'
+            }}
+            layout // Add layout animation to prevent jumpy behavior
           >
             {/* Header */}
             <div className="relative bg-gradient-to-r from-[#4083b7] to-[#3474ac] text-white">

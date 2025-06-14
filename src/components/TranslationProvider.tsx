@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, Suspense } from 'react';
 import { useLocale } from 'next-intl';
 import { usePathname, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
@@ -24,21 +24,16 @@ interface TranslationProviderProps {
   children: React.ReactNode;
 }
 
-export default function TranslationProvider({ children }: TranslationProviderProps) {
-  const locale = useLocale();
+// Separate component that uses useSearchParams - wrapped in Suspense
+function NavigationHandler({ 
+  setIsNavigating, 
+  setIsTranslationsReady 
+}: { 
+  setIsNavigating: (value: boolean) => void;
+  setIsTranslationsReady: (value: boolean) => void;
+}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isTranslationsReady, setIsTranslationsReady] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
-
-  // Handle initial load
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsTranslationsReady(true);
-    }, 1200);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   // Handle route changes
   useEffect(() => {
@@ -51,7 +46,24 @@ export default function TranslationProvider({ children }: TranslationProviderPro
     }, 800); // Shorter delay for navigation
 
     return () => clearTimeout(timer);
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams, setIsNavigating, setIsTranslationsReady]);
+
+  return null;
+}
+
+export default function TranslationProvider({ children }: TranslationProviderProps) {
+  const locale = useLocale();
+  const [isTranslationsReady, setIsTranslationsReady] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  // Handle initial load
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsTranslationsReady(true);
+    }, 1200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const LoadingScreen = () => (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-white via-blue-50 to-lochmara-50 px-4">
@@ -164,21 +176,28 @@ export default function TranslationProvider({ children }: TranslationProviderPro
     </div>
   );
 
-  // Show loader during initial load or navigation
-  if (!isTranslationsReady) {
-    return <LoadingScreen />;
-  }
-
   return (
     <TranslationContext.Provider value={{ isTranslationsReady, locale, isNavigating }}>
-      <motion.div
-        key={pathname} // Key change triggers re-mount on route change
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-      >
-        {children}
-      </motion.div>
+      {/* Wrap the navigation handler in Suspense */}
+      <Suspense fallback={null}>
+        <NavigationHandler 
+          setIsNavigating={setIsNavigating}
+          setIsTranslationsReady={setIsTranslationsReady}
+        />
+      </Suspense>
+      
+      {/* Show loader during initial load or navigation */}
+      {!isTranslationsReady ? (
+        <LoadingScreen />
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          {children}
+        </motion.div>
+      )}
     </TranslationContext.Provider>
   );
 }

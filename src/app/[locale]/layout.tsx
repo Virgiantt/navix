@@ -2,6 +2,7 @@ import {notFound} from 'next/navigation';
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
 import { Space_Grotesk } from "next/font/google";
+import TranslationProvider from '@/components/TranslationProvider';
 
 const font = Space_Grotesk({
   subsets: ["latin"],
@@ -35,7 +36,9 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={`${font.className} antialiased`}>
         <NextIntlClientProvider messages={messages} locale={locale}>
-          {children}
+          <TranslationProvider>
+            {children}
+          </TranslationProvider>
         </NextIntlClientProvider>
       </body>
     </html>

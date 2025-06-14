@@ -3,12 +3,14 @@ import React from "react";
 
 import WordPullUp from "@/components/magicui/word-pull-up";
 import { useTranslations } from "../../hooks/useTranslations";
+import { useDelayedAnimation } from "../../hooks/useDelayedAnimation";
 import BoxRevealDemo from "../magicui/demo/Box-reveal-demo";
 import { AnimatedBeamMultipleOutputDemo } from "../magicui/demo/animated-beam-demo";
 
 const Process = () => {
   const { t, locale } = useTranslations();
   const isRTL = locale === "ar";
+  const { shouldAnimate } = useDelayedAnimation({ delay: 200 });
 
   // Get the title text based on locale
   const titleText = isRTL ? 
@@ -22,12 +24,18 @@ const Process = () => {
         dir={isRTL ? "rtl" : "ltr"}
       >
         <div className={`text-center mb-8`}>
-          <WordPullUp
-            className={`text-3xl md:text-5xl font-medium mb-4 ${
-              isRTL ? "text-center" : "text-center"
-            }`}
-            words={titleText}
-          />
+          {shouldAnimate ? (
+            <WordPullUp
+              className={`text-3xl md:text-5xl font-medium mb-4 ${
+                isRTL ? "text-center" : "text-center"
+              }`}
+              words={titleText}
+            />
+          ) : (
+            <h1 className={`text-3xl md:text-5xl font-medium mb-4 text-center opacity-0`}>
+              {titleText}
+            </h1>
+          )}
         </div>
         <p className={`py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 text-center`}>
           {t("Process.subtitle")}

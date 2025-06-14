@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-import { FlipWords } from "../ui/flip-words";
+import WordPullUp from "@/components/magicui/word-pull-up";
 import { useTranslations } from "../../hooks/useTranslations";
 import BoxRevealDemo from "../magicui/demo/Box-reveal-demo";
 import { AnimatedBeamMultipleOutputDemo } from "../magicui/demo/animated-beam-demo";
@@ -9,8 +9,11 @@ import { AnimatedBeamMultipleOutputDemo } from "../magicui/demo/animated-beam-de
 const Process = () => {
   const { t, locale } = useTranslations();
   const isRTL = locale === "ar";
-  
-  const words = t("Process.words");
+
+  // Get the title text based on locale
+  const titleText = isRTL ? 
+    t("Process.title.our") : 
+    `${t("Process.title.our")} ${t("Process.title.process")}`;
 
   return (
     <section id="process">
@@ -18,34 +21,15 @@ const Process = () => {
         className="md:px-0 mx-6 md:mx-auto"
         dir={isRTL ? "rtl" : "ltr"}
       >
-        <h1 className={`text-3xl md:text-5xl md:text-center font-medium flex flex-wrap items-center justify-center gap-x-2 mx-auto ${isRTL ? 'flex-row-reverse' : ''}`}>
-          {isRTL ? (
-            // Arabic: "عمليتنا [FlipWords]" (Our [Adjective] Process)
-            <>
-         
-              <span className="text-lochmara-500 inline-flex min-h-[4rem] items-center relative">
-                <FlipWords 
-                  words={words} 
-                  className="text-lochmara-500 px-2 text-center whitespace-nowrap" 
-                />
-              </span>
-              <span className="whitespace-nowrap">{t("Process.title.our")}</span>
-            </>
-          ) : (
-            // English/French: "Our [FlipWords] Process"
-            <>
-              <span className="whitespace-nowrap">{t("Process.title.our")}</span>
-              <span className="text-lochmara-500 inline-flex min-h-[4rem] items-center relative">
-                <FlipWords 
-                  words={words} 
-                  className="text-lochmara-500 px-2 text-center whitespace-nowrap" 
-                />
-              </span>
-              <span className="whitespace-nowrap">{t("Process.title.process")}</span>
-            </>
-          )}
-        </h1>
-        <p className={`py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 ${isRTL ? 'text-center' : 'text-center'}`}>
+        <div className={`text-center mb-8`}>
+          <WordPullUp
+            className={`text-3xl md:text-5xl font-medium mb-4 ${
+              isRTL ? "text-center" : "text-center"
+            }`}
+            words={titleText}
+          />
+        </div>
+        <p className={`py-2 md:w-1/2 mx-auto text-xl md:text-2xl text-gray-500 text-center`}>
           {t("Process.subtitle")}
         </p>
         <div className="flex flex-col md:flex-row items-center justify-center w-full md:w-1/2 mx-auto">

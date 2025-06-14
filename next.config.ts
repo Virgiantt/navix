@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from 'next-intl/plugin';
+import crypto from 'crypto';
 
 const withNextIntl = createNextIntlPlugin(
   // This is the default (also the `src` folder is supported out of the box)

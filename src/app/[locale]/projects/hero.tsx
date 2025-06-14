@@ -216,7 +216,7 @@ const ProjectHero = ({ locale }: ProjectHeroProps) => {
                   className={viewMode === 'grid' ? "mb-6 break-inside-avoid" : "mb-6"}
                   dir={isRTL ? "rtl" : "ltr"}
                 >
-                  <Link href={`/${locale}/projects/${slug}`} className="block w-full group">
+                  <Link href={`/projects/${slug}`} className="block w-full group">
                     <div className={`bg-white/70 backdrop-blur-sm rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group-hover:scale-[1.02] ${
                       viewMode === 'list' ? 'flex' : ''
                     }`}>

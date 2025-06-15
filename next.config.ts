@@ -10,7 +10,9 @@ const withNextIntl = createNextIntlPlugin(
 const nextConfig: NextConfig = {
   // Enable experimental features for better performance
   experimental: {
-    optimizePackageImports: ['framer-motion', 'lucide-react'],
+    optimizePackageImports: ['framer-motion', 'lucide-react', '@tsparticles/react', '@tsparticles/engine', '@tsparticles/slim'],
+    // Enable better code splitting
+    optimizeCss: true,
   },
 
   // Image optimization
@@ -113,15 +115,15 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Webpack optimizations
+  // Enhanced webpack optimizations for better code splitting
   webpack: (config, { dev, isServer }) => {
     // Optimize bundle size in production
     if (!dev && !isServer) {
+      // Enhanced code splitting configuration
       config.optimization.splitChunks = {
         chunks: 'all',
         cacheGroups: {
-          default: false,
-          vendors: false,
+          // Separate React framework
           framework: {
             chunks: 'all',
             name: 'framework',
@@ -129,11 +131,21 @@ const nextConfig: NextConfig = {
             priority: 40,
             enforce: true,
           },
+          
+          // Separate animation libraries (heavy)
+          animations: {
+            name: 'animations',
+            test: /[\\/]node_modules[\\/](framer-motion|gsap|@tsparticles)[\\/]/,
+            priority: 35,
+            enforce: true,
+          },
+          
+          // Separate utility libraries
           lib: {
-            test(module) {
+            test(module: any) {
               return module.size() > 160000 && /node_modules[/\\]/.test(module.identifier());
             },
-            name(module) {
+            name(module: any) {
               const hash = crypto.createHash('sha1');
               hash.update(module.libIdent ? module.libIdent({ context: __dirname }) : module.identifier());
               return hash.digest('hex').substring(0, 8);
@@ -142,14 +154,28 @@ const nextConfig: NextConfig = {
             minChunks: 1,
             reuseExistingChunk: true,
           },
+          
+          // Common chunks
           commons: {
             name: 'commons',
             minChunks: 2,
             priority: 20,
           },
+          
+          // Default chunk
+          default: {
+            minChunks: 2,
+            priority: 10,
+            reuseExistingChunk: true,
+          },
         },
       };
+      
+      // Tree shaking optimization
+      config.optimization.usedExports = true;
+      config.optimization.sideEffects = false;
     }
+    
     return config;
   },
 };

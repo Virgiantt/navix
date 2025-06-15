@@ -11,9 +11,9 @@
     "upsert-content": "ts-node --loader ts-node/esm src/scripts/upsertContentToPinecone.ts",
     "perf:test": "lighthouse http://localhost:3000 --output=html --output-path=./performance-report.html --chrome-flags=\"--headless\"",
     "perf:build": "npm run build && npm run start & sleep 5 && npm run perf:test",
-    "perf:ci": "lighthouse https://navigagency.tech --output=json --output-path=./lighthouse-report.json",
+    "perf:ci": "lighthouse https://navixagency.tech --output=json --output-path=./lighthouse-report.json",
     "perf:full": "node scripts/performance-test.js",
-    "perf:production": "lighthouse https://navigagency.tech --output=html --output-path=./production-report.html",
+    "perf:production": "lighthouse https://navixagency.tech --output=html --output-path=./production-report.html",
     "analyze": "npm run build && npx @next/bundle-analyzer"
   },
   "dependencies": {

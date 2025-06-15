@@ -32,6 +32,36 @@ const nextConfig: NextConfig = {
     ],
   },
 
+  // Add redirects to handle domain redirects at build time
+  async redirects() {
+    return [
+      // Redirect root domain to www with locale in one step
+      {
+        source: '/',
+        destination: 'https://www.navixagency.tech/en',
+        permanent: true,
+        has: [
+          {
+            type: 'host',
+            value: 'navixagency.tech',
+          },
+        ],
+      },
+      // Redirect any path from root domain to www
+      {
+        source: '/:path*',
+        destination: 'https://www.navixagency.tech/:path*',
+        permanent: true,
+        has: [
+          {
+            type: 'host',
+            value: 'navixagency.tech',
+          },
+        ],
+      },
+    ];
+  },
+
   typescript: {
     ignoreBuildErrors: true, // Ignore TypeScript errors
   },

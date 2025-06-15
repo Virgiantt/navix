@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { fetchProjects } from '@/services/projectService'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://navigagency.tech'
+  const baseUrl = 'https://navixagency.tech'
   const locales = ['en', 'fr', 'ar']
   
   // Main pages for each locale

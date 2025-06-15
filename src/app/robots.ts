@@ -20,7 +20,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/studio/'],
       },
     ],
-    sitemap: 'https://navigagency.tech/sitemap.xml',
-    host: 'https://navigagency.tech'
+    sitemap: 'https://navixagency.tech/sitemap.xml',
+    host: 'https://navixagency.tech'
   }
 }

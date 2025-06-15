@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
-import { fetchAllProjects } from '@/services/projectService'
+import { fetchProjects } from '@/services/projectService'
 
-export default async function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://navigagency.tech'
   const locales = ['en', 'fr', 'ar']
   
@@ -38,7 +38,7 @@ export default async function sitemap(): MetadataRoute.Sitemap {
 
   // Fetch real project slugs from CMS
   try {
-    const projects = await fetchAllProjects()
+    const projects = await fetchProjects()
     
     projects.forEach(project => {
       if (project.slug) {
@@ -61,6 +61,7 @@ export default async function sitemap(): MetadataRoute.Sitemap {
     })
   } catch (error) {
     console.error('Error fetching projects for sitemap:', error)
+    // Continue without project URLs if there's an error
   }
 
   return sitemap

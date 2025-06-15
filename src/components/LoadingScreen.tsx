@@ -1,64 +1,13 @@
-"use client";
-
-import React, { createContext, useContext, useState, useEffect, Suspense } from 'react';
-import { useLocale } from 'next-intl';
-import { usePathname, useSearchParams } from 'next/navigation';
+import React from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-interface TranslationContextType {
-  isTranslationsReady: boolean;
-  locale: string;
+interface LoadingScreenProps {
   isNavigating: boolean;
+  locale: string;
 }
 
-const TranslationContext = createContext<TranslationContextType>({
-  isTranslationsReady: false,
-  locale: 'en',
-  isNavigating: false
-});
-
-export const useTranslationReady = () => useContext(TranslationContext);
-
-interface TranslationProviderProps {
-  children: React.ReactNode;
-}
-
-// Separate component that uses useSearchParams - wrapped in Suspense
-function NavigationHandler({ 
-  setIsNavigating, 
-  setIsTranslationsReady 
-}: { 
-  setIsNavigating: (value: boolean) => void;
-  setIsTranslationsReady: (value: boolean) => void;
-}) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  // Handle route changes
-  useEffect(() => {
-    setIsNavigating(true);
-    setIsTranslationsReady(false);
-
-    const timer = setTimeout(() => {
-      setIsTranslationsReady(true);
-      setIsNavigating(false);
-    }, 800); // Shorter delay for navigation
-
-    return () => clearTimeout(timer);
-  }, [pathname, searchParams, setIsNavigating, setIsTranslationsReady]);
-
-  return null;
-}
-
-// Loading screen component
-function LoadingScreen({ 
-  isNavigating, 
-  locale 
-}: { 
-  isNavigating: boolean; 
-  locale: string; 
-}) {
+export default function LoadingScreen({ isNavigating, locale }: LoadingScreenProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-white via-blue-50 to-lochmara-50 px-4">
       {/* Mobile-optimized background pattern */}
@@ -168,54 +117,5 @@ function LoadingScreen({
         </p>
       </motion.div>
     </div>
-  );
-}
-
-export default function TranslationProvider({ children }: TranslationProviderProps) {
-  const locale = useLocale();
-  const [isTranslationsReady, setIsTranslationsReady] = useState(true); // Start as true to prevent SSR loading screen
-  const [isNavigating, setIsNavigating] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  // Handle hydration detection
-  useEffect(() => {
-    // This effect only runs on the client after hydration
-    setIsHydrated(true);
-    setIsTranslationsReady(false); // Now show loading on client only
-    
-    const timer = setTimeout(() => {
-      setIsTranslationsReady(true);
-    }, 1200);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  return (
-    <TranslationContext.Provider value={{ 
-      isTranslationsReady: isHydrated ? isTranslationsReady : true, 
-      locale, 
-      isNavigating 
-    }}>
-      {/* Wrap the navigation handler in Suspense */}
-      <Suspense fallback={null}>
-        <NavigationHandler 
-          setIsNavigating={setIsNavigating}
-          setIsTranslationsReady={setIsTranslationsReady}
-        />
-      </Suspense>
-      
-      {/* Only show loading screen after hydration and when not ready */}
-      {isHydrated && !isTranslationsReady ? (
-        <LoadingScreen isNavigating={isNavigating} locale={locale} />
-      ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {children}
-        </motion.div>
-      )}
-    </TranslationContext.Provider>
   );
 }

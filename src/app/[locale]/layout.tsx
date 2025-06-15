@@ -59,7 +59,7 @@ export async function generateMetadata({
       address: false,
       telephone: false,
     },
-    metadataBase: new URL('https://navigagency.tech'),
+    metadataBase: new URL('https://navixagency.tech'),
     alternates: {
       canonical: `/${locale}`,
       languages: {
@@ -71,7 +71,7 @@ export async function generateMetadata({
     openGraph: {
       title: data.title,
       description: data.description,
-      url: `https://navigagency.tech/${locale}`,
+      url: `https://navixagency.tech/${locale}`,
       siteName: 'Navix Agency',
       locale: locale,
       type: 'website',
@@ -127,8 +127,8 @@ export default async function LocaleLayout({
     "@type": "DigitalMarketingAgency",
     "name": "Navix Agency",
     "alternateName": "Navix Digital Growth Agency",
-    "url": "https://navigagency.tech",
-    "logo": "https://navigagency.tech/logo_navix.png",
+    "url": "https://navixagency.tech",
+    "logo": "https://navixagency.tech/logo_navix.png",
     "description": "Digital marketing agency specializing in web development, marketing strategy, video production, and branding solutions for business growth.",
     "address": {
       "@type": "PostalAddress",
@@ -189,7 +189,7 @@ export default async function LocaleLayout({
             __html: JSON.stringify(structuredData),
           }}
         />
-        <link rel="canonical" href={`https://navigagency.tech/${locale}`} />
+        <link rel="canonical" href={`https://navixagency.tech/${locale}`} />
         {/* Preconnect to external domains */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

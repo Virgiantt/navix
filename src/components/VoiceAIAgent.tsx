@@ -371,7 +371,8 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     onListeningEnd: handleListeningEnd,
     onTranscript: handleVoiceInput,
     onError: handleError,
-    onAudioLevel: handleAudioLevel
+    onAudioLevel: handleAudioLevel,
+    onRestartListening // Added missing parameter
   });
 
   const handleMicButtonClick = useCallback(() => {

@@ -267,42 +267,28 @@ export default function useVoiceRecognitionManager({
           console.log('🎤 Interim:', interimTranscript);
         }
         
-        // ANDROID FIX: Aggressive transcript deduplication
+        // ANDROID FIX: Simplified duplicate detection - less aggressive
         if (finalTranscript.trim()) {
           const cleanTranscript = finalTranscript.trim();
           const now = Date.now();
           
-          // Check if this is a duplicate transcript
-          const isDuplicate = (
+          // Only check for exact duplicates within a very short time window
+          const isRecentDuplicate = (
             cleanTranscript === lastTranscriptRef.current &&
-            now - lastTranscriptTimeRef.current < 2000 // Within 2 seconds
-          ) || isProcessingTranscriptRef.current;
+            now - lastTranscriptTimeRef.current < 500 // Only 500ms window
+          );
           
-          if (isDuplicate) {
-            console.log('🚫 DUPLICATE transcript detected, ignoring:', cleanTranscript);
+          if (isRecentDuplicate) {
+            console.log('🚫 Recent duplicate detected, ignoring:', cleanTranscript);
             return;
           }
           
-          // Check if we're already processing a transcript
-          if (isProcessingTranscriptRef.current) {
-            console.log('🚫 Already processing transcript, ignoring:', cleanTranscript);
-            return;
-          }
-          
-          // Mark as processing and store for deduplication
-          isProcessingTranscriptRef.current = true;
+          // Store for next comparison
           lastTranscriptRef.current = cleanTranscript;
           lastTranscriptTimeRef.current = now;
           
-          console.log('✅ Final transcript (deduplicated):', cleanTranscript);
-          
-          // Process transcript and reset processing flag after a delay
+          console.log('✅ Final transcript:', cleanTranscript);
           onTranscript(cleanTranscript);
-          
-          // Reset processing flag after transcript is handled
-          setTimeout(() => {
-            isProcessingTranscriptRef.current = false;
-          }, 1000);
         }
       };
 

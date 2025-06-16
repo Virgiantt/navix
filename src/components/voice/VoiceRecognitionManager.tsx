@@ -373,10 +373,23 @@ export default function useVoiceRecognitionManager({
 
   // MOBILE-OPTIMIZED start listening with enhanced permission handling
   const startListening = useCallback(async () => {
-    // CRITICAL: Check if already active
+    // CRITICAL: Aggressive check to prevent multiple instances
     if (isRecognitionActiveRef.current) {
       console.log('🚫 Recognition already active, skipping start');
       return;
+    }
+
+    // ANDROID FIX: Stop any existing recognition first
+    if (recognitionRef.current) {
+      console.log('🛑 Stopping existing recognition before start...');
+      try {
+        recognitionRef.current.stop();
+        recognitionRef.current = null; // Clear the reference
+      } catch (error) {
+        console.log('Error stopping existing recognition:', error);
+      }
+      // Wait for cleanup
+      await new Promise(resolve => setTimeout(resolve, 300));
     }
 
     if (isEnding || isSpeaking) {
@@ -391,13 +404,12 @@ export default function useVoiceRecognitionManager({
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
-    
-    // Initialize recognition if needed
-    if (!recognitionRef.current) {
-      initializeRecognition();
-      // Wait for initialization
-      await new Promise(resolve => setTimeout(resolve, 500));
-    }
+
+    // ANDROID FIX: Force recreation of recognition instance
+    recognitionRef.current = null;
+    initializeRecognition();
+    // Wait for proper initialization
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     // ANDROID CHROME FIX: Request microphone permissions explicitly
     try {

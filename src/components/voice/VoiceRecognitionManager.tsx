@@ -56,6 +56,7 @@ interface VoiceRecognitionManagerProps {
   onTranscript: (transcript: string) => void;
   onError: (error: string) => void;
   onAudioLevel: (level: number) => void;
+  onRestartListening: () => void; // Added missing parameter
 }
 
 export default function useVoiceRecognitionManager({
@@ -68,7 +69,8 @@ export default function useVoiceRecognitionManager({
   onListeningEnd,
   onTranscript,
   onError,
-  onAudioLevel
+  onAudioLevel,
+  onRestartListening // Added missing parameter
 }: VoiceRecognitionManagerProps) {
   
   const recognitionRef = useRef<SpeechRecognitionInterface | null>(null);
@@ -175,15 +177,28 @@ export default function useVoiceRecognitionManager({
       recognition.interimResults = true; // Show real-time results
       recognition.maxAlternatives = 1; // Reduce processing overhead
       
-      // Enhanced language support for mobile
+      // Enhanced language support for mobile with regional variants
       const languageMap = {
-        'ar': 'ar-SA',
+        'ar': 'ar-SA', // Saudi Arabic for better recognition
         'fr': 'fr-FR', 
         'en': 'en-US'
       };
       recognition.lang = languageMap[locale as keyof typeof languageMap] || 'en-US';
       
-      console.log('🎤 Recognition configured with language:', recognition.lang);
+      // MOBILE ACCURACY FIX: Add alternative language fallbacks
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isAndroid = userAgent.includes('android');
+      const isIOS = /iphone|ipad|ipod/.test(userAgent);
+      
+      if (isAndroid && locale === 'en') {
+        // Android works better with generic English sometimes
+        recognition.lang = 'en';
+      } else if (isIOS && locale === 'en') {
+        // iOS prefers specific regional variants
+        recognition.lang = 'en-US';
+      }
+      
+      console.log('🎤 Recognition configured with language:', recognition.lang, 'for platform:', isAndroid ? 'Android' : isIOS ? 'iOS' : 'Desktop');
 
       // Enhanced event handlers for mobile reliability
       recognition.onstart = () => {
@@ -305,7 +320,36 @@ export default function useVoiceRecognitionManager({
         if (silenceTimeoutRef.current) {
           clearTimeout(silenceTimeoutRef.current);
         }
+        
+        // ANDROID CHROME FIX: Enhanced restart logic
+        const userAgent = navigator.userAgent.toLowerCase();
+        const isAndroid = userAgent.includes('android');
+        const isChrome = userAgent.includes('chrome');
+        
+        console.log('🎤 onend - Platform:', { isAndroid, isChrome, conversationActive, autoListenMode, isEnding, isSpeaking });
+        
+        // Call the original onListeningEnd
         onListeningEnd();
+        
+        // CRITICAL: Auto-restart for Android with proper timing
+        if (isAndroid && isChrome && conversationActive && autoListenMode && !isEnding && !isSpeaking) {
+          console.log('🔄 Android Chrome auto-restart triggered from onend');
+          // Longer delay specifically for Android Chrome
+          setTimeout(() => {
+            if (!isRecognitionActiveRef.current && !isEnding && !isSpeaking && conversationActive) {
+              console.log('🔄 Executing Android restart...');
+              // Clear any existing recognition instance for clean restart
+              recognitionRef.current = null;
+              // Use the parent's restart function with a small delay
+              setTimeout(() => {
+                if (!isRecognitionActiveRef.current) {
+                  console.log('🔄 Final Android restart attempt');
+                  onRestartListening();
+                }
+              }, 500);
+            }
+          }, 1500); // Increased delay for Android stability
+        }
       };
 
       // Additional mobile-specific events

@@ -227,13 +227,8 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
 
   const onRestartListening = useCallback(() => {
     if (!isEnding && conversationActive && recognitionManagerRef.current) {
-      console.log('🔄 Main component requesting mobile-optimized restart...');
-      // Add a small delay to ensure previous operations are complete
-      setTimeout(() => {
-        if (!isEnding && conversationActive && recognitionManagerRef.current) {
-          recognitionManagerRef.current.restartListening();
-        }
-      }, 200);
+      console.log('🔄 Audio manager requesting restart...');
+      recognitionManagerRef.current.restartListening();
     }
   }, [isEnding, conversationActive]);
 
@@ -405,13 +400,7 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       console.log('🎤 Starting listening...');
       setConversationActive(true);
       setHasStartedConversation(true);
-      
-      // MOBILE FIX: Ensure clean state before starting
-      setTimeout(() => {
-        if (recognitionManagerRef.current) {
-          recognitionManagerRef.current.startListening();
-        }
-      }, 100);
+      recognitionManagerRef.current.startListening();
     }
   }, [isListening, isSpeaking, isEnding, isMobileCompatible]);
 

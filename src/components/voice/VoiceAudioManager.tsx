@@ -131,7 +131,11 @@ export default function useVoiceAudioManager({
         onSpeakingEnd();
         isPlayingRef.current = false;
         if (!isGoodbye) {
-          setTimeout(() => onRestartListening(), 800);
+          // MOBILE FIX: Longer delay for restart after OpenAI TTS
+          setTimeout(() => {
+            console.log('🔊 Triggering mobile-optimized restart after OpenAI TTS');
+            onRestartListening();
+          }, 1000);
         }
         resolve();
       };
@@ -213,7 +217,11 @@ export default function useVoiceAudioManager({
           onSpeakingEnd();
           isPlayingRef.current = false;
           if (!isGoodbye) {
-            setTimeout(() => onRestartListening(), 800);
+            // MOBILE FIX: Longer delay before restart to ensure mobile browser is ready
+            setTimeout(() => {
+              console.log('🔊 Triggering mobile-optimized restart after TTS');
+              onRestartListening();
+            }, 1200);
           }
           resolve();
         };
@@ -223,7 +231,11 @@ export default function useVoiceAudioManager({
           onSpeakingEnd();
           isPlayingRef.current = false;
           if (!isGoodbye) {
-            setTimeout(() => onRestartListening(), 1000);
+            // MOBILE FIX: Restart even on TTS error with longer delay
+            setTimeout(() => {
+              console.log('🔊 Triggering restart after TTS error');
+              onRestartListening();
+            }, 1500);
           }
           resolve();
         };

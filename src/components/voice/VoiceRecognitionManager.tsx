@@ -267,6 +267,7 @@ export default function useVoiceRecognitionManager({
         switch (event.error) {
           case 'no-speech':
             console.log('📱 No speech detected');
+            // Don't show error for no-speech on mobile - it's normal
             onListeningEnd();
             break;
           case 'aborted':
@@ -283,13 +284,38 @@ export default function useVoiceRecognitionManager({
             onError("🎤 Speech service not available. Please try again later.");
             break;
           default:
-            // Retry on unknown errors (common on mobile)
-            if (initializationAttempts.current < 3) {
-              console.log('🔄 Retrying recognition initialization...');
+            // MOBILE FIX: Force complete restart on unknown errors
+            console.log('🔄 Unknown error - forcing complete restart for mobile...');
+            
+            // Clean up everything
+            if (recognitionRef.current) {
+              try {
+                recognitionRef.current.abort();
+              } catch (e) {
+                console.log('Error cleanup:', e);
+              }
+              recognitionRef.current = null;
+            }
+            
+            if (streamRef.current) {
+              streamRef.current.getTracks().forEach(track => track.stop());
+              streamRef.current = null;
+            }
+            
+            // Reset all states
+            isRecognitionActiveRef.current = false;
+            isInitializingRef.current = false;
+            initializationAttempts.current = 0;
+            
+            // Only retry if still in conversation and not too many attempts
+            if (conversationActive && initializationAttempts.current < 3) {
+              console.log('🔄 Retrying with fresh mobile setup...');
               setTimeout(() => {
-                recognitionRef.current = null;
-                initializeRecognition();
-              }, 1000);
+                if (!isEnding && !isSpeaking && conversationActive) {
+                  initializeRecognition();
+                  setTimeout(() => startListening(), 1000);
+                }
+              }, 2000);
               return;
             } else {
               onError(`🎤 Voice recognition error: ${event.error}. Please refresh and try again.`);
@@ -325,7 +351,7 @@ export default function useVoiceRecognitionManager({
       isInitializingRef.current = false;
       onError("🎤 Could not initialize voice recognition. Please refresh and try again.");
     }
-  }, [locale, checkBrowserCompatibility, onListeningStart, onListeningEnd, onTranscript, onError]);
+  }, [locale, checkBrowserCompatibility, onListeningStart, onListeningEnd, onTranscript, onError, conversationActive, isEnding, isSpeaking]);
 
   // MOBILE-OPTIMIZED start listening with enhanced permission handling
   const startListening = useCallback(async () => {
@@ -348,59 +374,62 @@ export default function useVoiceRecognitionManager({
       window.speechSynthesis.cancel();
     }
     
-    // Initialize recognition if needed
-    if (!recognitionRef.current) {
+    // MOBILE FIX: Always recreate recognition for mobile browsers
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /iphone|ipad|ipod|android/.test(userAgent);
+    
+    if (isMobile || !recognitionRef.current) {
+      console.log('📱 Mobile detected or no recognition - creating fresh instance');
+      // Clean up existing recognition first
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {
+          console.log('Previous recognition cleanup:', e);
+        }
+        recognitionRef.current = null;
+      }
+      
       initializeRecognition();
       // Wait for initialization
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 800));
     }
     
     // ANDROID CHROME FIX: Request microphone permissions explicitly
     try {
-      console.log('📱 Requesting microphone permissions explicitly for Android...');
+      console.log('📱 Requesting microphone permissions explicitly...');
       
-      // Check if permissions API is available
-      if (navigator.permissions) {
-        const micPermission = await navigator.permissions.query({ name: 'microphone' as PermissionName });
-        console.log('🎤 Current microphone permission:', micPermission.state);
-        
-        if (micPermission.state === 'denied') {
-          onError("🎤 Microphone access was denied. Please go to your browser settings and allow microphone access for this site.");
-          return;
-        }
+      // Always request fresh stream for mobile browsers
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
       }
 
-      // Enhanced microphone request with Android Chrome compatibility
-      console.log('📱 Requesting microphone with Android Chrome optimizations...');
+      // Enhanced microphone request with mobile compatibility
+      console.log('📱 Requesting fresh microphone stream...');
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
-          // Android Chrome specific optimizations
+          // Mobile optimized constraints
           sampleRate: { ideal: 16000, min: 8000, max: 48000 },
           channelCount: { ideal: 1, max: 2 },
-          latency: { ideal: 0.1, max: 0.5 },
-          // Additional Android compatibility
-          googEchoCancellation: true,
-          googAutoGainControl: true,
-          googNoiseSuppression: true,
-          googHighpassFilter: true,
-          googTypingNoiseDetection: true
-        } as any // Cast to any to allow Chrome-specific properties
+          latency: { ideal: 0.1, max: 0.5 }
+        }
       });
 
-      console.log('🎤 Microphone access granted successfully');
+      console.log('🎤 Fresh microphone access granted successfully');
       streamRef.current = stream;
 
-      // Enhanced audio context setup for Android
+      // Enhanced audio context setup for mobile
       if (!audioContextRef.current || audioContextRef.current.state === 'closed') {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioContextRef.current = new AudioContext();
         
-        // Android requires user interaction to resume audio context
+        // Mobile requires user interaction to resume audio context
         if (audioContextRef.current.state === 'suspended') {
-          console.log('📱 Resuming audio context for Android...');
+          console.log('📱 Resuming audio context...');
           await audioContextRef.current.resume();
         }
         
@@ -413,7 +442,22 @@ export default function useVoiceRecognitionManager({
         microphoneRef.current.connect(analyserRef.current);
         
         startAudioVisualization();
-        console.log('🎤 Android audio setup completed successfully');
+        console.log('🎤 Mobile audio setup completed successfully');
+      } else {
+        // Reuse existing audio context but update source
+        if (audioContextRef.current.state === 'suspended') {
+          await audioContextRef.current.resume();
+        }
+        
+        if (microphoneRef.current) {
+          microphoneRef.current.disconnect();
+        }
+        
+        if (analyserRef.current) {
+          microphoneRef.current = audioContextRef.current.createMediaStreamSource(stream);
+          microphoneRef.current.connect(analyserRef.current);
+          startAudioVisualization();
+        }
       }
       
     } catch (error) {
@@ -449,12 +493,19 @@ export default function useVoiceRecognitionManager({
       return;
     }
     
-    // Start recognition with Android Chrome optimizations
+    // Start recognition with mobile optimizations
     if (recognitionRef.current && !isRecognitionActiveRef.current && !isEnding) {
       try {
-        // Longer delay for Android Chrome stability
-        await new Promise(resolve => setTimeout(resolve, 500));
-        console.log('🎤 Starting speech recognition for Android Chrome...');
+        // MOBILE FIX: Longer delay for mobile stability
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Double-check state before starting
+        if (isRecognitionActiveRef.current || isEnding || isSpeaking) {
+          console.log('🚫 State changed during delay, aborting start');
+          return;
+        }
+        
+        console.log('🎤 Starting speech recognition...');
         recognitionRef.current.start();
       } catch (error) {
         console.error('Failed to start recognition:', error);
@@ -463,10 +514,30 @@ export default function useVoiceRecognitionManager({
         
         if (error instanceof Error) {
           if (error.name === 'InvalidStateError') {
-            // Common on Android - try to restart
-            console.log('🔄 Android recognition restart needed...');
-            recognitionRef.current = null;
-            setTimeout(() => startListening(), 1500);
+            // Common on mobile - force complete restart
+            console.log('🔄 Mobile recognition restart needed - force cleanup...');
+            
+            // Clean up everything
+            if (recognitionRef.current) {
+              try {
+                recognitionRef.current.abort();
+              } catch (e) {
+                console.log('Abort error:', e);
+              }
+              recognitionRef.current = null;
+            }
+            
+            if (streamRef.current) {
+              streamRef.current.getTracks().forEach(track => track.stop());
+              streamRef.current = null;
+            }
+            
+            // Retry with fresh setup
+            setTimeout(() => {
+              if (!isEnding && !isSpeaking) {
+                startListening();
+              }
+            }, 2000);
           } else if (error.name === 'NotAllowedError') {
             onError("🎤 Speech recognition permission denied. Please check your browser settings.");
           } else {
@@ -475,10 +546,17 @@ export default function useVoiceRecognitionManager({
         }
       }
     }
-  }, [locale, isEnding, isSpeaking, initializeRecognition, startAudioVisualization, onListeningStart, onListeningEnd, onTranscript, onError]);
+  }, [locale, isEnding, isSpeaking, initializeRecognition, startAudioVisualization, onListeningStart, onListeningEnd, onTranscript, onError, conversationActive]);
 
   const stopListening = useCallback(() => {
     console.log('🛑 Stopping listening...');
+    
+    // Clear silence timeout
+    if (silenceTimeoutRef.current) {
+      clearTimeout(silenceTimeoutRef.current);
+      silenceTimeoutRef.current = null;
+    }
+    
     if (recognitionRef.current && isRecognitionActiveRef.current) {
       try {
         recognitionRef.current.stop();
@@ -486,19 +564,43 @@ export default function useVoiceRecognitionManager({
         console.error('Error stopping recognition:', err);
       }
     }
+    
     isRecognitionActiveRef.current = false;
     onListeningEnd();
   }, [onListeningEnd]);
 
   const restartListening = useCallback(() => {
     if (!isEnding && !isSpeaking && conversationActive && autoListenMode) {
-      console.log('🎤 RESTART: Scheduling restart...');
-      setTimeout(() => {
-        if (!isRecognitionActiveRef.current && !isEnding && !isSpeaking) {
-          console.log('🎤 RESTART: Executing now!');
-          startListening();
+      console.log('🎤 RESTART: Scheduling mobile-optimized restart...');
+      
+      // MOBILE FIX: Always clean up before restart
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {
+          console.log('Restart cleanup:', e);
         }
-      }, 1500); // Longer delay for mobile stability
+        recognitionRef.current = null;
+      }
+      
+      // Clean up audio streams
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop());
+        streamRef.current = null;
+      }
+      
+      // Reset states
+      isRecognitionActiveRef.current = false;
+      isInitializingRef.current = false;
+      
+      setTimeout(() => {
+        if (!isRecognitionActiveRef.current && !isEnding && !isSpeaking && conversationActive) {
+          console.log('🎤 RESTART: Executing fresh start for mobile!');
+          startListening();
+        } else {
+          console.log('🎤 RESTART: Skipped due to state change');
+        }
+      }, 2000); // Longer delay for mobile stability
     }
   }, [isEnding, isSpeaking, conversationActive, autoListenMode, startListening]);
 

@@ -3,12 +3,12 @@ import React from 'react'
 
 import { ShootingStarsAndStarsBackgroundDemo } from '../magicui/demo/shooting-stars-demo'
 
-const Guarentees = () => {
+const Guarantees = () => {
   return (
-    <section id="guarentees">
+    <section id="guarantees">
       <ShootingStarsAndStarsBackgroundDemo />
     </section>
   )
 }
 
-export default Guarentees
+export default Guarantees

@@ -11,7 +11,7 @@ import VoiceMessagesList, { VoiceMessage } from "./voice/VoiceMessagesList";
 import VoiceStatusIndicator from "./voice/VoiceStatusIndicator";
 import VoiceControls from "./voice/VoiceControls";
 import useVoiceAudioManager from "./voice/VoiceAudioManager";
-import useVoiceRecognitionManager from "./voice/VoiceRecognitionManager";
+import useWebRTCVoiceManager from "./voice/WebRTCVoiceManager"; // NEW: WebRTC instead of old recognition
 
 interface VoiceAIAgentProps {
   isOpen: boolean;
@@ -24,21 +24,17 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
   const { locale } = useTranslations();
   const isRTL = locale === "ar";
 
-  // ALL STATE HOOKS FIRST - FIXED ORDER
+  // CLEANED UP STATE HOOKS - Only essential ones
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessingAudio, setIsProcessingAudio] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [error, setError] = useState<string>('');
   const [conversationActive, setConversationActive] = useState(false);
-  const [hasStartedConversation, setHasStartedConversation] = useState(false);
   const [isEnding, setIsEnding] = useState(false);
   
-  // MOBILE-FIRST: Add compatibility detection and enhanced initialization
-  const [isMobileCompatible, setIsMobileCompatible] = useState(true);
-  const [deviceInfo, setDeviceInfo] = useState<string>('');
-
   // Check mobile compatibility on mount
   useEffect(() => {
     const checkMobileCompatibility = () => {
@@ -53,7 +49,6 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       const deviceType = isIOS ? 'iOS' : isAndroid ? 'Android' : 'Desktop';
       const browserType = isChrome ? 'Chrome' : isSafari ? 'Safari' : isFirefox ? 'Firefox' : isSamsung ? 'Samsung Internet' : 'Unknown';
       
-      setDeviceInfo(`${deviceType} - ${browserType}`);
       console.log('📱 Device detection:', { deviceType, browserType, userAgent });
 
       // Check for speech recognition support
@@ -61,7 +56,6 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       const hasSpeechSynthesis = !!window.speechSynthesis;
 
       if (!hasSpeechRecognition) {
-        setIsMobileCompatible(false);
         setError(`Voice recognition not supported on ${deviceType} ${browserType}. Please use Chrome or Safari.`);
         return;
       }
@@ -72,13 +66,11 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
 
       // Firefox has poor mobile speech recognition
       if (isFirefox) {
-        setIsMobileCompatible(false);
         setError('Firefox has limited voice support. Please use Chrome, Safari, or Samsung Internet for the best experience.');
         return;
       }
 
       console.log('✅ Mobile compatibility check passed');
-      setIsMobileCompatible(true);
     };
 
     checkMobileCompatibility();
@@ -92,9 +84,9 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       console.log('📱 User interaction detected - enabling audio contexts');
       
       // Enable audio context for mobile
-      if (window.AudioContext || (window as any).webkitAudioContext) {
+      if (window.AudioContext || (window as unknown as any).webkitAudioContext) {
         try {
-          const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+          const AudioContext = window.AudioContext || (window as unknown as any).webkitAudioContext;
           const audioContext = new AudioContext();
           if (audioContext.state === 'suspended') {
             audioContext.resume();
@@ -142,9 +134,6 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       });
     };
   }, [isOpen]);
-
-  // Add permission status tracking
-  const [hasTriedMicrophone, setHasTriedMicrophone] = useState(false);
 
   // STABLE initial messages - useMemo to prevent re-creation
   const initialMessages = useMemo<VoiceMessage[]>(() => {
@@ -213,6 +202,11 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     setAudioLevel(level);
   }, []);
 
+  const handleAudioProcessing = useCallback((isProcessing: boolean) => {
+    console.log('🔄 Audio processing:', isProcessing);
+    setIsProcessingAudio(isProcessing);
+  }, []);
+
   const checkForGoodbye = useCallback((transcript: string) => {
     const goodbyePhrases = [
       'bye', 'goodbye', 'good bye', 'see you', 'talk to you later', 
@@ -266,21 +260,13 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     setTimeout(() => {
       console.log('👋 Conversation ended, closing...');
       setConversationActive(false);
-      setHasStartedConversation(false);
       setIsEnding(false);
       onClose();
     }, 2000);
   }, [locale, audioManager, onClose]);
 
   const handleVoiceInput = useCallback(async (transcript: string) => {
-    console.log('🎤 Processing voice input:', transcript);
-    
-    // ANDROID FIX: Prevent double processing
-    if (isProcessing) {
-      console.log('🚫 Already processing, ignoring duplicate transcript');
-      return;
-    }
-    
+    console.log('⚡ FAST Processing:', transcript);
     setIsListening(false);
     setIsProcessing(true);
     
@@ -295,7 +281,7 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     setMessages(prev => [...prev, userMessage]);
 
     if (checkForGoodbye(transcript)) {
-      console.log('👋 Goodbye detected, ending conversation...');
+      console.log('👋 Goodbye detected');
       setIsProcessing(false);
       await endConversation();
       return;
@@ -303,32 +289,33 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
 
     try {
       const baseUrl = window.location.origin;
-      const apiUrl = `${baseUrl}/api/voice-chat`; // FIXED: Use voice-chat endpoint
+      const apiUrl = `${baseUrl}/api/voice-chat`;
       
+      // SPEED: Reduced request payload for faster processing
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           message: transcript,
           context: context,
-          history: messages.slice(-8),
+          history: messages.slice(-3), // REDUCED from 8 to 3 for speed
           locale: locale,
           isVoiceChat: true
-        })
+        }),
+        signal: AbortSignal.timeout(15000) // 15 second timeout for speed
       });
 
       if (!response.ok) {
-        throw new Error(`API responded with status: ${response.status}`);
+        throw new Error(`API error: ${response.status}`);
       }
       
       const data = await response.json();
       
       const aiMessage: VoiceMessage = {
         role: 'assistant',
-        content: data.reply || "I'm sorry, I didn't understand that. Could you try again?", // FIXED: Use 'reply' field
+        content: data.reply || "I didn't catch that. Try again.",
         timestamp: Date.now(),
         id: 'assistant-' + Date.now(),
         type: 'text'
@@ -337,19 +324,19 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       setMessages(prev => [...prev, aiMessage]);
       setIsProcessing(false);
       
-      const responseContent = data.reply || aiMessage.content; // FIXED: Use 'reply' field
+      const responseContent = data.reply || aiMessage.content;
       
       if (checkForGoodbye(responseContent)) {
-        console.log('👋 AI goodbye detected, ending conversation...');
+        console.log('👋 AI goodbye detected');
         await endConversation();
       } else {
-        console.log('🔊 Playing AI response with Navi voice...');
+        console.log('🔊 INSTANT AI response...');
         await audioManager.speakWithElevenLabs(responseContent, false);
       }
       
     } catch (error) {
       console.error('Voice processing error:', error);
-      const errorMessage = "Sorry, I'm having trouble processing that right now. Please try again.";
+      const errorMessage = "Try again."; // SIMPLIFIED error message
       setError(errorMessage);
       
       const errorVoiceMessage: VoiceMessage = {
@@ -362,24 +349,22 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       setMessages(prev => [...prev, errorVoiceMessage]);
       setIsProcessing(false);
       
-      console.log('🔊 Playing error message with female voice...');
       await audioManager.speakWithElevenLabs(errorMessage, false);
     }
-  }, [context, locale, messages, checkForGoodbye, endConversation, audioManager, isProcessing]); // Added isProcessing dependency
+  }, [context, locale, messages, checkForGoodbye, endConversation, audioManager]);
 
   // Initialize recognition manager - ALWAYS CALLED IN SAME ORDER
-  const recognitionManager = useVoiceRecognitionManager({
+  const recognitionManager = useWebRTCVoiceManager({
     locale,
     isEnding,
     isSpeaking,
     conversationActive,
-    autoListenMode: true,
     onListeningStart: handleListeningStart,
     onListeningEnd: handleListeningEnd,
     onTranscript: handleVoiceInput,
     onError: handleError,
     onAudioLevel: handleAudioLevel,
-    onRestartListening // Added missing parameter
+    onAudioProcessing: handleAudioProcessing // NEW: Audio processing callback
   });
 
   const handleMicButtonClick = useCallback(() => {
@@ -388,12 +373,6 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     console.log('🎤 Recognition manager available:', !!recognitionManagerRef.current);
     
     setError('');
-    setHasTriedMicrophone(true); // Track that user has tried to use microphone
-    
-    if (!isMobileCompatible) {
-      setError('Voice features are not supported on this device/browser combination. Please use Chrome or Safari.');
-      return;
-    }
     
     if (!recognitionManagerRef.current) {
       console.error('❌ Recognition manager not initialized');
@@ -407,10 +386,9 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     } else {
       console.log('🎤 Starting listening...');
       setConversationActive(true);
-      setHasStartedConversation(true);
       recognitionManagerRef.current.startListening();
     }
-  }, [isListening, isSpeaking, isEnding, isMobileCompatible]);
+  }, [isListening, isSpeaking, isEnding]);
 
   const clearChat = useCallback(() => {
     console.log('🧹 Clearing chat...');
@@ -423,7 +401,6 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     };
     setMessages([welcomeMessage]);
     setConversationActive(false);
-    setHasStartedConversation(false);
     setIsEnding(false);
     
     if (typeof window !== 'undefined') {
@@ -439,6 +416,31 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
     console.log('👋 Manual goodbye clicked');
     await endConversation();
   }, [endConversation]);
+
+  // Immediate close handler
+  const handleCloseImmediate = useCallback(() => {
+    console.log('❌ Immediate close - stopping everything...');
+    
+    // Stop microphone immediately
+    if (recognitionManagerRef.current) {
+      recognitionManagerRef.current.cleanup();
+    }
+    
+    // Stop any speaking immediately
+    audioManager.stopSpeaking();
+    
+    // Reset all states immediately
+    setIsListening(false);
+    setIsSpeaking(false);
+    setIsProcessing(false);
+    setIsEnding(false);
+    setConversationActive(false);
+    setError('');
+    setAudioLevel(0);
+    
+    // Close immediately - no goodbye, no delay
+    onClose();
+  }, [audioManager, onClose]);
 
   // ALL EFFECTS LAST - FIXED ORDER
   // Store recognitionManager in ref - STABLE with fewer re-renders
@@ -507,7 +509,7 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
                   <div>
                     <h3 className="font-bold text-sm">NAvi Assistant</h3>
                     <p className="text-xs text-white/90">
-                      {isEnding ? "Ending conversation..." : "Auto-listen active"}
+                      {isEnding ? "Ending conversation..." : "Voice AI Ready"}
                     </p>
                   </div>
                 </div>
@@ -520,7 +522,7 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
                     <Minimize2 className="w-3 h-3" />
                   </button>
                   <button
-                    onClick={onClose}
+                    onClick={handleCloseImmediate}
                     className="p-2 hover:bg-white/20 rounded-lg transition-colors"
                     title="Close"
                   >
@@ -547,6 +549,7 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
                   isSpeaking={isSpeaking}
                   isEnding={isEnding}
                   audioLevel={audioLevel}
+                  isProcessingAudio={isProcessingAudio} // NEW: Pass audio processing state
                 />
               </div>
 
@@ -570,7 +573,7 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
                     ? "Speak now..." 
                     : isSpeaking
                       ? "NAvi is speaking..."
-                      : "Auto-listen active - start talking!"
+                      : "Ready to talk"
                 }
               </p>
             </div>

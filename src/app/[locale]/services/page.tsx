@@ -1,19 +1,14 @@
-"use client"
-
-import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
 
-export default function ServicesPage({ params }: { params: { locale: string } }) {
-  useEffect(() => {
-    // Redirect to homepage services section
-    redirect(`/${params.locale}/#services`)
-  }, [params.locale])
-
-  return null
+export default async function ServicesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  // Server-side redirect to homepage services section
+  redirect(`/${locale}/#services`)
 }
 
 // Add metadata for SEO
-export async function generateMetadata({ params }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
   return {
     title: 'Our Services - Navix Agency',
     description: 'Discover our comprehensive digital marketing and growth services.',
@@ -22,7 +17,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       follow: true,
     },
     alternates: {
-      canonical: `https://navixagency.tech/${params.locale}/#services`,
+      canonical: `https://navixagency.tech/${locale}/#services`,
       languages: {
         'en': 'https://navixagency.tech/en/#services',
         'fr': 'https://navixagency.tech/fr/#services', 

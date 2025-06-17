@@ -1,19 +1,14 @@
-"use client"
-
-import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
 
-export default function GuaranteesPage({ params }: { params: { locale: string } }) {
-  useEffect(() => {
-    // Redirect to homepage guarantees section
-    redirect(`/${params.locale}/#guarantees`)
-  }, [params.locale])
-
-  return null
+export default async function GuaranteesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  // Server-side redirect to homepage guarantees section
+  redirect(`/${locale}/#guarantees`)
 }
 
 // Add metadata for SEO
-export async function generateMetadata({ params }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
   return {
     title: 'Our Guarantees - Navix Agency',
     description: 'Learn about our quality guarantees and commitments to delivering exceptional results.',
@@ -22,7 +17,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       follow: true,
     },
     alternates: {
-      canonical: `https://navixagency.tech/${params.locale}/#guarantees`,
+      canonical: `https://navixagency.tech/${locale}/#guarantees`,
       languages: {
         'en': 'https://navixagency.tech/en/#guarantees',
         'fr': 'https://navixagency.tech/fr/#guarantees', 

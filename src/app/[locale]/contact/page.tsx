@@ -1,19 +1,14 @@
-"use client"
-
-import { useEffect } from 'react'
 import { redirect } from 'next/navigation'
 
-export default function ContactPage({ params }: { params: { locale: string } }) {
-  useEffect(() => {
-    // Redirect to meeting page (which is the actual contact page)
-    redirect(`/${params.locale}/meeting`)
-  }, [params.locale])
-
-  return null
+export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  // Server-side redirect to meeting page (which is the actual contact page)
+  redirect(`/${locale}/meeting`)
 }
 
 // Add metadata for SEO
-export async function generateMetadata({ params }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
   return {
     title: 'Contact Us - Navix Agency',
     description: 'Get in touch with Navix Agency for your digital marketing needs.',
@@ -22,7 +17,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
       follow: true,
     },
     alternates: {
-      canonical: `https://navixagency.tech/${params.locale}/meeting`,
+      canonical: `https://navixagency.tech/${locale}/meeting`,
       languages: {
         'en': 'https://navixagency.tech/en/meeting',
         'fr': 'https://navixagency.tech/fr/meeting', 

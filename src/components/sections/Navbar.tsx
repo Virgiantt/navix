@@ -156,7 +156,7 @@ const Navbar = () => {
                 {t("Navigation.services")}
               </button>
               <button
-                onClick={() => handleSectionNavigation("guarentees")}
+                onClick={() => handleSectionNavigation("guarantees")}
                 className="text-gray-700 hover:text-lochmara-500 transition-colors"
               >
                 {t("Navigation.guarantees")}
@@ -229,7 +229,7 @@ const Navbar = () => {
                 {t("Navigation.services")}
               </button>
               <button
-                onClick={() => handleSectionNavigation("guarentees")}
+                onClick={() => handleSectionNavigation("guarantees")}
                 className="text-gray-700 hover:text-lochmara-500 cursor-pointer text-left"
               >
                 {t("Navigation.guarantees")}

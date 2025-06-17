@@ -124,11 +124,17 @@ export default async function LocaleLayout({
   // Structured Data for Google
   const structuredData = {
     "@context": "https://schema.org",
-    "@type": "DigitalMarketingAgency",
+    "@type": "Organization",
+    "@id": "https://navixagency.tech/#organization",
     "name": "Navix Agency",
     "alternateName": "Navix Digital Growth Agency",
     "url": "https://navixagency.tech",
-    "logo": "https://navixagency.tech/logo_navix.png",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://navixagency.tech/logo_navix.png",
+      "width": 400,
+      "height": 400
+    },
     "description": "Digital marketing agency specializing in web development, marketing strategy, video production, and branding solutions for business growth.",
     "address": {
       "@type": "PostalAddress",
@@ -137,7 +143,8 @@ export default async function LocaleLayout({
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
-      "email": "contact@navixagency.tech"
+      "email": "contact@navixagency.tech",
+      "telephone": "+21650699724"
     },
     "sameAs": [
       "https://linkedin.com/company/navix-agency",
@@ -151,32 +158,43 @@ export default async function LocaleLayout({
         "longitude": "-7.0926"
       }
     },
-    "services": [
-      {
-        "@type": "Service",
-        "name": "Web Development",
-        "description": "Full-stack Next.js development with conversion optimization"
-      },
-      {
-        "@type": "Service", 
-        "name": "Digital Marketing Strategy",
-        "description": "Data-driven marketing campaigns with 150%+ ROI increases"
-      },
-      {
-        "@type": "Service",
-        "name": "Video Production",
-        "description": "4K video editing, motion graphics, and viral content creation"
-      },
-      {
-        "@type": "Service",
-        "name": "Brand Design",
-        "description": "Complete brand identity and visual system design"
-      }
-    ],
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "50"
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Digital Marketing Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Web Development",
+            "description": "Full-stack Next.js development with conversion optimization"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service", 
+            "name": "Digital Marketing Strategy",
+            "description": "Data-driven marketing campaigns with 150%+ ROI increases"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Video Production",
+            "description": "4K video editing, motion graphics, and viral content creation"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Brand Design",
+            "description": "Complete brand identity and visual system design"
+          }
+        }
+      ]
     }
   };
 

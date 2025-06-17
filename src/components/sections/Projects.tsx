@@ -213,7 +213,7 @@ export function Projects() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: index * 0.1 }}
       >
-        <Link href={`/${locale}/projects/${project.slug}`}>
+        <Link href={`/projects/${project.slug}`}>
           <div className="relative h-full w-full">
             {/* Image */}
             <div className="relative h-full w-full overflow-hidden rounded-xl">

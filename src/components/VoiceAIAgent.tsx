@@ -11,7 +11,7 @@ import VoiceMessagesList, { VoiceMessage } from "./voice/VoiceMessagesList";
 import VoiceStatusIndicator from "./voice/VoiceStatusIndicator";
 import VoiceControls from "./voice/VoiceControls";
 import useVoiceAudioManager from "./voice/VoiceAudioManager";
-import useVoiceRecognitionManager from "./voice/VoiceRecognitionManager";
+import useWebRTCVoiceManager from "./voice/WebRTCVoiceManager"; // NEW: WebRTC instead of old recognition
 
 interface VoiceAIAgentProps {
   isOpen: boolean;
@@ -92,9 +92,9 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       console.log('📱 User interaction detected - enabling audio contexts');
       
       // Enable audio context for mobile
-      if (window.AudioContext || (window as any).webkitAudioContext) {
+      if (window.AudioContext || (window as unknown as any).webkitAudioContext) {
         try {
-          const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+          const AudioContext = window.AudioContext || (window as unknown as any).webkitAudioContext;
           const audioContext = new AudioContext();
           if (audioContext.state === 'suspended') {
             audioContext.resume();
@@ -274,13 +274,6 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
 
   const handleVoiceInput = useCallback(async (transcript: string) => {
     console.log('🎤 Processing voice input:', transcript);
-    
-    // ANDROID FIX: Prevent double processing
-    if (isProcessing) {
-      console.log('🚫 Already processing, ignoring duplicate transcript');
-      return;
-    }
-    
     setIsListening(false);
     setIsProcessing(true);
     
@@ -365,21 +358,19 @@ export default function VoiceAIAgent({ isOpen, onClose, context = 'general', per
       console.log('🔊 Playing error message with female voice...');
       await audioManager.speakWithElevenLabs(errorMessage, false);
     }
-  }, [context, locale, messages, checkForGoodbye, endConversation, audioManager, isProcessing]); // Added isProcessing dependency
+  }, [context, locale, messages, checkForGoodbye, endConversation, audioManager]);
 
   // Initialize recognition manager - ALWAYS CALLED IN SAME ORDER
-  const recognitionManager = useVoiceRecognitionManager({
+  const recognitionManager = useWebRTCVoiceManager({
     locale,
     isEnding,
     isSpeaking,
     conversationActive,
-    autoListenMode: true,
     onListeningStart: handleListeningStart,
     onListeningEnd: handleListeningEnd,
     onTranscript: handleVoiceInput,
     onError: handleError,
-    onAudioLevel: handleAudioLevel,
-    onRestartListening // Added missing parameter
+    onAudioLevel: handleAudioLevel
   });
 
   const handleMicButtonClick = useCallback(() => {

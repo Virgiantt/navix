@@ -84,11 +84,6 @@ export default function useVoiceRecognitionManager({
   const lastSpeechTimeRef = useRef<number>(0);
   const initializationAttempts = useRef(0);
   const isInitializingRef = useRef(false);
-  
-  // ANDROID FIX: Add transcript deduplication
-  const lastTranscriptRef = useRef<string>('');
-  const lastTranscriptTimeRef = useRef<number>(0);
-  const isProcessingTranscriptRef = useRef(false);
 
   // Check browser compatibility with detailed mobile detection
   const checkBrowserCompatibility = useCallback(() => {
@@ -267,28 +262,10 @@ export default function useVoiceRecognitionManager({
           console.log('🎤 Interim:', interimTranscript);
         }
         
-        // ANDROID FIX: Simplified duplicate detection - less aggressive
+        // Process final transcript
         if (finalTranscript.trim()) {
-          const cleanTranscript = finalTranscript.trim();
-          const now = Date.now();
-          
-          // Only check for exact duplicates within a very short time window
-          const isRecentDuplicate = (
-            cleanTranscript === lastTranscriptRef.current &&
-            now - lastTranscriptTimeRef.current < 500 // Only 500ms window
-          );
-          
-          if (isRecentDuplicate) {
-            console.log('🚫 Recent duplicate detected, ignoring:', cleanTranscript);
-            return;
-          }
-          
-          // Store for next comparison
-          lastTranscriptRef.current = cleanTranscript;
-          lastTranscriptTimeRef.current = now;
-          
-          console.log('✅ Final transcript:', cleanTranscript);
-          onTranscript(cleanTranscript);
+          console.log('✅ Final transcript:', finalTranscript);
+          onTranscript(finalTranscript.trim());
         }
       };
 
@@ -396,23 +373,10 @@ export default function useVoiceRecognitionManager({
 
   // MOBILE-OPTIMIZED start listening with enhanced permission handling
   const startListening = useCallback(async () => {
-    // CRITICAL: Aggressive check to prevent multiple instances
+    // CRITICAL: Check if already active
     if (isRecognitionActiveRef.current) {
       console.log('🚫 Recognition already active, skipping start');
       return;
-    }
-
-    // ANDROID FIX: Stop any existing recognition first
-    if (recognitionRef.current) {
-      console.log('🛑 Stopping existing recognition before start...');
-      try {
-        recognitionRef.current.stop();
-        recognitionRef.current = null; // Clear the reference
-      } catch (error) {
-        console.log('Error stopping existing recognition:', error);
-      }
-      // Wait for cleanup
-      await new Promise(resolve => setTimeout(resolve, 300));
     }
 
     if (isEnding || isSpeaking) {
@@ -427,12 +391,13 @@ export default function useVoiceRecognitionManager({
     if (typeof window !== 'undefined' && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
-
-    // ANDROID FIX: Force recreation of recognition instance
-    recognitionRef.current = null;
-    initializeRecognition();
-    // Wait for proper initialization
-    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Initialize recognition if needed
+    if (!recognitionRef.current) {
+      initializeRecognition();
+      // Wait for initialization
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
     
     // ANDROID CHROME FIX: Request microphone permissions explicitly
     try {

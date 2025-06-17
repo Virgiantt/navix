@@ -20,32 +20,48 @@ export const getSimilarProjects = async (projectId: string): Promise<Project[]> 
       'slug',
       '_id',
     ]);
-    if (!project) return [];
+    if (!project) {
+      return [];
+    }
 
     // Generate embedding for the project
     const embeddingText = `Project: ${project.title}\nDescription: ${project.description}`;
+    
     const embeddingRes = await openai.embeddings.create({
       model: 'text-embedding-ada-002',
       input: embeddingText,
     });
     const embedding = embeddingRes.data[0].embedding;
 
-    // Query Pinecone for similar projects
+    // Query Pinecone for similar projects ONLY
     const index = getPineconeIndex();
+    
     const queryRes = await index.query({
       vector: embedding,
       topK: 4,
       includeMetadata: true,
-      filter: { projectId: { $ne: projectId } },
+      filter: { 
+        type: 'project', // Only get projects, not clients
+        projectId: { $ne: projectId } // Exclude the current project
+      },
     });
 
-    // Get the IDs of the top matches (excluding itself)
+    // Get the project IDs from the top matches
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const matchIds = (queryRes.matches || [])
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .filter((match: any) => match.score && match.score > 0.7)
+      .filter((match: any) => {
+        return match.score && match.score > 0.5 && match.metadata?.type === 'project';
+      })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .map((match: any) => match.id)
+      .map((match: any) => {
+        // Extract the actual project ID from the Pinecone ID
+        // Pinecone IDs are like "project_<actualProjectId>"
+        const actualProjectId = match.id.startsWith('project_') 
+          ? match.id.replace('project_', '') 
+          : match.id;
+        return actualProjectId;
+      })
       .slice(0, 3);
 
     // Fetch the full project documents from Sanity, including firstImage
@@ -71,9 +87,10 @@ export const getSimilarProjects = async (projectId: string): Promise<Project[]> 
         similarProjects.push(fullProject);
       }
     }
+    
     return similarProjects;
   } catch (error) {
-    console.error('Recommendation error:', error);
+    console.error('❌ Recommendation error:', error);
     return [];
   }
 };

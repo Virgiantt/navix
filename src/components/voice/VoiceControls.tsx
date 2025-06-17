@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Mic, MicOff, VolumeX, Trash2, Phone } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Mic, MicOff, Square, Trash2, Phone } from "lucide-react";
 
 interface VoiceControlsProps {
   isListening: boolean;
@@ -25,61 +24,71 @@ export default function VoiceControls({
   onGoodbyeClick,
   onStopSpeaking
 }: VoiceControlsProps) {
+  
+  // ULTRA SIMPLIFIED: Just the essential buttons for SPEED
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2">
+    <div className="flex items-center justify-between gap-2">
+      
+      {/* PRIMARY ACTION: Mic Button - Large and Prominent */}
+      <button
+        onClick={onMicClick}
+        disabled={isProcessing || isEnding}
+        className={`
+          flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all duration-200
+          ${isListening 
+            ? 'bg-red-500 hover:bg-red-600 text-white' 
+            : 'bg-[#4083b7] hover:bg-[#3474ac] text-white'
+          }
+          ${(isProcessing || isEnding) ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}
+        `}
+      >
+        {isListening ? (
+          <>
+            <MicOff className="w-5 h-5" />
+            <span>Stop</span>
+          </>
+        ) : (
+          <>
+            <Mic className="w-5 h-5" />
+            <span>Talk</span>
+          </>
+        )}
+      </button>
+
+      {/* SECONDARY ACTIONS: Small buttons */}
+      <div className="flex gap-1">
+        
+        {/* Stop Speaking - Only show when speaking */}
+        {isSpeaking && (
+          <button
+            onClick={onStopSpeaking}
+            className="p-2 bg-orange-100 hover:bg-orange-200 text-orange-600 rounded-lg transition-colors"
+            title="Stop Speaking"
+          >
+            <Square className="w-4 h-4" />
+          </button>
+        )}
+
         {/* Clear Chat */}
         <button
           onClick={onClearChat}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          title="Clear chat"
-          disabled={isEnding}
+          disabled={isProcessing || isEnding}
+          className="p-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg transition-colors disabled:opacity-50"
+          title="Clear Chat"
         >
-          <Trash2 className="w-4 h-4 text-gray-500" />
+          <Trash2 className="w-4 h-4" />
         </button>
 
-        {/* Goodbye Button */}
+        {/* End Conversation */}
         <button
           onClick={onGoodbyeClick}
-          className="p-2 hover:bg-red-100 rounded-lg transition-colors"
-          title="End conversation"
-          disabled={isEnding}
+          disabled={isProcessing || isEnding}
+          className="p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-lg transition-colors disabled:opacity-50"
+          title="End Conversation"
         >
-          <Phone className="w-4 h-4 text-red-500 transform rotate-[135deg]" />
+          <Phone className="w-4 h-4" />
         </button>
-
-        {/* Auto-Listen Status (always on) */}
-        <div className="flex items-center gap-1">
-          <div className="w-8 h-4 bg-[#4083b7] rounded-full">
-            <div className="w-3 h-3 bg-white rounded-full translate-x-4 transition-transform" />
-          </div>
-          <span className="text-xs text-gray-600">Auto</span>
-        </div>
       </div>
-
-      {/* Main Mic Button */}
-      <motion.button
-        onClick={onMicClick}
-        disabled={isProcessing || isEnding}
-        className={`w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 disabled:opacity-50 ${
-          isListening
-            ? 'bg-red-500 shadow-red-500/30 scale-110'
-            : isSpeaking
-            ? 'bg-green-500 shadow-green-500/30'
-            : 'bg-[#4083b7] shadow-[#4083b7]/30 hover:bg-[#3474ac]'
-        }`}
-        whileTap={{ scale: 0.95 }}
-      >
-        <AnimatePresence mode="wait">
-          {isListening ? (
-            <MicOff className="w-5 h-5 text-white" />
-          ) : isSpeaking ? (
-            <VolumeX className="w-5 h-5 text-white" onClick={onStopSpeaking} />
-          ) : (
-            <Mic className="w-5 h-5 text-white" />
-          )}
-        </AnimatePresence>
-      </motion.button>
     </div>
   );
 }

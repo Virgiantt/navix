@@ -12,6 +12,7 @@ interface WebRTCVoiceManagerProps {
   onTranscript: (transcript: string) => void;
   onError: (error: string) => void;
   onAudioLevel: (level: number) => void;
+  onAudioProcessing?: (isProcessing: boolean) => void; // NEW: Audio processing callback
 }
 
 export default function useWebRTCVoiceManager({
@@ -23,9 +24,11 @@ export default function useWebRTCVoiceManager({
   onListeningEnd,
   onTranscript,
   onError,
-  onAudioLevel
+  onAudioLevel,
+  onAudioProcessing
 }: WebRTCVoiceManagerProps) {
   
+  // CLEANED UP REFS - Only essential ones
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -36,6 +39,7 @@ export default function useWebRTCVoiceManager({
   const animationFrameRef = useRef<number>(0);
   const processingRef = useRef(false);
 
+  // SIMPLIFIED STATES - Only what we need
   const [isListening, setIsListening] = useState(false);
 
   // Audio level monitoring for visual feedback
@@ -73,61 +77,48 @@ export default function useWebRTCVoiceManager({
     }
 
     try {
-      console.log('🎤 Starting WebRTC recording...');
+      console.log('🎤 Starting FAST WebRTC recording...');
       processingRef.current = true;
       
-      // Get microphone access with optimized settings
+      // Get microphone access with ULTRA-FAST settings
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: {
           echoCancellation: true,
           noiseSuppression: true,
           autoGainControl: true,
-          sampleRate: 16000, // Optimal for speech recognition
-          channelCount: 1     // Mono audio
+          sampleRate: 16000,     // Optimal for speech
+          channelCount: 1,       // Mono for speed
+          latency: 0.01          // ULTRA LOW LATENCY
         }
       });
 
       streamRef.current = stream;
 
-      // Set up audio visualization
+      // Minimal audio context setup for SPEED
       audioContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       
-      // Resume audio context if suspended (mobile requirement)
       if (audioContextRef.current.state === 'suspended') {
         await audioContextRef.current.resume();
       }
       
       const source = audioContextRef.current.createMediaStreamSource(stream);
       analyserRef.current = audioContextRef.current.createAnalyser();
-      analyserRef.current.fftSize = 256;
-      analyserRef.current.smoothingTimeConstant = 0.8;
+      analyserRef.current.fftSize = 128;        // REDUCED for speed
+      analyserRef.current.smoothingTimeConstant = 0.3; // FASTER response
       source.connect(analyserRef.current);
       
-      // Configure MediaRecorder with optimal settings
-      const mimeTypes = [
-        'audio/webm;codecs=opus',
-        'audio/webm',
-        'audio/mp4',
-        'audio/wav'
-      ];
+      // Use FASTEST compression format
+      const fastMimeType = 'audio/webm;codecs=opus'; // Best compression/speed ratio
       
-      let selectedMimeType = '';
-      for (const mimeType of mimeTypes) {
-        if (MediaRecorder.isTypeSupported(mimeType)) {
-          selectedMimeType = mimeType;
-          break;
-        }
+      if (!MediaRecorder.isTypeSupported(fastMimeType)) {
+        throw new Error('Optimal audio format not supported');
       }
       
-      if (!selectedMimeType) {
-        throw new Error('No supported audio format found');
-      }
-      
-      console.log('🎤 Using MIME type:', selectedMimeType);
+      console.log('🎤 Using FAST format:', fastMimeType);
 
       const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: selectedMimeType,
-        audioBitsPerSecond: 16000 // Optimal for speech
+        mimeType: fastMimeType,
+        audioBitsPerSecond: 12000 // REDUCED for faster processing
       });
 
       mediaRecorderRef.current = mediaRecorder;
@@ -136,14 +127,13 @@ export default function useWebRTCVoiceManager({
       mediaRecorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           audioChunksRef.current.push(event.data);
-          console.log('🎤 Audio chunk received:', event.data.size, 'bytes');
         }
       };
 
       mediaRecorder.onstop = async () => {
-        console.log('🎤 Recording stopped, processing audio...');
+        console.log('🎤 Recording stopped, INSTANT processing...');
         if (audioChunksRef.current.length > 0) {
-          const audioBlob = new Blob(audioChunksRef.current, { type: selectedMimeType });
+          const audioBlob = new Blob(audioChunksRef.current, { type: fastMimeType });
           await processAudioBlob(audioBlob);
         }
         audioChunksRef.current = [];
@@ -155,23 +145,23 @@ export default function useWebRTCVoiceManager({
         stopListening();
       };
 
-      // Start recording
+      // Start recording IMMEDIATELY
       mediaRecorder.start();
       isRecordingRef.current = true;
       setIsListening(true);
       onListeningStart();
       processingRef.current = false;
       
-      // Start audio visualization
+      // Start lightweight visualization
       startAudioVisualization();
 
-      // Set up silence detection timeout
+      // MUCH SHORTER timeout for speed
       silenceTimeoutRef.current = setTimeout(() => {
-        console.log('⏰ Silence timeout - stopping recording');
+        console.log('⏰ FAST timeout - stopping recording');
         stopListening();
-      }, 8000); // 8 seconds of recording time
+      }, 3000); // REDUCED from 8 to 3 seconds
 
-      console.log('✅ WebRTC recording started successfully');
+      console.log('✅ LIGHTNING FAST WebRTC started');
 
     } catch (error) {
       console.error('❌ Failed to start recording:', error);
@@ -180,19 +170,16 @@ export default function useWebRTCVoiceManager({
       if (error instanceof Error) {
         switch (error.name) {
           case 'NotAllowedError':
-            onError('🎤 Microphone access denied. Please allow microphone access and try again.');
+            onError('🎤 Please allow microphone access');
             break;
           case 'NotFoundError':
-            onError('🎤 No microphone found. Please check your device settings.');
-            break;
-          case 'NotSupportedError':
-            onError('🎤 Audio recording not supported on this device.');
+            onError('🎤 No microphone found');
             break;
           default:
-            onError('🎤 Microphone access failed. Please check permissions and try again.');
+            onError('🎤 Recording failed');
         }
       } else {
-        onError('🎤 Failed to start voice recording. Please try again.');
+        onError('🎤 Recording failed');
       }
       cleanup();
     }
@@ -230,24 +217,23 @@ export default function useWebRTCVoiceManager({
 
   const processAudioBlob = useCallback(async (audioBlob: Blob) => {
     if (processingRef.current) {
-      console.log('🚫 Already processing audio, skipping...');
+      console.log('🚫 Already processing, skip');
       return;
     }
 
     try {
       processingRef.current = true;
-      console.log('🔄 Processing audio blob:', audioBlob.size, 'bytes');
+      onAudioProcessing?.(true); // Notify audio processing started
+      console.log('🚀 FAST processing:', audioBlob.size, 'bytes');
       
-      // Skip very small audio files (likely silence)
-      if (audioBlob.size < 1000) { // Less than 1KB
-        console.log('🔇 Audio too small, likely silence');
+      // Skip tiny files IMMEDIATELY
+      if (audioBlob.size < 800) { // Increased threshold slightly
+        console.log('🔇 Too small, restarting...');
         processingRef.current = false;
+        onAudioProcessing?.(false); // Notify audio processing ended
         
-        // Auto-restart listening for continuous conversation
         if (conversationActive && !isEnding && !isSpeaking) {
-          setTimeout(() => {
-            restartListening();
-          }, 1000);
+          setTimeout(restartListening, 500); // FASTER restart
         }
         return;
       }
@@ -256,59 +242,56 @@ export default function useWebRTCVoiceManager({
       formData.append('audio', audioBlob, `speech_${Date.now()}.webm`);
       formData.append('language', locale);
 
-      console.log('📤 Sending audio to speech-to-text API...');
+      console.log('📤 INSTANT API call...');
 
+      // FAST API call with shorter timeout
       const response = await fetch('/api/speech-to-text', {
         method: 'POST',
-        body: formData
+        body: formData,
+        signal: AbortSignal.timeout(10000) // 10 second timeout
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        throw new Error(`API error ${response.status}: ${errorData.error || 'Speech recognition failed'}`);
+        const errorData = await response.json().catch(() => ({ error: 'API error' }));
+        throw new Error(`${response.status}: ${errorData.error || 'Recognition failed'}`);
       }
 
       const result = await response.json();
       
       if (result.transcript && result.transcript.trim()) {
-        console.log('✅ Transcription successful:', result.transcript);
+        console.log('✅ FAST transcription:', result.transcript);
         onTranscript(result.transcript.trim());
       } else {
-        console.log('🔇 No speech detected in audio');
-        // Don't show error for silence - just restart listening
+        console.log('🔇 No speech, restarting...');
         if (conversationActive && !isEnding && !isSpeaking) {
-          setTimeout(() => {
-            restartListening();
-          }, 1000);
+          setTimeout(restartListening, 500);
         }
       }
 
     } catch (error) {
-      console.error('❌ Audio processing failed:', error);
-      onError('Speech processing failed. Please try again.');
+      console.error('❌ Processing failed:', error);
+      onError('Processing failed. Try again.');
     } finally {
       processingRef.current = false;
+      onAudioProcessing?.(false); // Notify audio processing ended
       
-      // Close audio context after processing
+      // FAST cleanup
       if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
         audioContextRef.current.close();
         audioContextRef.current = null;
       }
 
-      // Stop media stream
       if (streamRef.current) {
         streamRef.current.getTracks().forEach(track => track.stop());
         streamRef.current = null;
       }
     }
-  }, [locale, onTranscript, onError, conversationActive, isEnding, isSpeaking]);
+  }, [locale, onTranscript, onError, conversationActive, isEnding, isSpeaking, onAudioProcessing]);
 
   const restartListening = useCallback(() => {
     if (!isEnding && conversationActive && !isSpeaking && !processingRef.current) {
-      console.log('🔄 Restarting WebRTC listening...');
-      setTimeout(() => {
-        startListening();
-      }, 500);
+      console.log('🔄 INSTANT restart...');
+      setTimeout(startListening, 300); // MUCH FASTER restart
     }
   }, [isEnding, conversationActive, isSpeaking, startListening]);
 
@@ -350,15 +333,15 @@ export default function useWebRTCVoiceManager({
     onAudioLevel(0);
   }, [onListeningEnd, onAudioLevel]);
 
-  // Auto-restart listening when AI finishes speaking
-  useEffect(() => {
-    if (!isSpeaking && conversationActive && !isEnding && !isRecordingRef.current && !processingRef.current) {
-      console.log('🔄 AI finished speaking - auto-restarting listening...');
-      setTimeout(() => {
-        startListening();
-      }, 1000); // 1 second delay for smooth transition
-    }
-  }, [isSpeaking, conversationActive, isEnding, startListening]);
+  // Auto-restart listening when AI finishes speaking - COMMENTED OUT FOR MANUAL CONTROL
+  // useEffect(() => {
+  //   if (!isSpeaking && conversationActive && !isEnding && !isRecordingRef.current && !processingRef.current) {
+  //     console.log('🔄 AI finished - INSTANT restart...');
+  //     setTimeout(() => {
+  //       startListening();
+  //     }, 500); // REDUCED from 1000ms to 500ms for instant feel
+  //   }
+  // }, [isSpeaking, conversationActive, isEnding, startListening]);
 
   return {
     startListening,

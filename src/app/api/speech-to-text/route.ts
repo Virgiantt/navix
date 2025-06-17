@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
-export const maxDuration = 30; // 30 seconds max execution time
+export const maxDuration = 15; // REDUCED to 15 seconds for speed
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,42 +13,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No audio file provided' }, { status: 400 });
     }
 
-    console.log('🎤 Processing audio:', audioFile.size, 'bytes, language:', language);
+    console.log('🚀 FAST Processing:', audioFile.size, 'bytes');
 
     const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
-      console.error('Missing OPENAI_API_KEY for speech recognition');
-      return NextResponse.json({ error: 'Speech recognition service unavailable' }, { status: 503 });
+      console.error('Missing OPENAI_API_KEY');
+      return NextResponse.json({ error: 'Service unavailable' }, { status: 503 });
     }
 
-    // Convert language codes for Whisper
-    const whisperLanguageMap: { [key: string]: string } = {
-      'en-US': 'en',
-      'en': 'en',
-      'fr-FR': 'fr', 
-      'fr': 'fr',
-      'ar-SA': 'ar',
-      'ar': 'ar'
-    };
-    
-    const whisperLanguage = whisperLanguageMap[language] || 'en';
+    // SPEED OPTIMIZATION: Skip very small files instantly
+    if (audioFile.size < 500) {
+      console.log('🔇 Audio too small, returning empty');
+      return NextResponse.json({ transcript: '', confidence: 0 });
+    }
 
-    // Prepare form data for Whisper API
+    // ULTRA FAST language mapping - just use base language
+    const whisperLanguage = language.split('-')[0]; // 'en', 'fr', 'ar'
+
+    // Minimal form data for MAXIMUM SPEED
     const whisperFormData = new FormData();
     whisperFormData.append('file', audioFile);
     whisperFormData.append('model', 'whisper-1');
     whisperFormData.append('language', whisperLanguage);
     whisperFormData.append('response_format', 'json');
-    whisperFormData.append('temperature', '0'); // More deterministic results
+    whisperFormData.append('temperature', '0'); // Most deterministic = fastest
 
-    console.log('🔄 Sending to Whisper API with language:', whisperLanguage);
+    console.log('⚡ INSTANT Whisper call...');
 
-    // Call OpenAI Whisper API with timeout
+    // SPEED: Much shorter timeout for faster failures
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
-      console.log('⏰ Whisper API timeout');
+      console.log('⏰ API timeout');
       controller.abort();
-    }, 25000); // 25 second timeout
+    }, 12000); // REDUCED from 25 to 12 seconds
 
     const whisperResponse = await fetch('https://api.openai.com/v1/audio/transcriptions', {
       method: 'POST',
@@ -62,38 +59,28 @@ export async function POST(request: NextRequest) {
     clearTimeout(timeoutId);
 
     if (!whisperResponse.ok) {
-      const errorText = await whisperResponse.text();
-      console.error('Whisper API error:', whisperResponse.status, errorText);
+      console.error('Whisper error:', whisperResponse.status);
       return NextResponse.json({ 
-        error: `Speech recognition failed: ${whisperResponse.status}`,
-        details: errorText
+        error: 'Recognition failed'
       }, { status: 500 });
     }
 
     const whisperResult = await whisperResponse.json();
-    console.log('✅ Whisper transcription:', whisperResult.text);
+    console.log('⚡ INSTANT result:', whisperResult.text);
     
-    // Return the transcription
+    // Return immediately with minimal payload
     return NextResponse.json({ 
       transcript: whisperResult.text.trim(),
-      confidence: 0.95, // Whisper is very accurate
-      language: whisperLanguage,
-      duration: audioFile.size // Rough estimate
+      confidence: 0.95
     });
 
   } catch (error) {
-    console.error('Speech-to-text error:', error);
+    console.error('Speech error:', error);
     
-    if (error instanceof Error) {
-      if (error.name === 'AbortError') {
-        console.log('🔊 Speech recognition request timeout');
-        return NextResponse.json({ error: 'Speech recognition timeout' }, { status: 408 });
-      }
+    if (error instanceof Error && error.name === 'AbortError') {
+      return NextResponse.json({ error: 'Timeout' }, { status: 408 });
     }
     
-    return NextResponse.json({ 
-      error: 'Speech recognition failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    return NextResponse.json({ error: 'Recognition failed' }, { status: 500 });
   }
 }

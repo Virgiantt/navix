@@ -31,13 +31,16 @@ const LanguageSwitcher = () => {
     const segments = pathname.split('/');
     const currentPathLocale = segments[1];
     
-    // Check if current path starts with a locale
+    // Check if current path starts with a locale, and get the path without locale
     const pathWithoutLocale = languages.some(lang => lang.code === currentPathLocale)
-      ? '/' + segments.slice(2).join('/')
+      ? '/' + segments.slice(2).join('/') // Remove the locale segment
       : pathname;
     
-    // Navigate to the new locale path
-    const newPath = `/${newLocale}${pathWithoutLocale === '/' ? '' : pathWithoutLocale}`;
+    // Clean the path - remove any leading slashes and ensure proper formatting
+    const cleanPath = pathWithoutLocale === '/' || pathWithoutLocale === '' ? '' : pathWithoutLocale;
+    
+    // Navigate to the new locale path - avoid double slashes
+    const newPath = `/${newLocale}${cleanPath}`;
     
     router.push(newPath);
     setIsOpen(false);

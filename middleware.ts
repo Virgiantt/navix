@@ -15,6 +15,10 @@ const intlMiddleware = createMiddleware({
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
+  // Add pathname to headers for not-found page
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set('x-pathname', pathname);
+  
   // Block invalid nested locale patterns (e.g., /en/en/projects)
   const nestedLocalePattern = /^\/(en|fr|ar)\/(en|fr|ar)\/.*$/;
   if (nestedLocalePattern.test(pathname)) {
@@ -77,7 +81,14 @@ export default function middleware(request: NextRequest) {
   }
 
   // Continue with next-intl middleware for valid requests
-  return intlMiddleware(request);
+  const response = intlMiddleware(request);
+  
+  // Add pathname header to the response
+  if (response) {
+    response.headers.set('x-pathname', pathname);
+  }
+  
+  return response;
 }
 
 export const config = {

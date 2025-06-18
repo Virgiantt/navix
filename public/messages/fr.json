@@ -47,6 +47,13 @@
       }
     }
   },
+  "NotFound": {
+    "title": "Page Non Trouvée",
+    "description": "La page que vous recherchez n'existe pas ou a été déplacée.",
+    "backHome": "Retour à l'Accueil",
+    "viewProjects": "Voir Nos Projets",
+    "contactUs": "Nous Contacter"
+  },
   "LanguageSwitcher": {
     "selectLanguage": "Sélectionner la langue",
     "english": "Anglais",

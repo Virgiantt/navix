@@ -27,6 +27,14 @@ export default function middleware(request: NextRequest) {
     }
   }
 
+  // Block standalone nested locale paths like /en/en, /fr/fr, /ar/ar
+  const standaloneNestedPattern = /^\/(en|fr|ar)\/(en|fr|ar)\/?$/;
+  if (standaloneNestedPattern.test(pathname)) {
+    const firstLocale = pathname.split('/')[1];
+    const correctedUrl = new URL(`/${firstLocale}`, request.url);
+    return NextResponse.redirect(correctedUrl, 301);
+  }
+
   // Handle contact page redirects to meeting
   if (pathname.match(/^\/(en|fr|ar)\/contact\/?$/)) {
     const locale = pathname.split('/')[1];
@@ -56,8 +64,11 @@ export default function middleware(request: NextRequest) {
     // Block malformed URLs for bots to prevent crawl budget waste
     const malformedPatterns = [
       /^\/(en|fr|ar)\/(en|fr|ar)\//,  // Nested locales
+      /^\/(en|fr|ar)\/(en|fr|ar)\/?$/,  // Standalone nested locales
       /.*\/\/.*/, // Double slashes
       /.*\/{3,}.*/, // Triple+ slashes
+      /.*\/projects\/test\/?$/, // Test project URLs
+      /.*\/projects\/.*test.*$/, // Any project with 'test' in slug
     ];
     
     if (malformedPatterns.some(pattern => pattern.test(pathname))) {

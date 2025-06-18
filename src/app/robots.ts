@@ -14,7 +14,14 @@ export default function robots(): MetadataRoute.Robots {
           '/private/',
           '/sanity/',
           '/_vercel/',
-          '/middleware'
+          '/middleware',
+          // Block nested locale patterns
+          '/*/en/*',
+          '/*/fr/*', 
+          '/*/ar/*',
+          // Block test URLs
+          '/*/*/test*',
+          '/*/*test*'
         ],
       },
       {
@@ -24,23 +31,19 @@ export default function robots(): MetadataRoute.Robots {
           '/api/', 
           '/studio/',
           '/admin/',
-          '/_next/'
+          '/_next/',
+          // Block nested locale patterns for Google
+          '/*/en/*',
+          '/*/fr/*',
+          '/*/ar/*',
+          // Block test URLs
+          '/*/*/test*',
+          '/*/*test*'
         ],
-        // Help Google understand the redirect pages
         crawlDelay: 1
-      },
-      // Allow redirect pages but discourage deep crawling
-      {
-        userAgent: '*',
-        allow: [
-          '/*/contact',
-          '/*/services', 
-          '/*/guarantees'
-        ],
-        crawlDelay: 5  // Slow down crawling of redirect pages
       }
     ],
-    sitemap: 'https://navixagency.tech/sitemap.xml',
-    host: 'https://navixagency.tech'
+    sitemap: 'https://www.navixagency.tech/sitemap.xml',
+    host: 'https://www.navixagency.tech'
   }
 }
